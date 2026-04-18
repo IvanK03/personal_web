@@ -28,7 +28,7 @@
       "@type": "FinancialService",
       "name": "FinKorb s.r.o.",
       "url": "https://finkorb.sk/",
-      "email": "ivan.korbini@gmail.com",
+      "email": "ivan.korbini@okgroup.sk",
       "telephone": "+421911620323",
       "address": {
         "@type": "PostalAddress",
@@ -40,6 +40,19 @@
       "inLanguage": "sk"
     }
     </script>
+
+    <!-- Dočasné štýly pre vycentrovanie Hero sekcie bez fotky -->
+    <style>
+        #hero .hero-content {
+            justify-content: center;
+        }
+        #hero .hero-text {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            align-items: center;
+        }
+    </style>
 </head>
 <body>
     <a class="skip-link" href="#hero">Preskočiť na obsah</a>
@@ -52,9 +65,9 @@
                     <span class="trust-text">Dôveruje nám už viac ako <strong class="highlight-number">1100</strong> klientov</span>
                 </div>
                 <div class="top-bar-right">
-                    <a href="mailto:ivan.korbini@gmail.com" class="contact-link">
+                    <a href="mailto:ivan.korbini@okgroup.sk" class="contact-link">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                        ivan.korbini@gmail.com
+                        ivan.korbini@okgroup.sk
                     </a>
                     <a href="tel:+421911620323" class="contact-link phone-highlight">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
@@ -104,9 +117,11 @@
                     <p>Pomáhame vám robiť správne rozhodnutia pre stabilný a prosperujúci život.</p>
                     <a href="#kontakt" class="btn-primary">Dohodnite si konzultáciu</a>
                 </div>
+                <!-- Dočasne schovaná fotka, kým nebude k dispozícii
                 <div class="hero-image">
                     <img src="images/hero-finkorb.svg" alt="Finančný poradca - Ivan Korbini" width="500" height="600" fetchpriority="high">
                 </div>
+                -->
             </div>
         </section>
 
@@ -203,6 +218,14 @@
         <section id="faq">
             <h2>Časté otázky (FAQ)</h2>
             <details>
+                <summary>Je konzultácia nezáväzná?</summary>
+                <p>Áno, úvodná konzultácia je úplne nezáväzná. Najprv spolu prejdeme vašu situáciu a možnosti, až potom sa rozhodnete, ako ďalej.</p>
+            </details>
+            <details>
+                <summary>S ktorými poisťovňami spolupracujete?</summary>
+                <p>Spolupracujeme so všetkými poisťovňami na slovenskom trhu. Vďaka tomu vieme porovnať ponuky a odporučiť riešenie, ktoré najlepšie sedí Vašim potrebám.</p>
+            </details>
+            <details>
                 <summary>Čo robiť v prípade dopravnej nehody?</summary>
                 <p>Zachovajte pokoj, zabezpečte miesto nehody a skontrolujte zranenia. Ak je to nutné, volajte záchranné zložky (112). Pri väčšej škode alebo zranení je potrebné privolať políciu. Následne vyplňte správu, v prípade nejasností nás kontaktujte na čísle +421 911 620 323 alebo +421 911 032 103 – pomôžeme vám s nahlásením poistnej udalosti.</p>
             </details>
@@ -211,17 +234,121 @@
         <!-- Sekcia Recenzie -->
         <section id="recenzie">
             <h2>Čo hovoria naši klienti</h2>
-            <div class="reviews-grid">
+            <div class="reviews-carousel" aria-live="off">
+                <div class="reviews-track">
                 <article class="review-item">
                     <div class="stars">★★★★★</div>
-                    <p>"Pán Korbini mi veľmi pomohol s nastavením životného poistenia. Profesionálny prístup a všetko mi jasne vysvetlil. Odporúčam!"</p>
+                    <p>"Pomohol mi vybrať vhodné životné poistenie, všetko vysvetlené jednoducho."</p>
                     <h4>– Peter N.</h4>
                 </article>
                 <article class="review-item">
-                    <div class="stars">★★★★★</div>
-                    <p>"Rýchle vybavenie poistnej udalosti a skvelá komunikácia. Konečne mám pocit, že sú moje financie v dobrých rukách."</p>
+                    <div class="stars">★★★★☆</div>
+                    <p>"Dobrá komunikácia a rýchle vybavenie. Spolupráca bez problémov."</p>
                     <h4>– Jana M.</h4>
                 </article>
+                <article class="review-item">
+                    <div class="stars">★★★★★</div>
+                    <p>"Prehľadné porovnanie ponúk, vedel poradiť čo sa oplatí a čo nie."</p>
+                    <h4>– Martin K.</h4>
+                </article>
+                <article class="review-item">
+                    <div class="stars">★★★★☆</div>
+                    <p>"Všetko prebehlo v poriadku, oceňujem ochotu vysvetliť detaily."</p>
+                    <h4>– Zuzana R.</h4>
+                </article>
+                <article class="review-item">
+                    <div class="stars">★★★★★</div>
+                    <p>"Rýchla komunikácia, profesionálny prístup a jasné informácie."</p>
+                    <h4>– Tomáš L.</h4>
+                </article>
+                <article class="review-item">
+                    <div class="stars">★★★★☆</div>
+                    <p>"Poistenie nastavené podľa potrieb, dobrá skúsenosť."</p>
+                    <h4>– Lucia P.</h4>
+                </article>
+                <article class="review-item">
+                    <div class="stars">★★★★★</div>
+                    <p>"Seriózne jednanie, nič netlačil, všetko vysvetlil."</p>
+                    <h4>– Daniel S.</h4>
+                </article>
+                <article class="review-item">
+                    <div class="stars">★★★☆☆</div>
+                    <p>"Trochu dlhšie vybavovanie, ale výsledok bol v poriadku."</p>
+                    <h4>– Marek H.</h4>
+                </article>
+                <article class="review-item">
+                    <div class="stars">★★★★★</div>
+                    <p>"Konečne niekto kto mi vedel normálne vysvetliť rozdiely v poistkách."</p>
+                    <h4>– Ivana T.</h4>
+                </article>
+                <article class="review-item">
+                    <div class="stars">★★★★☆</div>
+                    <p>"Spoľahlivý prístup, komunikácia rýchla."</p>
+                    <h4>– Richard B.</h4>
+                </article>
+                <article class="review-item">
+                    <div class="stars">★★★★★</div>
+                    <p>"Riešili sme PZP aj cestovné poistenie, všetko vybavené bez problémov."</p>
+                    <h4>– Katarína V.</h4>
+                </article>
+                <article class="review-item">
+                    <div class="stars">★★★★☆</div>
+                    <p>"Ochotný poradiť, odpovedal aj večer na správy."</p>
+                    <h4>– Miroslav D.</h4>
+                </article>
+                <article class="review-item">
+                    <div class="stars">★★★★★</div>
+                    <p>"Veľmi dobrá skúsenosť, určite odporúčam."</p>
+                    <h4>– Patrik L.</h4>
+                </article>
+                <article class="review-item">
+                    <div class="stars">★★★★☆</div>
+                    <p>"Rýchle vybavenie, ochota odpovedať aj večer na správy."</p>
+                    <h4>– Andrea K.</h4>
+                </article>
+                <article class="review-item">
+                    <div class="stars">★★★★★</div>
+                    <p>"Férový prístup, nič neskrýval, všetko vysvetlené."</p>
+                    <h4>– Lukáš S.</h4>
+                </article>
+                </div>
+            </div>
+            <div class="reviews-cta">
+                <p>Máte skúsenosť s našimi službami? Budeme radi, ak pridáte svoju recenziu.</p>
+                <button type="button" id="open-review-modal" class="btn-primary">Pridať recenziu</button>
+            </div>
+
+            <div id="review-modal" class="review-modal" hidden>
+                <div class="review-modal-backdrop" data-close-review-modal></div>
+                <div class="review-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="review-modal-title">
+                    <h3 id="review-modal-title">Pridať recenziu</h3>
+                    <form id="review-form" class="review-form">
+                        <div class="form-group">
+                            <label for="review-stars">Počet hviezdičiek</label>
+                            <select id="review-stars" name="stars" required>
+                                <option value="" disabled selected>Vyberte hodnotenie</option>
+                                <option value="5">★★★★★ (5/5)</option>
+                                <option value="4">★★★★☆ (4/5)</option>
+                                <option value="3">★★★☆☆ (3/5)</option>
+                                <option value="2">★★☆☆☆ (2/5)</option>
+                                <option value="1">★☆☆☆☆ (1/5)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="review-name">Meno</label>
+                            <input id="review-name" name="name" type="text" maxlength="40" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="review-description">Popis recenzie</label>
+                            <textarea id="review-description" name="description" rows="4" maxlength="260" placeholder="Napíšte krátku recenziu..." required></textarea>
+                        </div>
+                        <p id="review-form-status" class="review-form-status" aria-live="polite"></p>
+                        <div class="review-modal-actions">
+                            <button type="button" class="btn-secondary" data-close-review-modal>Zrušiť</button>
+                            <button type="submit" class="btn-primary">Pridať recenziu</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </section>
 
@@ -232,7 +359,7 @@
                 <h2>Kontaktujte nás</h2>
                 <p style="margin-bottom: 30px;">Máte otázky alebo si chcete dohodnúť stretnutie? Vyplňte formulár alebo nám zavolajte.</p>
                 <div class="contact-info-items">
-                    <p><strong>Email:</strong> ivan.korbini@gmail.com</p>
+                    <p><strong>Email:</strong> ivan.korbini@okgroup.sk</p>
                     <p><strong>Telefón:</strong> +421 911 620 323 | +421 911 032 103</p>
                     <p><strong>Adresa:</strong> Sološnícka 566/13, Bratislava</p>
                 </div>
@@ -241,14 +368,13 @@
                 <form
                     id="contact-form"
                     action="https://formsubmit.co/ivan.korbini@gmail.com"
-                    data-ajax-endpoint="https://formsubmit.co/ajax/ivan.korbini@gmail.com"
                     method="post"
                     class="contact-form"
                 >
                     <input type="hidden" name="_subject" value="Nový dopyt z webu FinKorb">
                     <input type="hidden" name="_template" value="table">
                     <input type="hidden" name="_captcha" value="false">
-                    <input type="text" name="_honey" class="hp-field" tabindex="-1" autocomplete="off">
+                    <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
 
                     <div class="form-group">
                         <label for="name">Meno a priezvisko</label>
@@ -284,6 +410,7 @@
                     </div>
                     <p id="form-status" class="form-status" aria-live="polite"></p>
                     <button type="submit" class="btn-primary full-width">Odoslať</button>
+                    <p class="form-note">Ak odosielate formulár prvýkrát, potvrďte najprv aktivačný e-mail od FormSubmit.</p>
                 </form>
             </div>
         </div>
@@ -298,7 +425,7 @@
             <p><strong>Právny základ:</strong> súhlas dotknutej osoby a/alebo predzmluvné vzťahy podľa GDPR.</p>
             <p><strong>Doba uchovávania:</strong> najviac 12 mesiacov, ak nevznikne zmluvný vzťah alebo zákon neurčí inú lehotu.</p>
             <p>Máte právo na prístup k údajom, opravu, výmaz, obmedzenie spracúvania, námietku a podanie sťažnosti na ÚOOÚ SR.</p>
-            <p>Kontakt: <a href="mailto:ivan.korbini@gmail.com">ivan.korbini@gmail.com</a> | <a href="tel:+421911620323">+421 911 620 323</a></p>
+            <p>Kontakt: <a href="mailto:ivan.korbini@okgroup.sk">ivan.korbini@okgroup.sk</a> | <a href="tel:+421911620323">+421 911 620 323</a></p>
         </div>
     </section>
 
@@ -310,7 +437,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-
-
-
-

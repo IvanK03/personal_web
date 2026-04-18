@@ -28,7 +28,7 @@
       "@type": "FinancialService",
       "name": "FinKorb s.r.o.",
       "url": "https://finkorb.sk/",
-      "email": "ivan.korbini@gmail.com",
+      "email": "ivan.korbini@okgroup.sk",
       "telephone": "+421911620323",
       "address": {
         "@type": "PostalAddress",
@@ -40,6 +40,19 @@
       "inLanguage": "sk"
     }
     </script>
+
+    <!-- Dočasné štýly pre vycentrovanie Hero sekcie bez fotky -->
+    <style>
+        #hero .hero-content {
+            justify-content: center;
+        }
+        #hero .hero-text {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            align-items: center;
+        }
+    </style>
 </head>
 <body>
     <a class="skip-link" href="#hero">Preskočiť na obsah</a>
@@ -52,9 +65,9 @@
                     <span class="trust-text">Dôveruje nám už viac ako <strong class="highlight-number">1100</strong> klientov</span>
                 </div>
                 <div class="top-bar-right">
-                    <a href="mailto:ivan.korbini@gmail.com" class="contact-link">
+                    <a href="mailto:ivan.korbini@okgroup.sk" class="contact-link">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                        ivan.korbini@gmail.com
+                        ivan.korbini@okgroup.sk
                     </a>
                     <a href="tel:+421911620323" class="contact-link phone-highlight">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
@@ -104,9 +117,11 @@
                     <p>Pomáhame vám robiť správne rozhodnutia pre stabilný a prosperujúci život.</p>
                     <a href="#kontakt" class="btn-primary">Dohodnite si konzultáciu</a>
                 </div>
+                <!-- Dočasne schovaná fotka, kým nebude k dispozícii
                 <div class="hero-image">
                     <img src="images/hero-finkorb.svg" alt="Finančný poradca - Ivan Korbini" width="500" height="600" fetchpriority="high">
                 </div>
+                -->
             </div>
         </section>
 
@@ -203,8 +218,16 @@
         <section id="faq">
             <h2>Časté otázky (FAQ)</h2>
             <details>
+                <summary>Je konzultácia nezáväzná?</summary>
+                <p>Áno, úvodná konzultácia je úplne nezáväzná. Najprv spolu prejdeme vašu situáciu a možnosti, až potom sa rozhodnete, ako ďalej.</p>
+            </details>
+            <details>
+                <summary>S ktorými poisťovňami spolupracujete?</summary>
+                <p>Spolupracujeme so všetkými poisťovňami na slovenskom trhu. Vďaka tomu vieme porovnať ponuky a odporučiť riešenie, ktoré najlepšie sedí Vašim potrebám.</p>
+            </details>
+            <details>
                 <summary>Čo robiť v prípade dopravnej nehody?</summary>
-                <p>Zachovajte pokoj, zabezpečte miesto nehody a skontrolujte zranenia. Ak je to nutné, volajte záchranné zložky (112). Pri väčšej škode alebo zranení je potrebné privolať políciu. Následne vyplňte správu, v prípade nejasností nás kontaktujte na čísle +421 911 620 323 alebo +421 911 032 103 – pomôžeme vám s nahlásením poistnej udalosti.</p>
+                <p>Zachovajte pokoj, zabezpečte miesto nehody a skontrolujte zranenia. Ak je to nutné, volajte záchranné zložky (112). Pri väčšej škode alebo zranení je potrebné privolať políciu. Následne vyplňte správu, v prípade nejasností nás kontaktujte na čísle <a href="tel:+421911620323">+421 911 620 323</a> alebo <a href="tel:+421911032103">+421 911 032 103</a> – pomôžeme vám s nahlásením poistnej udalosti.</p>
             </details>
         </section>
 
@@ -313,11 +336,11 @@
                         </div>
                         <div class="form-group">
                             <label for="review-name">Meno</label>
-                            <input id="review-name" name="name" type="text" maxlength="40" required>
+                            <input id="review-name" name="name" type="text" required>
                         </div>
                         <div class="form-group">
                             <label for="review-description">Popis recenzie</label>
-                            <textarea id="review-description" name="description" rows="4" maxlength="260" placeholder="Napíšte krátku recenziu..." required></textarea>
+                            <textarea id="review-description" name="description" rows="4" placeholder="Napíšte krátku recenziu..." required></textarea>
                         </div>
                         <p id="review-form-status" class="review-form-status" aria-live="polite"></p>
                         <div class="review-modal-actions">
@@ -336,8 +359,8 @@
                 <h2>Kontaktujte nás</h2>
                 <p style="margin-bottom: 30px;">Máte otázky alebo si chcete dohodnúť stretnutie? Vyplňte formulár alebo nám zavolajte.</p>
                 <div class="contact-info-items">
-                    <p><strong>Email:</strong> ivan.korbini@gmail.com</p>
-                    <p><strong>Telefón:</strong> +421 911 620 323 | +421 911 032 103</p>
+                    <p><strong>Email:</strong> <a href="mailto:ivan.korbini@okgroup.sk">ivan.korbini@okgroup.sk</a></p>
+                    <p><strong>Telefón:</strong> <a href="tel:+421911620323">+421 911 620 323</a> | <a href="tel:+421911032103">+421 911 032 103</a></p>
                     <p><strong>Adresa:</strong> Sološnícka 566/13, Bratislava</p>
                 </div>
             </div>
@@ -345,31 +368,38 @@
                 <form
                     id="contact-form"
                     action="https://formsubmit.co/ivan.korbini@gmail.com"
-                    data-ajax-endpoint="https://formsubmit.co/ajax/ivan.korbini@gmail.com"
                     method="post"
                     class="contact-form"
+                    data-submit-mode="ajax"
+                    data-ajax-endpoint="https://formsubmit.co/ajax/ivan.korbini@gmail.com"
                 >
+                    <p class="form-intro">Vyplnenie trvá približne 1 minútu. Odpovieme vám do 24 hodín počas pracovných dní.</p>
                     <input type="hidden" name="_subject" value="Nový dopyt z webu FinKorb">
                     <input type="hidden" name="_template" value="table">
                     <input type="hidden" name="_captcha" value="false">
-                    <input type="text" name="_honey" class="hp-field" tabindex="-1" autocomplete="off">
+                    <input type="hidden" name="_autoresponse" value="Dobrý deň, ďakujeme za váš dopyt. Ozveme sa vám čo najskôr. Tím FinKorb s.r.o.">
+                    <input type="hidden" name="_replyto" id="contact-replyto">
+                    <input type="hidden" name="_next" id="contact-next">
+                    <input type="text" name="_honey" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
 
                     <div class="form-group">
                         <label for="name">Meno a priezvisko</label>
-                        <input id="name" type="text" name="name" autocomplete="name" required>
+                        <input id="name" type="text" name="name" autocomplete="name" placeholder="Napíšte celé meno" required>
                     </div>
                     <div class="form-group">
                         <label for="email">E-mail</label>
-                        <input id="email" type="email" name="email" autocomplete="email" required>
+                        <input id="email" type="email" name="email" autocomplete="email" placeholder="napr. meno@email.sk" required>
                     </div>
                     <div class="form-group">
                         <label for="phone">Telefónne číslo</label>
-                        <input id="phone" type="tel" name="phone" autocomplete="tel">
+                        <input id="phone" type="tel" name="phone" autocomplete="tel" inputmode="tel" placeholder="+421 911 123 456">
+                        <p class="field-help">Nepovinné. Uveďte ho, ak chcete rýchlejšie spätné zavolanie.</p>
                     </div>
                     <div class="form-group">
                         <label for="service">O akú službu máte záujem?</label>
                         <select id="service" name="service" required>
                             <option value="" disabled selected>Vyberte službu</option>
+                            <option value="konzultacia">Nezáväzná konzultácia</option>
                             <option value="zivotne">Životné poistenie</option>
                             <option value="pzp">PZP (Povinné zmluvné poistenie)</option>
                             <option value="havarijne">Havarijné poistenie</option>
@@ -379,15 +409,35 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <label for="contact-preference">Ako vás máme kontaktovať?</label>
+                        <select id="contact-preference" name="contact_preference" required>
+                            <option value="" disabled selected>Vyberte spôsob kontaktu</option>
+                            <option value="email">E-mailom</option>
+                            <option value="telefon">Telefonicky</option>
+                            <option value="whatsapp">WhatsApp</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="callback-time">Kedy vám to najviac vyhovuje?</label>
+                        <select id="callback-time" name="callback_time">
+                            <option value="" selected>Nezáleží mi na čase</option>
+                            <option value="rano">Ráno (8:00 - 11:00)</option>
+                            <option value="obed">Poobede (13:00 - 16:00)</option>
+                            <option value="vecer">Podvečer (16:00 - 19:00)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="message">Správa</label>
-                        <textarea id="message" name="message" rows="4" placeholder="Napíšte stručne, s čím potrebujete pomôcť"></textarea>
+                        <textarea id="message" name="message" rows="5" placeholder="Stručne popíšte, s čím potrebujete pomôcť (napr. typ poistenia, termín, čo chcete porovnať)." required></textarea>
+                        <p class="field-help">Čím viac informácií uvediete, tým presnejšie vám pripravíme riešenie.</p>
                     </div>
                     <div class="form-consent">
                         <input id="gdpr-consent" type="checkbox" name="gdpr_consent" value="suhlasim" required>
-                        <label for="gdpr-consent">Súhlasím so spracovaním osobných údajov podľa <a href="#ochrana-udajov">Zásad ochrany osobných údajov</a>.</label>
+                        <label for="gdpr-consent">Súhlasím so spracovaním osobných údajov za účelom vybavenia môjho dopytu podľa <a href="#ochrana-udajov">Zásad ochrany osobných údajov</a>.</label>
                     </div>
                     <p id="form-status" class="form-status" aria-live="polite"></p>
-                    <button type="submit" class="btn-primary full-width">Odoslať</button>
+                    <button type="submit" class="btn-primary full-width">Odoslať nezáväzný dopyt</button>
+                    <p class="form-note">Ak formulár odosielate cez FormSubmit prvýkrát, potvrďte najprv aktivačný e-mail, ktorý vám príde po prvom odoslaní.</p>
                 </form>
             </div>
         </div>
@@ -398,11 +448,11 @@
         <div class="container">
             <h2>Zásady ochrany osobných údajov</h2>
             <p><strong>Prevádzkovateľ:</strong> FinKorb s.r.o., Sološnícka 566/13, Bratislava.</p>
-            <p>Osobné údaje z formulára (meno, e-mail, telefón a zvolená služba) spracúvame výlučne na účel kontaktovania a vybavenia vašej požiadavky.</p>
+            <p>Osobné údaje z formulára (meno, e-mail, telefón, zvolená služba, preferovaný spôsob kontaktu a obsah správy) spracúvame výlučne na účel kontaktovania a vybavenia vašej požiadavky.</p>
             <p><strong>Právny základ:</strong> súhlas dotknutej osoby a/alebo predzmluvné vzťahy podľa GDPR.</p>
             <p><strong>Doba uchovávania:</strong> najviac 12 mesiacov, ak nevznikne zmluvný vzťah alebo zákon neurčí inú lehotu.</p>
             <p>Máte právo na prístup k údajom, opravu, výmaz, obmedzenie spracúvania, námietku a podanie sťažnosti na ÚOOÚ SR.</p>
-            <p>Kontakt: <a href="mailto:ivan.korbini@gmail.com">ivan.korbini@gmail.com</a> | <a href="tel:+421911620323">+421 911 620 323</a></p>
+            <p>Kontakt: <a href="mailto:ivan.korbini@okgroup.sk">ivan.korbini@okgroup.sk</a> | <a href="tel:+421911620323">+421 911 620 323</a> | <a href="tel:+421911032103">+421 911 032 103</a></p>
         </div>
     </section>
 
@@ -414,7 +464,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-
-
-
-

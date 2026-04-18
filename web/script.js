@@ -1,15 +1,26 @@
 ﻿document.addEventListener('DOMContentLoaded', () => {
     const header = document.querySelector('header');
+    const setHeaderOffset = () => {
+        const headerHeight = header
+            ? Math.ceil(header.getBoundingClientRect().height)
+            : 120;
+
+        document.documentElement.style.setProperty(
+            '--header-offset',
+            `${headerHeight + 12}px`
+        );
+    };
+
+    setHeaderOffset();
+    window.addEventListener('resize', setHeaderOffset);
+    window.addEventListener('orientationchange', setHeaderOffset);
 
     if (header) {
         window.addEventListener(
             'scroll',
             () => {
-                if (window.scrollY > 50) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
-                }
+                header.classList.toggle('scrolled', window.scrollY > 50);
+                setHeaderOffset();
             },
             { passive: true }
         );
@@ -36,16 +47,103 @@
     const nextBtn = document.querySelector('.slider-btn.next');
 
     if (partnersContainer && prevBtn && nextBtn) {
+        const getPartnerScrollStep = () =>
+            Math.max(160, Math.round(partnersContainer.clientWidth * 0.72));
+
         nextBtn.addEventListener('click', () => {
-            partnersContainer.scrollBy({ left: 190, behavior: 'smooth' });
+            partnersContainer.scrollBy({
+                left: getPartnerScrollStep(),
+                behavior: 'smooth',
+            });
         });
 
         prevBtn.addEventListener('click', () => {
-            partnersContainer.scrollBy({ left: -190, behavior: 'smooth' });
+            partnersContainer.scrollBy({
+                left: -getPartnerScrollStep(),
+                behavior: 'smooth',
+            });
         });
     }
 
     const reviewsTrack = document.querySelector('.reviews-track');
+    const reviewsApiUrl = '/api/reviews';
+    const loadedRemoteReviewIds = new Set();
+
+    const sanitizeReview = review => {
+        if (!review || typeof review !== 'object') {
+            return null;
+        }
+
+        const stars = Number(review.stars);
+        const name = String(review.name || '').trim();
+        const description = String(review.description || '').trim();
+        const id = review.id ? String(review.id).trim() : '';
+
+        if (!Number.isInteger(stars) || stars < 1 || stars > 5) {
+            return null;
+        }
+
+        if (!name || !description) {
+            return null;
+        }
+
+        return { id, stars, name, description };
+    };
+
+    const createReviewCard = review => {
+        const article = document.createElement('article');
+        article.className = 'review-item';
+        article.dataset.reviewSource = 'original';
+        if (review.id) {
+            article.dataset.reviewId = review.id;
+        }
+
+        const starsEl = document.createElement('div');
+        starsEl.className = 'stars';
+        starsEl.textContent = `${'\u2605'.repeat(review.stars)}${'\u2606'.repeat(5 - review.stars)}`;
+
+        const reviewText = document.createElement('p');
+        reviewText.textContent = `"${review.description}"`;
+
+        const author = document.createElement('h4');
+        author.textContent = `\u2013 ${review.name}`;
+
+        article.appendChild(starsEl);
+        article.appendChild(reviewText);
+        article.appendChild(author);
+
+        return article;
+    };
+
+    const addApprovedReviewToTrack = review => {
+        if (!reviewsTrack) {
+            return false;
+        }
+
+        const sanitizedReview = sanitizeReview(review);
+        if (!sanitizedReview) {
+            return false;
+        }
+
+        if (sanitizedReview.id && loadedRemoteReviewIds.has(sanitizedReview.id)) {
+            return false;
+        }
+
+        if (
+            sanitizedReview.id &&
+            reviewsTrack.querySelector(`.review-item[data-review-id="${sanitizedReview.id}"]`)
+        ) {
+            loadedRemoteReviewIds.add(sanitizedReview.id);
+            return false;
+        }
+
+        const article = createReviewCard(sanitizedReview);
+        reviewsTrack.appendChild(article);
+        if (sanitizedReview.id) {
+            loadedRemoteReviewIds.add(sanitizedReview.id);
+        }
+        return true;
+    };
 
     const rebuildReviewLoop = () => {
         if (!reviewsTrack) {
@@ -78,11 +176,59 @@
         reviewsTrack.dataset.cloned = 'true';
     };
 
+    const loadApprovedReviews = async () => {
+        if (!reviewsTrack) {
+            return;
+        }
+
+        try {
+            const response = await fetch(reviewsApiUrl, {
+                headers: {
+                    Accept: 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                return;
+            }
+
+            const payload = await response.json();
+            if (!payload || !Array.isArray(payload.reviews)) {
+                return;
+            }
+
+            let hasNewItems = false;
+            payload.reviews.forEach(review => {
+                if (addApprovedReviewToTrack(review)) {
+                    hasNewItems = true;
+                }
+            });
+
+            if (hasNewItems) {
+                rebuildReviewLoop();
+            }
+        } catch (error) {
+            // Keď API nie je dostupné, stránka stále funguje so statickými recenziami.
+        }
+    };
+
     rebuildReviewLoop();
+    loadApprovedReviews();
 
     if (reviewsTrack) {
         const isReviewCard = element =>
             Boolean(element && element.closest('.review-item'));
+        let touchPauseTimeoutId = null;
+
+        const resumeReviewsAfterTouch = () => {
+            if (touchPauseTimeoutId) {
+                window.clearTimeout(touchPauseTimeoutId);
+            }
+
+            touchPauseTimeoutId = window.setTimeout(() => {
+                reviewsTrack.classList.remove('is-paused');
+            }, 350);
+        };
 
         reviewsTrack.addEventListener('pointerover', event => {
             if (isReviewCard(event.target)) {
@@ -99,6 +245,24 @@
                 reviewsTrack.classList.remove('is-paused');
             }
         });
+
+        reviewsTrack.addEventListener(
+            'touchstart',
+            () => {
+                if (touchPauseTimeoutId) {
+                    window.clearTimeout(touchPauseTimeoutId);
+                }
+                reviewsTrack.classList.add('is-paused');
+            },
+            { passive: true }
+        );
+
+        reviewsTrack.addEventListener('touchend', resumeReviewsAfterTouch, {
+            passive: true,
+        });
+        reviewsTrack.addEventListener('touchcancel', resumeReviewsAfterTouch, {
+            passive: true,
+        });
     }
 
     const reviewModal = document.getElementById('review-modal');
@@ -106,10 +270,15 @@
     const closeReviewModalButtons = document.querySelectorAll('[data-close-review-modal]');
     const reviewForm = document.getElementById('review-form');
     const reviewFormStatus = document.getElementById('review-form-status');
+    const reviewSubmitButton = reviewForm?.querySelector('button[type="submit"]');
 
-    const setReviewFormStatus = message => {
+    const setReviewFormStatus = (message, stateClass = '') => {
         if (!reviewFormStatus) {
             return;
+        }
+        reviewFormStatus.className = 'review-form-status';
+        if (stateClass) {
+            reviewFormStatus.classList.add(stateClass);
         }
         reviewFormStatus.textContent = message;
     };
@@ -147,8 +316,8 @@
         }
     });
 
-    if (reviewForm && reviewsTrack) {
-        reviewForm.addEventListener('submit', event => {
+    if (reviewForm) {
+        reviewForm.addEventListener('submit', async event => {
             event.preventDefault();
 
             const stars = Number(reviewForm.elements.stars.value);
@@ -156,33 +325,61 @@
             const description = reviewForm.elements.description.value.trim();
 
             if (!stars || !name || !description) {
-                setReviewFormStatus('Pros\u00edm, vypl\u0148te v\u0161etky polia formul\u00e1ra.');
+                setReviewFormStatus('Pros\u00edm, vypl\u0148te v\u0161etky polia formul\u00e1ra.', 'error');
                 return;
             }
 
-            const article = document.createElement('article');
-            article.className = 'review-item';
-            article.dataset.reviewSource = 'original';
+            if (reviewSubmitButton) {
+                reviewSubmitButton.disabled = true;
+            }
+            setReviewFormStatus('Odosielam recenziu na schválenie...', 'loading');
 
-            const starsEl = document.createElement('div');
-            starsEl.className = 'stars';
-            starsEl.textContent = `${'\u2605'.repeat(stars)}${'\u2606'.repeat(5 - stars)}`;
+            try {
+                const response = await fetch(reviewsApiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Accept: 'application/json',
+                    },
+                    body: JSON.stringify({
+                        stars,
+                        name,
+                        description,
+                    }),
+                });
 
-            const reviewText = document.createElement('p');
-            reviewText.textContent = `"${description}"`;
+                const payload = await response.json().catch(() => null);
 
-            const author = document.createElement('h4');
-            author.textContent = `\u2013 ${name}`;
+                if (!response.ok || !payload || payload.ok !== true) {
+                    const errorMessage =
+                        payload && payload.error
+                            ? String(payload.error)
+                            : 'Recenziu sa nepodarilo odoslať.';
+                    throw new Error(errorMessage);
+                }
 
-            article.appendChild(starsEl);
-            article.appendChild(reviewText);
-            article.appendChild(author);
+                reviewForm.reset();
+                setReviewFormStatus(
+                    'Ďakujeme. Recenzia bola odoslaná na schválenie a po kontrole ju zverejníme.',
+                    'success'
+                );
 
-            reviewsTrack.appendChild(article);
-            rebuildReviewLoop();
-            reviewForm.reset();
-            setReviewFormStatus('');
-            closeReviewModal();
+                window.setTimeout(() => {
+                    closeReviewModal();
+                    setReviewFormStatus('');
+                }, 1600);
+            } catch (error) {
+                setReviewFormStatus(
+                    error && error.message
+                        ? error.message
+                        : 'Recenziu sa teraz nepodarilo odoslať. Skúste to, prosím, znova o chvíľu.',
+                    'error'
+                );
+            } finally {
+                if (reviewSubmitButton) {
+                    reviewSubmitButton.disabled = false;
+                }
+            }
         });
     }
 
@@ -218,10 +415,16 @@
             return;
         }
 
+        const cssHeaderOffset = Number.parseFloat(
+            getComputedStyle(document.documentElement).getPropertyValue('--header-offset')
+        );
+        const sectionOffset = Number.isFinite(cssHeaderOffset)
+            ? cssHeaderOffset
+            : 120;
         let current = '';
 
         menuSections.forEach(section => {
-            if (window.scrollY >= section.offsetTop - 150) {
+            if (window.scrollY >= section.offsetTop - sectionOffset - 16) {
                 current = section.getAttribute('id');
             }
         });
@@ -235,6 +438,7 @@
     };
 
     window.addEventListener('scroll', highlightMenu, { passive: true });
+    window.addEventListener('resize', highlightMenu);
     highlightMenu();
 
     const contactForm = document.getElementById('contact-form');
@@ -249,7 +453,14 @@
     const ajaxEndpoint = contactForm.getAttribute('data-ajax-endpoint');
     const replyToField = document.getElementById('contact-replyto');
     const nextField = document.getElementById('contact-next');
+    const honeyField = contactForm.querySelector('input[name="_honey"]');
+    const nameField = document.getElementById('name');
     const emailField = document.getElementById('email');
+    const phoneField = document.getElementById('phone');
+    const serviceField = document.getElementById('service');
+    const contactPreferenceField = document.getElementById('contact-preference');
+    const messageField = document.getElementById('message');
+    const gdprConsentField = document.getElementById('gdpr-consent');
 
     const setFormStatus = (stateClass, message) => {
         if (!formStatus) {
@@ -263,15 +474,122 @@
         formStatus.textContent = message;
     };
 
+    const setNextFieldValue = () => {
+        if (
+            !nextField ||
+            (window.location.protocol !== 'http:' && window.location.protocol !== 'https:')
+        ) {
+            return;
+        }
+
+        const nextUrl = new URL(window.location.href);
+        nextUrl.searchParams.set('sent', '1');
+        nextUrl.hash = 'kontakt';
+        nextField.value = nextUrl.toString();
+    };
+
+    const validateContactFields = () => {
+        const validators = [
+            {
+                field: nameField,
+                getMessage: () => {
+                    if (!nameField.value.trim()) {
+                        return 'Prosím, zadajte meno a priezvisko.';
+                    }
+                    return '';
+                },
+            },
+            {
+                field: emailField,
+                getMessage: () => {
+                    const value = emailField.value.trim();
+                    if (!value) {
+                        return 'Prosím, zadajte e-mail.';
+                    }
+                    if (!emailField.checkValidity()) {
+                        return 'Prosím, zadajte platný e-mail v tvare meno@email.sk.';
+                    }
+                    return '';
+                },
+            },
+            {
+                field: phoneField,
+                getMessage: () => {
+                    return '';
+                },
+            },
+            {
+                field: serviceField,
+                getMessage: () => (serviceField.value ? '' : 'Prosím, vyberte službu.'),
+            },
+            {
+                field: contactPreferenceField,
+                getMessage: () =>
+                    contactPreferenceField.value ? '' : 'Prosím, vyberte preferovaný spôsob kontaktu.',
+            },
+            {
+                field: messageField,
+                getMessage: () => {
+                    if (!messageField.value.trim()) {
+                        return 'Prosím, napíšte správu.';
+                    }
+                    return '';
+                },
+            },
+            {
+                field: gdprConsentField,
+                getMessage: () =>
+                    gdprConsentField.checked
+                        ? ''
+                        : 'Bez súhlasu so spracovaním údajov nevieme váš dopyt odoslať.',
+            },
+        ];
+
+        let firstInvalidField = null;
+
+        validators.forEach(({ field, getMessage }) => {
+            if (!field) {
+                return;
+            }
+
+            const validationMessage = getMessage();
+            field.setCustomValidity(validationMessage);
+
+            if (!firstInvalidField && validationMessage) {
+                firstInvalidField = field;
+            }
+        });
+
+        return firstInvalidField;
+    };
+
+    const validationFields = [
+        nameField,
+        emailField,
+        phoneField,
+        serviceField,
+        contactPreferenceField,
+        messageField,
+        gdprConsentField,
+    ].filter(Boolean);
+
+    validationFields.forEach(field => {
+        const eventName = field.type === 'checkbox' ? 'change' : 'input';
+
+        field.addEventListener(eventName, () => {
+            field.setCustomValidity('');
+            if (formStatus && formStatus.classList.contains('error')) {
+                setFormStatus('', '');
+            }
+        });
+    });
+
     if (
         nextField &&
         !nextField.value &&
         (window.location.protocol === 'http:' || window.location.protocol === 'https:')
     ) {
-        const nextUrl = new URL(window.location.href);
-        nextUrl.searchParams.set('sent', '1');
-        nextUrl.hash = 'kontakt';
-        nextField.value = nextUrl.toString();
+        setNextFieldValue();
     }
 
     const queryParams = new URLSearchParams(window.location.search);
@@ -286,9 +604,24 @@
     }
 
     contactForm.addEventListener('submit', async event => {
+        setFormStatus('', '');
+
+        if (honeyField && honeyField.value.trim()) {
+            event.preventDefault();
+            return;
+        }
+
+        const firstInvalidField = validateContactFields();
+
         if (!contactForm.checkValidity()) {
             event.preventDefault();
-            contactForm.reportValidity();
+            setFormStatus('error', 'Prosím, opravte zvýraznené polia formulára.');
+
+            if (firstInvalidField) {
+                firstInvalidField.reportValidity();
+            } else {
+                contactForm.reportValidity();
+            }
             return;
         }
 
@@ -327,7 +660,22 @@
                 throw new Error('Po\u017eiadavka zlyhala.');
             }
 
+            let responsePayload = null;
+            const responseContentType = response.headers.get('content-type') || '';
+            if (responseContentType.includes('application/json')) {
+                responsePayload = await response.json();
+            }
+
+            if (
+                responsePayload &&
+                responsePayload.success !== true &&
+                responsePayload.success !== 'true'
+            ) {
+                throw new Error('Formulár nebol prijatý.');
+            }
+
             contactForm.reset();
+            setNextFieldValue();
             setFormStatus('success', '\u010eakujeme, ozveme sa v\u00e1m \u010do najsk\u00f4r.');
         } catch (error) {
             if (submitButton) {

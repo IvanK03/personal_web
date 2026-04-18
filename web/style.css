@@ -53,7 +53,7 @@ body.dark-mode {
 
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 120px; /* Odsadenie pre fixnďż˝ hlaviďż˝ku, aby neprekrďż˝vala sekcie */
+    scroll-padding-top: var(--header-offset, 120px); /* Odsadenie pre fixnďż˝ hlaviďż˝ku */
 }
 
 body {
@@ -62,6 +62,7 @@ body {
     color: var(--text-color);
     background-color: var(--bg-color);
     transition: background-color 0.3s ease, color 0.3s ease; /* Plynulďż˝ prechod */
+    overflow-x: hidden;
 }
 
 h1, h2, h3 {
@@ -165,6 +166,7 @@ header {
     color: rgba(255, 255, 255, 0.8);
     transition: var(--transition);
     font-weight: 500;
+    min-height: 40px;
 }
 
 .contact-link svg {
@@ -252,6 +254,9 @@ nav ul {
 }
 
 nav a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     font-weight: 500;
     color: var(--text-color);
     transition: var(--transition);
@@ -469,7 +474,7 @@ body.dark-mode .theme-toggle-btn .moon-icon { display: none; }
 
 .services-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 30px;
     max-width: 1200px;
     margin: 0 auto;
@@ -652,12 +657,15 @@ details p {
 .review-modal-dialog {
     position: relative;
     width: min(560px, 100%);
+    max-height: min(88dvh, 740px);
     background: var(--card-bg);
     border: 1px solid var(--border-color);
     border-radius: 16px;
     box-shadow: var(--shadow-lg);
     padding: 24px;
     z-index: 1;
+    overflow-y: auto;
+    overscroll-behavior: contain;
 }
 
 .review-modal-dialog h3 {
@@ -699,15 +707,39 @@ details p {
 .review-form-status {
     min-height: 24px;
     margin-bottom: 12px;
-    color: #dc2626;
+    color: var(--text-muted);
     font-weight: 500;
     font-size: 0.95rem;
+}
+
+.review-form-status.loading {
+    color: var(--text-muted);
+}
+
+.review-form-status.success {
+    color: #16a34a;
+}
+
+.review-form-status.error {
+    color: #dc2626;
+}
+
+.review-note {
+    margin-top: 10px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
 }
 
 .review-modal-actions {
     display: flex;
     justify-content: flex-end;
     gap: 12px;
+}
+
+.review-form button:disabled {
+    opacity: 0.7;
+    cursor: wait;
 }
 
 @keyframes reviewsScroll {
@@ -760,10 +792,20 @@ body.dark-mode .partners-title {
 .partners-logos {
     display: flex;
     gap: 30px;
-    overflow: hidden; /* Skryje posuvnďż˝k, posďż˝vame cez JS */
+    overflow-x: auto;
+    overflow-y: hidden;
     scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
     align-items: center;
     width: 100%;
+}
+
+.partners-logos::-webkit-scrollbar {
+    display: none;
+}
+
+.partners-logos {
+    scrollbar-width: none;
 }
 
 .partners-logos img {
@@ -812,6 +854,7 @@ body.dark-mode .logo-for-dark-mode {
     transition: var(--transition);
     display: flex;
     align-items: center;
+    touch-action: manipulation;
 }
 
 .slider-btn:hover {
@@ -867,6 +910,18 @@ body.dark-mode .logo-for-dark-mode {
     font-size: 1.1rem;
 }
 
+.contact-info-items a {
+    color: var(--accent-color);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+}
+
+#faq details p a {
+    color: var(--accent-color);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+}
+
 /* Kontaktnďż˝ formulďż˝r */
 .contact-form-wrapper {
     background-color: var(--card-bg);
@@ -874,6 +929,13 @@ body.dark-mode .logo-for-dark-mode {
     border-radius: 20px;
     box-shadow: var(--shadow-lg);
     border: 1px solid var(--border-color);
+}
+
+.form-intro {
+    margin-bottom: 18px;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
 }
 
 .form-group {
@@ -911,6 +973,10 @@ body.dark-mode .logo-for-dark-mode {
     resize: vertical;
 }
 
+.contact-form ::placeholder {
+    color: #94a3b8;
+}
+
 .hp-field {
     position: absolute;
     left: -9999px;
@@ -925,6 +991,13 @@ body.dark-mode .logo-for-dark-mode {
     border-color: var(--accent-color);
     background-color: var(--bg-color);
     box-shadow: 0 0 0 3px rgba(15, 44, 89, 0.1);
+}
+
+.field-help {
+    margin-top: 8px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    line-height: 1.4;
 }
 
 .full-width {
@@ -1044,44 +1117,173 @@ footer {
 }
 
 /* Responzivita pre mobily */
-@media (max-width: 768px) {
-    header .container {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    nav ul {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 15px;
+@media (max-width: 1024px) {
+    .hero-content {
+        gap: 32px;
     }
 
     #hero h1 {
-        font-size: 2.2rem;
+        font-size: clamp(2.4rem, 5.4vw, 3.1rem);
     }
-    
-    .hero-content {
+
+    nav ul {
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 16px;
+    }
+
+    section {
+        padding: 56px 16px;
+    }
+
+    h2 {
+        font-size: 1.8rem;
+        margin-bottom: 2rem;
+    }
+
+    .top-bar {
+        padding: 8px 0;
+        font-size: 12px;
+    }
+
+    .top-bar-inner {
         flex-direction: column;
+        gap: 8px;
         text-align: center;
-        gap: 40px;
+    }
+
+    .top-bar-right {
+        width: 100%;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .contact-link {
+        font-size: 12.5px;
+        min-height: 36px;
+    }
+
+    header .container {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 12px;
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+    }
+
+    .logo {
+        font-size: 1.45rem;
+    }
+
+    .theme-toggle-btn {
+        margin-left: 0;
+    }
+
+    nav {
+        grid-column: 1 / -1;
+        width: 100%;
+    }
+
+    nav ul {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    nav a {
+        width: 100%;
+        min-height: 40px;
+        border: 1px solid var(--border-color);
+        border-radius: 999px;
+        padding: 7px 6px;
+        font-size: 0.92rem;
+        background-color: var(--card-bg);
+    }
+
+    nav a::after {
+        display: none;
+    }
+
+    nav a.active {
+        border-color: var(--accent-color);
+    }
+
+    #hero {
+        padding: 72px 16px 64px;
+        border-bottom-left-radius: 36px;
+        border-bottom-right-radius: 36px;
+    }
+
+    #hero h1 {
+        font-size: clamp(1.95rem, 9vw, 2.55rem);
+        line-height: 1.2;
+        margin-bottom: 1rem;
     }
 
     #hero p {
+        font-size: 1.05rem;
+        margin-bottom: 1.6rem;
+        max-width: 34ch;
         margin-left: auto;
         margin-right: auto;
     }
-    
+
+    #hero .btn-primary {
+        width: min(100%, 360px);
+        text-align: center;
+        padding: 14px 24px;
+    }
+
+    .hero-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 24px;
+    }
+
     .benefits-grid {
         grid-template-columns: 1fr;
-        gap: 50px;
+        gap: 32px;
+    }
+
+    .service-item {
+        padding: 28px 20px;
+    }
+
+    .reviews-carousel {
+        --review-gap: 16px;
+    }
+
+    .reviews-track {
+        animation-duration: 48s;
     }
 
     .review-item {
-        flex-basis: min(560px, calc(100vw - 40px));
+        padding: 22px 18px;
+        flex-basis: calc(100vw - 48px);
+        max-width: none;
+    }
+
+    .reviews-cta {
+        margin-top: 24px;
+    }
+
+    .review-modal {
+        align-items: flex-start;
+        padding: 12px;
+        overflow-y: auto;
     }
 
     .review-modal-dialog {
-        padding: 18px;
+        width: 100%;
+        max-height: calc(100dvh - 24px);
+        padding: 16px;
+        border-radius: 14px;
     }
 
     .review-modal-actions {
@@ -1092,39 +1294,91 @@ footer {
     .review-modal-actions .btn-secondary {
         width: 100%;
     }
-    
+
     /* Partneri responzivita */
     .partners-layout {
         flex-direction: column;
-        align-items: flex-start;
-        gap: 20px;
+        align-items: stretch;
+        gap: 16px;
     }
-    
-    .partners-slider {
+
+    .partners-title {
         width: 100%;
-    }
-    
-    .top-bar-inner {
-        flex-direction: column;
-        gap: 10px;
         text-align: center;
     }
-    
+
+    .partners-slider {
+        width: 100%;
+        gap: 8px;
+    }
+
+    .partners-logos {
+        gap: 16px;
+    }
+
+    .partners-logos img {
+        width: 130px;
+        height: 56px;
+    }
+
+    .slider-btn {
+        font-size: 1.5rem;
+        padding: 0 8px;
+    }
+
     /* Kontakt responzivita */
     .contact-container {
         grid-template-columns: 1fr;
+        gap: 28px;
     }
-    
+
+    .contact-form-wrapper {
+        padding: 22px 16px;
+        border-radius: 16px;
+    }
+
     .contact-details h2 {
         text-align: center;
     }
-    
+
     .contact-details h2::after {
         margin: 10px auto 0;
     }
 
-    section {
-        padding: 60px 20px;
+    .contact-info-items p {
+        font-size: 1rem;
+    }
+
+    .form-consent {
+        gap: 8px;
+    }
+
+    .full-width {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    nav ul {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #hero h1 {
+        font-size: clamp(1.75rem, 10vw, 2.2rem);
+    }
+
+    .top-bar-right {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .review-item {
+        flex-basis: calc(100vw - 36px);
+    }
+
+    .partners-logos img {
+        width: 116px;
+        height: 52px;
     }
 }
 

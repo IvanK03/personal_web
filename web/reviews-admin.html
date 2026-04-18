@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>FinKorb - Schvaľovanie recenzií</title>
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #0f172a;
+            --muted: #475569;
+            --border: #cbd5e1;
+            --accent: #c5832b;
+            --success: #166534;
+            --danger: #dc2626;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 24px 16px 48px;
+        }
+
+        h1 {
+            margin: 0 0 10px;
+        }
+
+        .muted {
+            color: var(--muted);
+        }
+
+        .panel {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        label {
+            font-weight: 600;
+        }
+
+        input[type="password"] {
+            flex: 1;
+            min-width: 260px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-size: 1rem;
+        }
+
+        button {
+            border: none;
+            border-radius: 999px;
+            padding: 10px 16px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-main {
+            background: var(--accent);
+            color: #0f172a;
+        }
+
+        .btn-approve {
+            background: #16a34a;
+            color: #ffffff;
+        }
+
+        .btn-reject {
+            background: var(--danger);
+            color: #ffffff;
+        }
+
+        .status {
+            margin-top: 10px;
+            min-height: 20px;
+            font-weight: 600;
+        }
+
+        .status.success {
+            color: var(--success);
+        }
+
+        .status.error {
+            color: var(--danger);
+        }
+
+        .review-list {
+            display: grid;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .review-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px;
+        }
+
+        .review-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .review-meta {
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+
+        .review-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Schvaľovanie Recenzií</h1>
+        <p class="muted">Táto stránka je určená pre administráciu. Recenzie sa na web dostanú až po schválení.</p>
+
+        <section class="panel">
+            <label for="admin-token">Admin token</label>
+            <div class="controls" style="margin-top: 8px;">
+                <input id="admin-token" type="password" autocomplete="off" placeholder="Vložte REVIEWS_ADMIN_TOKEN">
+                <button id="load-pending" class="btn-main" type="button">Načítať čakajúce</button>
+            </div>
+            <p id="status" class="status" aria-live="polite"></p>
+        </section>
+
+        <section class="panel">
+            <h2 style="margin-top: 0;">Čakajúce recenzie</h2>
+            <div id="review-list" class="review-list"></div>
+        </section>
+    </main>
+
+    <script>
+        (function () {
+            const apiUrl = '/api/reviews/moderation';
+            const tokenInput = document.getElementById('admin-token');
+            const loadButton = document.getElementById('load-pending');
+            const statusEl = document.getElementById('status');
+            const reviewListEl = document.getElementById('review-list');
+            const storageKey = 'finkorb_reviews_admin_token';
+
+            tokenInput.value = sessionStorage.getItem(storageKey) || '';
+
+            const setStatus = (message, type) => {
+                statusEl.className = 'status';
+                if (type) {
+                    statusEl.classList.add(type);
+                }
+                statusEl.textContent = message || '';
+            };
+
+            const formatDate = iso => {
+                if (!iso) {
+                    return '-';
+                }
+                const date = new Date(iso);
+                if (Number.isNaN(date.getTime())) {
+                    return '-';
+                }
+                return date.toLocaleString('sk-SK');
+            };
+
+            const toStars = value => {
+                const stars = Number(value);
+                if (!Number.isInteger(stars) || stars < 1 || stars > 5) {
+                    return '☆☆☆☆☆';
+                }
+                return '★'.repeat(stars) + '☆'.repeat(5 - stars);
+            };
+
+            const getToken = () => tokenInput.value.trim();
+
+            const apiRequest = async (method, body) => {
+                const token = getToken();
+                if (!token) {
+                    throw new Error('Chýba admin token.');
+                }
+
+                sessionStorage.setItem(storageKey, token);
+
+                const response = await fetch(apiUrl, {
+                    method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Accept: 'application/json',
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: body ? JSON.stringify(body) : undefined,
+                });
+
+                const payload = await response.json().catch(() => ({}));
+                if (!response.ok || payload.ok !== true) {
+                    throw new Error(payload.error || 'Požiadavka zlyhala.');
+                }
+                return payload;
+            };
+
+            const moderateReview = async (id, action) => {
+                setStatus('Spracovávam akciu...', '');
+                try {
+                    await apiRequest('POST', { id, action });
+                    setStatus(
+                        action === 'approve'
+                            ? 'Recenzia bola schválená.'
+                            : 'Recenzia bola zamietnutá.',
+                        'success'
+                    );
+                    await loadPendingReviews();
+                } catch (error) {
+                    setStatus(error.message, 'error');
+                }
+            };
+
+            const renderReviews = reviews => {
+                reviewListEl.innerHTML = '';
+
+                if (!reviews.length) {
+                    reviewListEl.innerHTML = '<p class="muted">Žiadne čakajúce recenzie.</p>';
+                    return;
+                }
+
+                reviews.forEach(review => {
+                    const card = document.createElement('article');
+                    card.className = 'review-card';
+
+                    const head = document.createElement('div');
+                    head.className = 'review-head';
+
+                    const name = document.createElement('strong');
+                    name.textContent = review.name || 'Bez mena';
+
+                    const meta = document.createElement('span');
+                    meta.className = 'review-meta';
+                    meta.textContent = `${toStars(review.stars)} | ${formatDate(review.createdAt)}`;
+
+                    head.appendChild(name);
+                    head.appendChild(meta);
+
+                    const text = document.createElement('p');
+                    text.textContent = review.description || '';
+
+                    const actions = document.createElement('div');
+                    actions.className = 'review-actions';
+
+                    const approveButton = document.createElement('button');
+                    approveButton.type = 'button';
+                    approveButton.className = 'btn-approve';
+                    approveButton.textContent = 'Schváliť';
+                    approveButton.addEventListener('click', () => moderateReview(review.id, 'approve'));
+
+                    const rejectButton = document.createElement('button');
+                    rejectButton.type = 'button';
+                    rejectButton.className = 'btn-reject';
+                    rejectButton.textContent = 'Zamietnuť';
+                    rejectButton.addEventListener('click', () => moderateReview(review.id, 'reject'));
+
+                    actions.appendChild(approveButton);
+                    actions.appendChild(rejectButton);
+
+                    card.appendChild(head);
+                    card.appendChild(text);
+                    card.appendChild(actions);
+                    reviewListEl.appendChild(card);
+                });
+            };
+
+            const loadPendingReviews = async () => {
+                setStatus('Načítavam recenzie...', '');
+                try {
+                    const payload = await apiRequest('GET');
+                    const pending = Array.isArray(payload.pending) ? payload.pending : [];
+                    renderReviews(pending);
+                    setStatus(`Načítané čakajúce recenzie: ${pending.length}.`, 'success');
+                } catch (error) {
+                    setStatus(error.message, 'error');
+                }
+            };
+
+            loadButton.addEventListener('click', loadPendingReviews);
+        })();
+    </script>
+</body>
+</html>

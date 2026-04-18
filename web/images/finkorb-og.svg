@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">FinKorb s.r.o.</title>
+  <desc id="desc">Komplexné finančné poradenstvo</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#020617" />
+      <stop offset="100%" stop-color="#0f2c59" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <circle cx="1030" cy="90" r="180" fill="rgba(197, 131, 43, 0.18)" />
+  <circle cx="170" cy="560" r="220" fill="rgba(197, 131, 43, 0.14)" />
+  <text x="90" y="280" fill="#ffffff" font-size="74" font-family="Montserrat, Arial, sans-serif" font-weight="700">FinKorb s.r.o.</text>
+  <text x="90" y="350" fill="#d0d9e6" font-size="36" font-family="Inter, Arial, sans-serif">Komplexné finančné poradenstvo</text>
+  <text x="90" y="412" fill="#c5832b" font-size="30" font-family="Inter, Arial, sans-serif">Poistenie | Hypotéky | Investovanie</text>
+</svg>

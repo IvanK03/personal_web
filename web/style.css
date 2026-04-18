@@ -1,0 +1,1136 @@
+﻿/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700&display=swap');
+
+/* Zďż˝kladnďż˝ premennďż˝ pre konzistentnďż˝ dizajn */
+:root {
+    /* SVETLďż˝ REďż˝IM (Default) */
+    --bg-color: #ffffff; /* ďż˝istďż˝ biela */
+    --text-color: #111111; /* Veďż˝mi tmavďż˝ sivďż˝ pre lepďż˝ďż˝ kontrast ďż˝ďż˝tania */
+    --heading-color: #0f2c59; /* Tmavomodrďż˝ pre nadpisy */
+    --header-bg: #ffffff;
+    --card-bg: #ffffff;
+    --section-bg: #ffffff; /* Zjednotenďż˝ biela pre vďż˝etky sekcie */
+    --hero-bg: #ffffff; /* Odstrďż˝nenďż˝ modrďż˝, teraz biela */
+    --border-color: #e2e8f0;
+    --input-bg: #ffffff;
+    --partners-bg: #ffffff;
+    
+    --accent-color: #c5832b; /* Medeno-zlatďż˝ - Luxus */
+    --accent-hover: #a66a1d;
+    --text-muted: #64748b;
+    
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+/* TMAVďż˝ REďż˝IM (Luxusnďż˝) */
+body.dark-mode {
+    --bg-color: #020617; /* Zjednotenďż˝ tmavďż˝ farba (podďż˝a sekcie Vďż˝hody) */
+    --text-color: #ededed; /* Svetlosivďż˝ pre oďż˝i (nie ďż˝istďż˝ biela) */
+    --heading-color: #ffffff;
+    --header-bg: #020617;
+    --card-bg: #1e293b;
+    --section-bg: #020617;
+    --hero-bg: #020617; /* Jednotnďż˝ tmavďż˝ farba */
+    --border-color: #334155;
+    --input-bg: #1e293b;
+    --partners-bg: #020617; /* Tmavomodrďż˝ pre sekciu partnerov */
+    --text-muted: #94a3b8;
+    
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Reset a zďż˝kladnďż˝ nastavenia */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 120px; /* Odsadenie pre fixnďż˝ hlaviďż˝ku, aby neprekrďż˝vala sekcie */
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    transition: background-color 0.3s ease, color 0.3s ease; /* Plynulďż˝ prechod */
+}
+
+h1, h2, h3 {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--heading-color);
+    margin-bottom: 1rem;
+}
+
+h2 {
+    font-size: 2.2rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+/* Dekoratďż˝vna ďż˝iara pod nadpismi sekciďż˝ */
+h2::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background-color: var(--accent-color);
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 10px;
+    background: #020617;
+    color: #ffffff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    z-index: 2000;
+}
+
+.skip-link:focus {
+    top: 10px;
+}
+
+ul {
+    list-style: none;
+}
+
+/* Layout utility */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+section {
+    padding: 80px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Hlaviďż˝ka a Navigďż˝cia */
+header {
+    background-color: var(--header-bg);
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 0; /* Padding presunieme na container kvďż˝li top-bar */
+}
+
+/* Hornďż˝ liďż˝ta s poďż˝tom klientov */
+.top-bar {
+    background-color: #020617; /* Takmer ďż˝ierna */
+    color: #cccccc;
+    padding: 10px 0;
+    font-size: 13px;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    letter-spacing: 0.5px;
+}
+
+.top-bar-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.top-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.contact-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.8);
+    transition: var(--transition);
+    font-weight: 500;
+}
+
+.contact-link svg {
+    width: 16px;
+    height: 16px;
+    color: var(--accent-color); /* Zlatďż˝ farba ikon */
+}
+
+.contact-link:hover {
+    color: #ffffff;
+}
+
+.phone-highlight {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.trust-text {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.highlight-number {
+    color: var(--accent-color);
+    font-weight: 700;
+}
+
+/* ďż˝tďż˝l pre prilepenďż˝ hlaviďż˝ku pri scrollovanďż˝ */
+header.scrolled {
+    background-color: var(--header-bg);
+    opacity: 0.98;
+    backdrop-filter: blur(5px); /* Rozostrenie pozadia */
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    transition: var(--transition);
+}
+
+header.scrolled .container {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.logo {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.8rem; /* Zvďż˝ďż˝enie loga */
+    font-weight: 700;
+    color: #000000; /* ďż˝ierna pre light mode */
+    background: none;
+    transition: var(--transition);
+}
+
+.animated-logo {
+    background: linear-gradient(to right, #000000 20%, #ffd700 50%, #000000 80%);
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: textShine 6s linear infinite;
+}
+
+body.dark-mode .animated-logo {
+    background: linear-gradient(to right, #ffffff 20%, #ffd700 50%, #ffffff 80%);
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+
+@keyframes textShine {
+    to { background-position: 200% center; }
+}
+
+nav ul {
+    display: flex;
+    gap: 30px;
+}
+
+nav a {
+    font-weight: 500;
+    color: var(--text-color);
+    transition: var(--transition);
+    position: relative;
+}
+
+/* Modernďż˝ hover efekt pre navigďż˝ciu (podďż˝iarknutie zo stredu) */
+nav a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 50%;
+    background-color: var(--accent-color);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+nav a.active::after,
+nav a:hover::after {
+    width: 100%;
+}
+
+nav a.active,
+nav a:hover {
+    color: var(--accent-color);
+}
+
+/* Tlaďż˝idlo prepďż˝naďż˝a tďż˝my */
+.theme-toggle-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    margin-left: 30px; /* Ponechanďż˝ medzera od menu */
+    transition: color 0.3s ease;
+}
+
+.theme-toggle-btn:hover {
+    color: var(--accent-color);
+}
+
+/* V svetlom reďż˝ime vidďż˝me Mesiac (aby sme prepli na tmu) */
+.theme-toggle-btn .sun-icon { display: none; }
+.theme-toggle-btn .moon-icon { display: block; }
+
+/* V tmavom reďż˝ime vidďż˝me Slnko (aby sme prepli na svetlo) */
+body.dark-mode .theme-toggle-btn .sun-icon { display: block; }
+body.dark-mode .theme-toggle-btn .moon-icon { display: none; }
+
+/* Hero Sekcia */
+#hero {
+    background: var(--hero-bg);
+    color: var(--text-color);
+    padding: 100px 20px;
+    max-width: 100%; /* Hero roztiahneme na celďż˝ ďż˝ďż˝rku */
+    overflow: hidden;
+    /* Modernďż˝ zaoblenie spodnej ďż˝asti */
+    border-bottom-left-radius: 60px;
+    border-bottom-right-radius: 60px;
+    box-shadow: 0 10px 30px -10px rgba(15, 44, 89, 0.5);
+    position: relative;
+    z-index: 1;
+}
+
+.hero-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 50px;
+    text-align: left;
+}
+
+.hero-text {
+    flex: 1;
+}
+
+.hero-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.hero-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    object-fit: cover;
+    /* Animďż˝cia plďż˝vania */
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+#hero h1 {
+    color: var(--heading-color);
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+#hero p {
+    font-size: 1.2rem;
+    margin-bottom: 2.5rem;
+    opacity: 0.95;
+    max-width: 600px;
+}
+
+/* Tlaďż˝idlďż˝ */
+.btn-primary {
+    display: inline-block;
+    background-color: var(--accent-color);
+    color: #0f172a; /* Tmavďż˝ text na zlatom tlaďż˝idle pre kontrast */
+    padding: 15px 35px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: var(--transition);
+    box-shadow: 0 4px 15px rgba(214, 158, 46, 0.4);
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(214, 158, 46, 0.6);
+}
+
+/* Sekcia Vďż˝hody spoluprďż˝ce */
+#vyhody {
+    background-color: var(--section-bg);
+    color: var(--text-color);
+    padding: 80px 20px;
+    max-width: 100%;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.section-subtitle {
+    display: block;
+    color: var(--accent-color);
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+#vyhody h2 {
+    color: var(--heading-color);
+    margin-bottom: 0;
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+}
+
+.benefit-item {
+    text-align: left;
+}
+
+.benefit-icon {
+    color: var(--accent-color);
+    margin-bottom: 20px;
+}
+
+.benefit-item h3 {
+    color: var(--heading-color);
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+}
+
+.benefit-item p {
+    color: var(--text-muted);
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+/* Sekcia O mne */
+#o-mne {
+    text-align: center;
+    max-width: 800px;
+}
+
+/* Sekcia Sluďż˝by - Grid */
+#sluzby {
+    background-color: var(--section-bg);
+    max-width: 100%; /* Pozadie na celďż˝ ďż˝ďż˝rku */
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.service-item {
+    background: var(--card-bg);
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    text-align: center;
+    border-top: 4px solid transparent;
+}
+
+.service-item:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-lg);
+    border-top: 4px solid var(--accent-color);
+}
+
+.service-item h3 {
+    margin-bottom: 15px;
+}
+
+/* FAQ Sekcia */
+details {
+    background-color: var(--card-bg);
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+summary {
+    padding: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--heading-color);
+    list-style: none; /* Skryje defaultnďż˝ ďż˝ďż˝pku */
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+summary::-webkit-details-marker {
+    display: none;
+}
+
+summary::after {
+    content: '+';
+    font-size: 1.5rem;
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+details[open] summary::after {
+    content: '-';
+}
+
+details p {
+    padding: 0 20px 20px 20px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-color);
+    margin-top: 0;
+    padding-top: 15px;
+    /* Animďż˝cia pre plynulďż˝ zobrazenie textu */
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Recenzie Sekcia */
+#recenzie {
+    background-color: var(--section-bg);
+    max-width: 100%;
+}
+
+.reviews-carousel {
+    --review-gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.reviews-track {
+    display: flex;
+    align-items: stretch;
+    gap: var(--review-gap);
+    width: max-content;
+    animation: reviewsScroll 55s linear infinite;
+    will-change: transform;
+}
+
+.review-item {
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+    flex: 0 0 calc((min(1200px, 100vw - 40px) - var(--review-gap)) / 2);
+    max-width: 600px;
+}
+
+.stars {
+    color: var(--accent-color);
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.review-item h4 {
+    margin-top: 20px;
+    color: var(--heading-color);
+}
+
+.reviews-track.is-paused {
+    animation-play-state: paused;
+}
+
+.reviews-cta {
+    text-align: center;
+    margin: 32px auto 0;
+    max-width: 760px;
+}
+
+.reviews-cta p {
+    margin-bottom: 16px;
+    color: var(--text-muted);
+}
+
+.btn-secondary {
+    display: inline-block;
+    background-color: transparent;
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-secondary:hover {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+
+.review-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.review-modal[hidden] {
+    display: none !important;
+}
+
+.review-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(2, 6, 23, 0.72);
+    backdrop-filter: blur(2px);
+}
+
+.review-modal-dialog {
+    position: relative;
+    width: min(560px, 100%);
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: var(--shadow-lg);
+    padding: 24px;
+    z-index: 1;
+}
+
+.review-modal-dialog h3 {
+    margin-bottom: 18px;
+    text-align: center;
+}
+
+.review-form input,
+.review-form select,
+.review-form textarea {
+    width: 100%;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--input-bg);
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    color: var(--text-color);
+    padding: 10px 15px;
+}
+
+.review-form input,
+.review-form select {
+    height: 46px;
+}
+
+.review-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.review-form input:focus,
+.review-form select:focus,
+.review-form textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(15, 44, 89, 0.1);
+}
+
+.review-form-status {
+    min-height: 24px;
+    margin-bottom: 12px;
+    color: #dc2626;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.review-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+@keyframes reviewsScroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+/* Sekcia Partneri */
+#partneri {
+    background-color: var(--partners-bg);
+    padding: 40px 0;
+    border-top: none;
+    border-bottom: none;
+    max-width: 100%; /* Roztiahnutie na celďż˝ ďż˝ďż˝rku strďż˝nky */
+    width: 100%;
+}
+
+.partners-layout {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.partners-title {
+    margin-bottom: 0;
+    font-size: 1.5rem;
+    white-space: nowrap;
+    color: #0f172a; /* Tmavďż˝ text na svetlom pozadďż˝ */
+}
+
+body.dark-mode .partners-title {
+    color: #ffffff;
+}
+
+.partners-title::after {
+    display: none; /* Odstrďż˝nenie podďż˝iarknutia pre tento nadpis */
+}
+
+.partners-slider {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.partners-logos {
+    display: flex;
+    gap: 30px;
+    overflow: hidden; /* Skryje posuvnďż˝k, posďż˝vame cez JS */
+    scroll-behavior: smooth;
+    align-items: center;
+    width: 100%;
+}
+
+.partners-logos img {
+    height: 70px;
+    width: 160px;
+    padding: 5px;
+    object-fit: contain;
+    transition: var(--transition);
+    flex-shrink: 0;
+    mix-blend-mode: multiply; /* Odstrďż˝ni biele pozadie obrďż˝zkov splynutďż˝m s podkladom */
+}
+
+.partners-logos img:hover {
+    transform: scale(1.05);
+}
+
+/* V tmavom reďż˝ime odstrďż˝nime biele pozadie a upravďż˝me logďż˝ pre viditeďż˝nosďż˝ */
+body.dark-mode .partners-logos img {
+    background-color: transparent !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    filter: none;
+    mix-blend-mode: normal;
+}
+
+/* ďż˝pecifickďż˝ pravidlďż˝ pre prepďż˝nanie loga Pillow */
+.logo-for-dark-mode {
+    display: none;
+}
+
+body.dark-mode .logo-for-light-mode {
+    display: none;
+}
+
+body.dark-mode .logo-for-dark-mode {
+    display: inline-block;
+}
+
+.slider-btn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #334155; /* Tmavďż˝ia pre lepďż˝ďż˝ kontrast na striebornom pozadďż˝ */
+    cursor: pointer;
+    padding: 0 15px;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+}
+
+.slider-btn:hover {
+    color: var(--accent-color);
+}
+
+/* Cennďż˝k v sekcii Vďż˝hody */
+.cennik-wrapper {
+    margin-top: 80px;
+    padding-top: 60px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+.price-subtitle {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--accent-color);
+    margin-bottom: 20px;
+}
+
+.legal-text {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Sekcia Kontakt (Novďż˝ layout) */
+#kontakt {
+    background-color: var(--bg-color);
+    padding: 80px 20px;
+}
+
+.contact-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: start;
+}
+
+.contact-details h2 {
+    text-align: left;
+}
+
+.contact-details h2::after {
+    margin: 10px 0 0; /* Zarovnanie ďż˝iary doďż˝ava */
+}
+
+.contact-info-items p {
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+/* Kontaktnďż˝ formulďż˝r */
+.contact-form-wrapper {
+    background-color: var(--card-bg);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-color);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--heading-color);
+}
+
+.contact-form input,
+.contact-form select,
+.contact-form textarea {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--input-bg);
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    color: var(--text-color);
+    transition: var(--transition);
+}
+
+.contact-form input,
+.contact-form select {
+    height: 50px;
+}
+
+.contact-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.hp-field {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.contact-form input:focus,
+.contact-form select:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    background-color: var(--bg-color);
+    box-shadow: 0 0 0 3px rgba(15, 44, 89, 0.1);
+}
+
+.full-width {
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+.contact-form button:disabled {
+    opacity: 0.7;
+    cursor: wait;
+}
+
+.form-consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.form-consent input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.form-consent label {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--text-color);
+}
+
+.form-consent a {
+    color: var(--accent-color);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+}
+
+.form-status {
+    min-height: 24px;
+    margin-bottom: 16px;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.form-status.loading {
+    color: var(--text-muted);
+}
+
+.form-status.success {
+    color: #16a34a;
+}
+
+.form-status.error {
+    color: #dc2626;
+}
+
+.form-note {
+    margin-top: 10px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* Pďż˝ta */
+.privacy-section {
+    background-color: var(--section-bg);
+    border-top: 1px solid var(--border-color);
+}
+
+.privacy-section .container {
+    max-width: 900px;
+}
+
+.privacy-section h2 {
+    margin-bottom: 1.5rem;
+}
+
+.privacy-section p {
+    margin-bottom: 14px;
+    color: var(--text-muted);
+}
+
+.privacy-section a {
+    color: var(--accent-color);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+}
+footer {
+    background-color: #020617; /* Pďż˝tu nechďż˝me vďż˝dy tmavďż˝ pre kontrast */
+    color: #cccccc;
+    text-align: center;
+    padding: 20px;
+}
+
+.copyright {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+    font-size: 0.9rem;
+    opacity: 0.6;
+}
+
+
+.footer-links {
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+.footer-links a {
+    color: #ffffff;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+}
+
+/* Responzivita pre mobily */
+@media (max-width: 768px) {
+    header .container {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    #hero h1 {
+        font-size: 2.2rem;
+    }
+    
+    .hero-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 40px;
+    }
+
+    #hero p {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .benefits-grid {
+        grid-template-columns: 1fr;
+        gap: 50px;
+    }
+
+    .review-item {
+        flex-basis: min(560px, calc(100vw - 40px));
+    }
+
+    .review-modal-dialog {
+        padding: 18px;
+    }
+
+    .review-modal-actions {
+        flex-direction: column;
+    }
+
+    .review-modal-actions .btn-primary,
+    .review-modal-actions .btn-secondary {
+        width: 100%;
+    }
+    
+    /* Partneri responzivita */
+    .partners-layout {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+    
+    .partners-slider {
+        width: 100%;
+    }
+    
+    .top-bar-inner {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    /* Kontakt responzivita */
+    .contact-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .contact-details h2 {
+        text-align: center;
+    }
+    
+    .contact-details h2::after {
+        margin: 10px auto 0;
+    }
+
+    section {
+        padding: 60px 20px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .reviews-track {
+        animation: none;
+    }
+}
+

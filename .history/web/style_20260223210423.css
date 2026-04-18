@@ -1,0 +1,741 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700&display=swap');
+
+/* Základné premenné pre konzistentný dizajn */
+:root {
+    --primary-color: #ffffff; /* Biela pre nadpisy */
+    --secondary-color: #1e293b; /* Tmavá pre gradienty */
+    --accent-color: #c5832b; /* Medeno-zlatá - Luxus */
+    --accent-hover: #a66a1d;
+    --text-dark: #cccccc; /* Svetlosivá pre text na tmavom pozadí */
+    --text-light: #94a3b8;
+    --bg-light: #161f32; /* Jemne odlišná tmavá pre sekcie */
+    --white: #0f172a; /* Hlavná tmavá farba pozadia (pôvodne biela) */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
+    --transition: all 0.3s ease;
+}
+
+/* Reset a základné nastavenia */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    color: var(--text-dark);
+    background-color: var(--white);
+}
+
+h1, h2, h3 {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+h2 {
+    font-size: 2.2rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+/* Dekoratívna čiara pod nadpismi sekcií */
+h2::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background-color: var(--accent-color);
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+/* Layout utility */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+section {
+    padding: 80px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Hlavička a Navigácia */
+header {
+    background-color: var(--white);
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 0; /* Padding presunieme na container kvôli top-bar */
+}
+
+/* Horná lišta s počtom klientov */
+.top-bar {
+    background-color: #020617; /* Takmer čierna */
+    color: #cccccc;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    letter-spacing: 0.5px;
+}
+
+.top-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.contact-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.8);
+    transition: var(--transition);
+    font-weight: 500;
+}
+
+.contact-link svg {
+    width: 16px;
+    height: 16px;
+    color: var(--accent-color); /* Zlatá farba ikon */
+}
+
+.contact-link:hover {
+    color: var(--white);
+}
+
+.phone-highlight {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.trust-text {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.highlight-number {
+    color: var(--accent-color);
+    font-weight: 700;
+}
+
+/* Štýl pre prilepenú hlavičku pri scrollovaní */
+header.scrolled {
+    background-color: rgba(15, 23, 42, 0.95); /* Tmavá polopriehľadná */
+    backdrop-filter: blur(5px); /* Rozostrenie pozadia */
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    transition: var(--transition);
+}
+
+header.scrolled .container {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.logo {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    background: linear-gradient(45deg, var(--accent-color), #ffffff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    transition: var(--transition);
+}
+
+nav ul {
+    display: flex;
+    gap: 30px;
+}
+
+nav a {
+    font-weight: 500;
+    color: var(--text-dark);
+    transition: var(--transition);
+    position: relative;
+}
+
+/* Moderný hover efekt pre navigáciu (podčiarknutie zo stredu) */
+nav a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 50%;
+    background-color: var(--accent-color);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+nav a:hover::after {
+    width: 100%;
+}
+
+nav a:hover {
+    color: var(--accent-color);
+}
+
+/* Hero Sekcia */
+#hero {
+    background: linear-gradient(135deg, #020617 0%, #0f172a 50%, #1e293b 100%);
+    color: #ffffff;
+    padding: 100px 20px;
+    max-width: 100%; /* Hero roztiahneme na celú šírku */
+    overflow: hidden;
+    /* Moderné zaoblenie spodnej časti */
+    border-bottom-left-radius: 60px;
+    border-bottom-right-radius: 60px;
+    box-shadow: 0 10px 30px -10px rgba(15, 44, 89, 0.5);
+    position: relative;
+    z-index: 1;
+}
+
+.hero-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 50px;
+    text-align: left;
+}
+
+.hero-text {
+    flex: 1;
+}
+
+.hero-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.hero-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    object-fit: cover;
+    /* Animácia plávania */
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+#hero h1 {
+    color: #ffffff;
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+#hero p {
+    font-size: 1.2rem;
+    margin-bottom: 2.5rem;
+    opacity: 0.95;
+    max-width: 600px;
+}
+
+/* Tlačidlá */
+.btn-primary {
+    display: inline-block;
+    background-color: var(--accent-color);
+    color: #0f172a; /* Tmavý text na zlatom tlačidle pre kontrast */
+    padding: 15px 35px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: var(--transition);
+    box-shadow: 0 4px 15px rgba(214, 158, 46, 0.4);
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(214, 158, 46, 0.6);
+}
+
+/* Sekcia Výhody spolupráce */
+#vyhody {
+    background-color: #020617;
+    color: #cccccc;
+    padding: 80px 20px;
+    max-width: 100%;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.section-subtitle {
+    display: block;
+    color: var(--accent-color);
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+#vyhody h2 {
+    color: #ffffff;
+    margin-bottom: 0;
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+}
+
+.benefit-item {
+    text-align: left;
+}
+
+.benefit-icon {
+    color: var(--accent-color);
+    margin-bottom: 20px;
+}
+
+.benefit-item h3 {
+    color: #ffffff;
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+}
+
+.benefit-item p {
+    color: var(--text-light);
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+/* Sekcia O mne */
+#o-mne {
+    text-align: center;
+    max-width: 800px;
+}
+
+/* Sekcia Služby - Grid */
+#sluzby {
+    background-color: var(--bg-light);
+    max-width: 100%; /* Pozadie na celú šírku */
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.service-item {
+    background: var(--white);
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    text-align: center;
+    border-top: 4px solid transparent;
+}
+
+.service-item:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-lg);
+    border-top: 4px solid var(--accent-color);
+}
+
+.service-item h3 {
+    margin-bottom: 15px;
+}
+
+/* FAQ Sekcia */
+details {
+    background-color: var(--white);
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    border: 1px solid #334155;
+}
+
+summary {
+    padding: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--primary-color);
+    list-style: none; /* Skryje defaultnú šípku */
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+summary::-webkit-details-marker {
+    display: none;
+}
+
+summary::after {
+    content: '+';
+    font-size: 1.5rem;
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+details[open] summary::after {
+    content: '-';
+}
+
+details p {
+    padding: 0 20px 20px 20px;
+    color: var(--text-light);
+    border-top: 1px solid #334155;
+    margin-top: 0;
+    padding-top: 15px;
+    /* Animácia pre plynulé zobrazenie textu */
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Recenzie Sekcia */
+#recenzie {
+    background-color: var(--bg-light);
+    max-width: 100%;
+}
+
+.reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.review-item {
+    background: var(--white);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+}
+
+.stars {
+    color: var(--accent-color);
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.review-item h4 {
+    margin-top: 20px;
+    color: var(--primary-color);
+}
+
+/* Sekcia Partneri */
+#partneri {
+    background-color: #cbd5e1; /* Strieborná sivá - menej kontrastná ako biela */
+    padding: 40px 0;
+    border-top: none;
+    border-bottom: none;
+    max-width: 100%; /* Roztiahnutie na celú šírku stránky */
+    width: 100%;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
+}
+
+.partners-layout {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.partners-title {
+    margin-bottom: 0;
+    font-size: 1.5rem;
+    white-space: nowrap;
+    color: #0f172a; /* Tmavý text na svetlom pozadí */
+}
+
+.partners-title::after {
+    display: none; /* Odstránenie podčiarknutia pre tento nadpis */
+}
+
+.partners-slider {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.partners-logos {
+    display: flex;
+    gap: 30px;
+    overflow: hidden; /* Skryje posuvník, posúvame cez JS */
+    scroll-behavior: smooth;
+    align-items: center;
+    width: 100%;
+}
+
+.partners-logos img {
+    height: 70px;
+    width: 160px;
+    padding: 5px;
+    object-fit: contain;
+    transition: var(--transition);
+    flex-shrink: 0;
+    filter: grayscale(100%); /* Čiernobiele logá pre čistý vzhľad */
+    opacity: 0.8;
+    mix-blend-mode: multiply; /* Odstráni biele pozadie obrázkov splynutím s podkladom */
+}
+
+.partners-logos img:hover {
+    filter: none; /* Pri hoveri ukážeme pôvodné farby */
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.slider-btn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #334155; /* Tmavšia pre lepší kontrast na striebornom pozadí */
+    cursor: pointer;
+    padding: 0 15px;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+}
+
+.slider-btn:hover {
+    color: var(--accent-color);
+}
+
+/* Cenník v sekcii Výhody */
+.cennik-wrapper {
+    margin-top: 80px;
+    padding-top: 60px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+.price-subtitle {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--accent-color);
+    margin-bottom: 20px;
+}
+
+.legal-text {
+    font-size: 0.9rem;
+    color: #94a3b8; /* Svetlejšia sivá pre tmavé pozadie */
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Sekcia Kontakt (Nový layout) */
+#kontakt {
+    background-color: var(--white);
+    padding: 80px 20px;
+}
+
+.contact-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: start;
+}
+
+.contact-details h2 {
+    text-align: left;
+}
+
+.contact-details h2::after {
+    margin: 10px 0 0; /* Zarovnanie čiary doľava */
+}
+
+.contact-info-items p {
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+/* Kontaktný formulár */
+.contact-form-wrapper {
+    background-color: var(--white);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid #334155;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.contact-form input,
+.contact-form select {
+    width: 100%;
+    height: 50px;
+    padding: 10px 15px;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    background-color: #1e293b;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    color: var(--text-dark);
+    transition: var(--transition);
+}
+
+.contact-form input:focus,
+.contact-form select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    background-color: #0f172a;
+    box-shadow: 0 0 0 3px rgba(15, 44, 89, 0.1);
+}
+
+.full-width {
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+/* Päta */
+footer {
+    background-color: #020617;
+    color: #cccccc;
+    text-align: center;
+    padding: 20px;
+}
+
+.copyright {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+    font-size: 0.9rem;
+    opacity: 0.6;
+}
+
+/* Responzivita pre mobily */
+@media (max-width: 768px) {
+    header .container {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    #hero h1 {
+        font-size: 2.2rem;
+    }
+    
+    .hero-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 40px;
+    }
+
+    #hero p {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .benefits-grid {
+        grid-template-columns: 1fr;
+        gap: 50px;
+    }
+    
+    /* Partneri responzivita */
+    .partners-layout {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+    
+    .partners-slider {
+        width: 100%;
+    }
+    
+    .top-bar {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    /* Kontakt responzivita */
+    .contact-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .contact-details h2 {
+        text-align: center;
+    }
+    
+    .contact-details h2::after {
+        margin: 10px auto 0;
+    }
+
+    section {
+        padding: 60px 20px;
+    }
+}

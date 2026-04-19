@@ -666,7 +666,7 @@
                 getMessage: () =>
                     gdprConsentField.checked
                         ? ''
-                        : 'Bez súhlasu so spracovaním údajov nevieme váš dopyt odoslať.',
+                        : 'Bez súhlasu so spracovaním údajov nevieme Váš dopyt odoslať.',
             },
         ];
 
@@ -719,7 +719,7 @@
 
     const queryParams = new URLSearchParams(window.location.search);
     if (queryParams.get('sent') === '1') {
-        setFormStatus('success', '\u010eakujeme, spr\u00e1va bola odoslan\u00e1. Ozveme sa v\u00e1m \u010do najsk\u00f4r.');
+        setFormStatus('success', '\u010eakujeme, spr\u00e1va bola odoslan\u00e1. Ozveme sa V\u00e1m \u010do najsk\u00f4r.');
 
         if (window.history.replaceState) {
             const cleanUrl = new URL(window.location.href);
@@ -801,7 +801,7 @@
 
             contactForm.reset();
             setNextFieldValue();
-            setFormStatus('success', '\u010eakujeme, ozveme sa v\u00e1m \u010do najsk\u00f4r.');
+            setFormStatus('success', '\u010eakujeme, ozveme sa V\u00e1m \u010do najsk\u00f4r.');
         } catch (error) {
             if (submitButton) {
                 submitButton.disabled = false;

@@ -71,17 +71,15 @@
     <!-- Hlavička s navigáciou -->
     <header class="main-header">
         <div class="top-bar">
-            <div class="container top-bar-inner">
-                <div class="top-bar-left">
-                    <span class="trust-text">Dôveruje nám už viac ako <strong class="highlight-number">1100</strong> klientov</span>
-                </div>
-                <div class="top-bar-right">
-                    <a href="mailto:ivan.korbini@okgroup.sk" class="contact-link">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            <div class="container top-bar-content">
+                <span class="top-bar__trust">Dôveruje nám už viac ako <strong>1100</strong> klientov</span>
+                <div class="top-bar__contact">
+                    <a href="mailto:ivan.korbini@okgroup.sk" class="email-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
                         ivan.korbini@okgroup.sk
                     </a>
-                    <a href="tel:+421911620323" class="contact-link phone-highlight">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                    <a href="tel:+421911620323">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.68 13.1 19.79 19.79 0 0 1 1.61 4.5 2 2 0 0 1 3.6 2.32h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l.98-.98a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
                         +421 911 620 323
                     </a>
                 </div>
@@ -125,13 +123,6 @@
     </header>
     <div class="nav-backdrop" id="nav-backdrop" hidden></div>
     <aside class="nav-overlay" id="nav-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Mobilná navigácia">
-        <div class="nav-overlay__topbar">
-            <span>Dôveruje nám už viac ako <strong>1100</strong> klientov</span>
-            <div class="nav-overlay__topbar-contact">
-                <a href="mailto:ivan.korbini@okgroup.sk">✉ ivan.korbini@okgroup.sk</a>
-                <a href="tel:+421911620323">📞 +421 911 620 323</a>
-            </div>
-        </div>
         <div class="nav-overlay__header">
             <a href="#hero" class="logo animated-logo site-logo" data-nav-link>FinKorb s.r.o.</a>
             <button class="nav-close" id="nav-close" aria-label="Zatvoriť menu">✕</button>
@@ -152,7 +143,7 @@
             <div class="hero-content">
                 <div class="hero-text">
                     <h1>Vaša finančná budúcnosť v dobrých rukách</h1>
-                    <p>Pomáhame vám robiť správne rozhodnutia pre stabilný a prosperujúci život.</p>
+                    <p>Pomáhame Vám robiť správne rozhodnutia pre stabilný a prosperujúci život.</p>
                     <a href="#kontakt" class="btn-primary">Dohodnite si konzultáciu</a>
                 </div>
                 <!-- Dočasne schovaná fotka, kým nebude k dispozícii
@@ -177,7 +168,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
                         </div>
                         <h3>Nezávislé porovnanie trhu</h3>
-                        <p>Nie sme viazaní na jednu poisťovňu. Vyberieme vám najlepšie a najvýhodnejšie krytie z celého trhu.</p>
+                        <p>Nie sme viazaní na jednu poisťovňu. Vyberieme Vám najlepšie a najvýhodnejšie krytie z celého trhu.</p>
                     </div>
                     <!-- Výhoda 2 -->
                     <div class="benefit-item">
@@ -185,7 +176,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                         </div>
                         <h3>Pomoc pri poistnej udalosti</h3>
-                        <p>Keď sa niečo stane, nevoláte na anonymnú infolinku, ale priamo nám. Pomôžeme vám s nahlásením a administratívou.</p>
+                        <p>Keď sa niečo stane, nevoláte na anonymnú infolinku, ale priamo nám. Pomôžeme Vám s nahlásením a administratívou.</p>
                     </div>
                     <!-- Výhoda 3 -->
                     <div class="benefit-item">
@@ -193,7 +184,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
                         </div>
                         <h3>Všetko vybavíme za Vás</h3>
-                        <p>Ušetríte si čas, behanie po pobočkách aj nervy. Od návrhu až po podpis zmluvy vybavíme administratívu za vás.</p>
+                        <p>Ušetríte si čas, behanie po pobočkách aj nervy. Od návrhu až po podpis zmluvy vybavíme administratívu za Vás.</p>
                     </div>
                 </div>
 
@@ -243,7 +234,7 @@
             <div class="services-grid">
                 <article class="service-item">
                     <h3>Životné poistenie</h3>
-                    <p>Komplexná ochrana vášho zdravia a zabezpečenie rodiny pre prípad nečakaných životných situácií.</p>
+                    <p>Komplexná ochrana Vášho zdravia a zabezpečenie rodiny pre prípad nečakaných životných situácií.</p>
                 </article>
                 <article class="service-item">
                     <h3>Neživotné poistenie</h3>
@@ -257,7 +248,7 @@
             <h2>Časté otázky (FAQ)</h2>
             <details>
                 <summary>Je konzultácia nezáväzná?</summary>
-                <p>Áno, úvodná konzultácia je úplne nezáväzná. Najprv spolu prejdeme vašu situáciu a možnosti, až potom sa rozhodnete, ako ďalej.</p>
+                <p>Áno, úvodná konzultácia je úplne nezáväzná. Najprv spolu prejdeme Vašu situáciu a možnosti, až potom sa rozhodnete, ako ďalej.</p>
             </details>
             <details>
                 <summary>S ktorými poisťovňami spolupracujete?</summary>
@@ -265,7 +256,7 @@
             </details>
             <details>
                 <summary>Čo robiť v prípade dopravnej nehody?</summary>
-                <p>Zachovajte pokoj, zabezpečte miesto nehody a skontrolujte zranenia. Ak je to nutné, volajte záchranné zložky (112). Pri väčšej škode alebo zranení je potrebné privolať políciu. Následne vyplňte správu, v prípade nejasností nás kontaktujte na čísle <a href="tel:+421911620323">+421 911 620 323</a> alebo <a href="tel:+421911032103">+421 911 032 103</a> – pomôžeme vám s nahlásením poistnej udalosti.</p>
+                <p>Zachovajte pokoj, zabezpečte miesto nehody a skontrolujte zranenia. Ak je to nutné, volajte záchranné zložky (112). Pri väčšej škode alebo zranení je potrebné privolať políciu. Následne vyplňte správu, v prípade nejasností nás kontaktujte na čísle <a href="tel:+421911620323">+421 911 620 323</a> alebo <a href="tel:+421911032103">+421 911 032 103</a> – pomôžeme Vám s nahlásením poistnej udalosti.</p>
             </details>
         </section>
 
@@ -416,7 +407,7 @@
                     <input type="hidden" name="_subject" value="Nový dopyt z webu FinKorb">
                     <input type="hidden" name="_template" value="table">
                     <input type="hidden" name="_captcha" value="false">
-                    <input type="hidden" name="_autoresponse" value="Dobrý deň, ďakujeme za váš dopyt. Ozveme sa Vám čo najskôr. Tím FinKorb s.r.o.">
+                    <input type="hidden" name="_autoresponse" value="Dobrý deň, ďakujeme za Váš dopyt. Ozveme sa Vám čo najskôr. Tím FinKorb s.r.o.">
                     <input type="hidden" name="_replyto" id="contact-replyto">
                     <input type="hidden" name="_next" id="contact-next">
                     <input type="text" name="_honey" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -448,7 +439,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="contact-preference">Ako vás máme kontaktovať?</label>
+                        <label for="contact-preference">Ako Vás máme kontaktovať?</label>
                         <select id="contact-preference" name="contact_preference" required>
                             <option value="" disabled selected>Vyberte spôsob kontaktu</option>
                             <option value="email">E-mailom</option>
@@ -457,7 +448,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="callback-time">Kedy vám to najviac vyhovuje?</label>
+                        <label for="callback-time">Kedy Vám to najviac vyhovuje?</label>
                         <select id="callback-time" name="callback_time">
                             <option value="" selected>Nezáleží mi na čase</option>
                             <option value="rano">Ráno (8:00 - 11:00)</option>
@@ -468,7 +459,7 @@
                     <div class="form-group">
                         <label for="message">Správa</label>
                         <textarea id="message" name="message" rows="5" placeholder="Stručne popíšte, s čím potrebujete pomôcť (napr. typ poistenia, termín, čo chcete porovnať)." required></textarea>
-                        <p class="field-help">Čím viac informácií uvediete, tým presnejšie vám pripravíme riešenie.</p>
+                        <p class="field-help">Čím viac informácií uvediete, tým presnejšie Vám pripravíme riešenie.</p>
                     </div>
                     <div class="form-consent">
                         <input id="gdpr-consent" type="checkbox" name="gdpr_consent" value="suhlasim" required>
@@ -476,7 +467,7 @@
                     </div>
                     <p id="form-status" class="form-status" aria-live="polite"></p>
                     <button type="submit" class="btn-primary full-width">Odoslať nezáväzný dopyt</button>
-                    <p class="form-note">Ak formulár odosielate cez FormSubmit prvýkrát, potvrďte najprv aktivačný e-mail, ktorý vám príde po prvom odoslaní.</p>
+                    <p class="form-note">Ak formulár odosielate cez FormSubmit prvýkrát, potvrďte najprv aktivačný e-mail, ktorý Vám príde po prvom odoslaní.</p>
                 </form>
             </div>
         </div>
@@ -487,7 +478,7 @@
         <div class="container">
             <h2>Zásady ochrany osobných údajov</h2>
             <p><strong>Prevádzkovateľ:</strong> FinKorb s.r.o., Sološnícka 566/13, Bratislava.</p>
-            <p>Osobné údaje z formulára (meno, e-mail, telefón, zvolená služba, preferovaný spôsob kontaktu a obsah správy) spracúvame výlučne na účel kontaktovania a vybavenia vašej požiadavky.</p>
+            <p>Osobné údaje z formulára (meno, e-mail, telefón, zvolená služba, preferovaný spôsob kontaktu a obsah správy) spracúvame výlučne na účel kontaktovania a vybavenia Vašej požiadavky.</p>
             <p><strong>Právny základ:</strong> súhlas dotknutej osoby a/alebo predzmluvné vzťahy podľa GDPR.</p>
             <p><strong>Doba uchovávania:</strong> najviac 12 mesiacov, ak nevznikne zmluvný vzťah alebo zákon neurčí inú lehotu.</p>
             <p>Máte právo na prístup k údajom, opravu, výmaz, obmedzenie spracúvania, námietku a podanie sťažnosti na ÚOOÚ SR.</p>

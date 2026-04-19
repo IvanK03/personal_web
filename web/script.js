@@ -640,6 +640,9 @@
             {
                 field: phoneField,
                 getMessage: () => {
+                    if (!phoneField.value.trim()) {
+                        return 'Prosím, zadajte telefónne číslo.';
+                    }
                     return '';
                 },
             },
@@ -812,4 +815,3 @@
         }
     });
 });
-

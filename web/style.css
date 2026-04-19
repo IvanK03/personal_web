@@ -1054,6 +1054,9 @@ body.dark-mode .partners-title {
     overflow-y: hidden;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    touch-action: pan-x;
+    overscroll-behavior-x: contain;
     align-items: center;
     width: 100%;
 }
@@ -1076,6 +1079,7 @@ body.dark-mode .partners-title {
     box-sizing: border-box;
     transition: var(--transition);
     flex-shrink: 0;
+    scroll-snap-align: start;
     mix-blend-mode: multiply; /* Odstrďż˝ni biele pozadie obrďż˝zkov splynutďż˝m s podkladom */
 }
 
@@ -1414,6 +1418,16 @@ footer {
     text-decoration-thickness: 1px;
 }
 
+/* GDPR podstránka */
+.privacy-page .privacy-back-link {
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.2;
+    max-width: 168px;
+}
+
 /* Responzivita pre mobily */
 @media (max-width: 1024px) {
     .hero-content {
@@ -1644,6 +1658,45 @@ footer {
     .full-width {
         font-size: 1rem;
     }
+
+    .privacy-page .top-bar-content {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 6px 12px;
+    }
+
+    .privacy-page .top-bar__trust {
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+        text-align: center;
+        flex: 1 1 100%;
+    }
+
+    .privacy-page .top-bar__contact {
+        width: 100%;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .privacy-page .top-bar__contact a {
+        font-size: 0.73rem;
+    }
+
+    .privacy-page .header-main-row {
+        gap: 8px;
+    }
+
+    .privacy-page .logo {
+        font-size: 1.25rem;
+    }
+
+    .privacy-page .privacy-back-link {
+        max-width: 132px;
+        padding: 7px 9px;
+        font-size: 0.78rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -1664,6 +1717,11 @@ footer {
         --partner-logo-pillow-height: 56px;
         --partner-logo-pillow-pad-y: 8px;
         --partner-logo-pillow-pad-x: 10px;
+    }
+
+    .privacy-page .privacy-back-link {
+        max-width: 118px;
+        font-size: 0.74rem;
     }
 }
 

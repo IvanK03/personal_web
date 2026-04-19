@@ -47,21 +47,51 @@
     const nextBtn = document.querySelector('.slider-btn.next');
 
     if (partnersContainer && prevBtn && nextBtn) {
-        const getPartnerScrollStep = () =>
-            Math.max(160, Math.round(partnersContainer.clientWidth * 0.72));
+        const getPartnerItems = () =>
+            Array.from(partnersContainer.querySelectorAll('img'));
 
-        nextBtn.addEventListener('click', () => {
-            partnersContainer.scrollBy({
-                left: getPartnerScrollStep(),
+        const getNearestPartnerIndex = () => {
+            const items = getPartnerItems();
+            if (!items.length) {
+                return 0;
+            }
+
+            const currentLeft = partnersContainer.scrollLeft;
+            let nearestIndex = 0;
+            let nearestDistance = Number.POSITIVE_INFINITY;
+
+            items.forEach((item, index) => {
+                const distance = Math.abs(item.offsetLeft - currentLeft);
+                if (distance < nearestDistance) {
+                    nearestDistance = distance;
+                    nearestIndex = index;
+                }
+            });
+
+            return nearestIndex;
+        };
+
+        const scrollToPartnerIndex = index => {
+            const items = getPartnerItems();
+            if (!items.length) {
+                return;
+            }
+
+            const clampedIndex = Math.max(0, Math.min(items.length - 1, index));
+            const targetItem = items[clampedIndex];
+
+            partnersContainer.scrollTo({
+                left: targetItem.offsetLeft,
                 behavior: 'smooth',
             });
+        };
+
+        nextBtn.addEventListener('click', () => {
+            scrollToPartnerIndex(getNearestPartnerIndex() + 1);
         });
 
         prevBtn.addEventListener('click', () => {
-            partnersContainer.scrollBy({
-                left: -getPartnerScrollStep(),
-                behavior: 'smooth',
-            });
+            scrollToPartnerIndex(getNearestPartnerIndex() - 1);
         });
     }
 

@@ -654,7 +654,12 @@
             },
             {
                 field: messageField,
-                getMessage: () => '',
+                getMessage: () => {
+                    if (!messageField.value.trim()) {
+                        return 'Prosím, napíšte správu.';
+                    }
+                    return '';
+                },
             },
             {
                 field: gdprConsentField,
@@ -812,4 +817,5 @@
         }
     });
 });
+
 

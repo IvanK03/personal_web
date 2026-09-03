@@ -1,0 +1,807 @@
+/* =====================================================================
+   FinKorb — vizuálny a animačný layer (2026)
+   Načítava sa AŽ PO style.css, takže tieto pravidlá majú prednosť.
+   Celý súbor sa dá odstrániť bez toho, aby sa stránka rozbila.
+   ===================================================================== */
+
+/* ------------------------------------------------------------------
+   1. Rozšírená farebná paleta
+   ------------------------------------------------------------------ */
+:root {
+    --navy: #0f2c59;
+    --navy-deep: #081b3a;
+    --navy-soft: #1e3a6f;
+
+    --gold: #c5832b;
+    --gold-light: #e8b563;
+
+    --teal: #0d9488;
+    --teal-light: #2dd4bf;
+    --sky: #2563eb;
+    --sky-light: #60a5fa;
+    --violet: #7c3aed;
+    --violet-light: #a78bfa;
+
+    --grad-gold: linear-gradient(135deg, #e8b563 0%, #c5832b 100%);
+    --grad-navy: linear-gradient(135deg, #1e3a6f 0%, #081b3a 100%);
+    --grad-teal: linear-gradient(135deg, #2dd4bf 0%, #0d9488 100%);
+    --grad-sky: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%);
+    --grad-violet: linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%);
+
+    /* Striedavé pozadie sekcií, aby stránka nebola biela na bielej */
+    --section-alt-bg: #f6f8fc;
+    --surface: #ffffff;
+    --surface-border: rgba(15, 44, 89, 0.08);
+    --surface-ring: rgba(15, 44, 89, 0.06);
+
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+body.dark-mode {
+    --section-alt-bg: #0a1428;
+    --surface: #101d38;
+    --surface-border: rgba(255, 255, 255, 0.09);
+    --surface-ring: rgba(255, 255, 255, 0.05);
+}
+
+/* ------------------------------------------------------------------
+   2. Ukazovateľ posunu stránky (tenký pásik úplne hore)
+   ------------------------------------------------------------------ */
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    background: linear-gradient(90deg, var(--gold) 0%, var(--teal) 50%, var(--sky) 100%);
+    z-index: 3000;
+    pointer-events: none;
+}
+
+/* ------------------------------------------------------------------
+   3. Odhaľovanie prvkov pri scrollovaní
+   ------------------------------------------------------------------ */
+.has-reveal [data-reveal] {
+    opacity: 0;
+    transform: translate3d(0, 28px, 0);
+    transition:
+        opacity 0.75s var(--ease-out),
+        transform 0.75s var(--ease-out);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+}
+
+.has-reveal [data-reveal='left']  { transform: translate3d(-34px, 0, 0); }
+.has-reveal [data-reveal='right'] { transform: translate3d(34px, 0, 0); }
+.has-reveal [data-reveal='zoom']  { transform: scale(0.92); }
+
+.has-reveal [data-reveal].is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+}
+
+/* ------------------------------------------------------------------
+   4. HERO — animované farebné pozadie
+   ------------------------------------------------------------------ */
+#hero {
+    position: relative;
+    isolation: isolate;
+    padding: 110px 20px 96px;
+    background: linear-gradient(180deg, #ffffff 0%, #eef3fb 55%, #ffffff 100%);
+    border-bottom-left-radius: 48px;
+    border-bottom-right-radius: 48px;
+    box-shadow: 0 24px 60px -34px rgba(15, 44, 89, 0.55);
+}
+
+body.dark-mode #hero {
+    background: linear-gradient(180deg, #020617 0%, #0a1a35 55%, #020617 100%);
+}
+
+/* Farebné rozostrené škvrny, ktoré sa pomaly pohybujú */
+.hero-aurora {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: -2;
+    border-bottom-left-radius: 48px;
+    border-bottom-right-radius: 48px;
+}
+
+.hero-aurora span {
+    position: absolute;
+    display: block;
+    border-radius: 50%;
+    filter: blur(70px);
+    opacity: 0.42;
+    animation: auroraDrift 22s ease-in-out infinite;
+}
+
+.hero-aurora span:nth-child(1) {
+    width: 460px; height: 460px;
+    top: -140px; left: -90px;
+    background: radial-gradient(circle, #e8b563 0%, rgba(232, 181, 99, 0) 70%);
+}
+
+.hero-aurora span:nth-child(2) {
+    width: 520px; height: 520px;
+    top: -60px; right: -120px;
+    background: radial-gradient(circle, #60a5fa 0%, rgba(96, 165, 250, 0) 70%);
+    animation-duration: 27s;
+    animation-delay: -6s;
+}
+
+.hero-aurora span:nth-child(3) {
+    width: 400px; height: 400px;
+    bottom: -170px; left: 32%;
+    background: radial-gradient(circle, #2dd4bf 0%, rgba(45, 212, 191, 0) 70%);
+    animation-duration: 31s;
+    animation-delay: -13s;
+}
+
+body.dark-mode .hero-aurora span { opacity: 0.3; }
+
+@keyframes auroraDrift {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+    33%      { transform: translate3d(50px, 34px, 0) scale(1.12); }
+    66%      { transform: translate3d(-38px, 22px, 0) scale(0.94); }
+}
+
+/* Jemná mriežka nad škvrnami */
+.hero-grid {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image:
+        linear-gradient(rgba(15, 44, 89, 0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15, 44, 89, 0.055) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 75% 60% at 50% 38%, #000 20%, transparent 78%);
+    -webkit-mask-image: radial-gradient(ellipse 75% 60% at 50% 38%, #000 20%, transparent 78%);
+    border-bottom-left-radius: 48px;
+    border-bottom-right-radius: 48px;
+}
+
+body.dark-mode .hero-grid {
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+}
+
+.hero-content {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    gap: 0;
+}
+
+.hero-text { flex: none; max-width: 900px; }
+
+/* Odznak nad nadpisom */
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 18px 8px 14px;
+    margin-bottom: 26px;
+    border-radius: 999px;
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    box-shadow: 0 6px 20px -8px rgba(15, 44, 89, 0.3);
+    font-size: 0.86rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    color: var(--heading-color);
+}
+
+.hero-badge__dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--teal);
+    box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.65);
+    animation: livePulse 2.4s ease-out infinite;
+}
+
+@keyframes livePulse {
+    0%   { box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.65); }
+    70%  { box-shadow: 0 0 0 12px rgba(13, 148, 136, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(13, 148, 136, 0); }
+}
+
+#hero h1 {
+    font-size: clamp(2.3rem, 5.6vw, 4rem);
+    line-height: 1.12;
+    letter-spacing: -1px;
+    margin-bottom: 1.4rem;
+}
+
+/* Farebný prechod na zvýraznenej časti nadpisu */
+.hero-highlight {
+    /* Paleta je zámerne „tam a späť", aby na napojení konca a začiatku
+       nevznikol vymytý sivý prechod medzi modrou a zlatou. */
+    background: linear-gradient(
+        100deg,
+        #c5832b 0%, #e8b563 12%, #2dd4bf 26%, #2563eb 38%,
+        #7c3aed 50%,
+        #2563eb 62%, #2dd4bf 74%, #e8b563 88%, #c5832b 100%
+    );
+    background-size: 280% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: hueSlide 9s linear infinite;
+}
+
+@keyframes hueSlide {
+    0%   { background-position: 0% 50%; }
+    100% { background-position: 280% 50%; }
+}
+
+#hero p {
+    font-size: clamp(1.02rem, 2vw, 1.22rem);
+    margin: 0 auto 2.4rem;
+    color: var(--text-muted);
+    max-width: 620px;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    margin-bottom: 58px;
+}
+
+/* Sekundárne tlačidlo */
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 32px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--heading-color);
+    background: var(--surface);
+    border: 1.5px solid var(--surface-border);
+    transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), border-color 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-secondary:hover {
+    transform: translateY(-3px);
+    border-color: var(--gold);
+    box-shadow: 0 10px 26px -12px rgba(15, 44, 89, 0.5);
+}
+
+.btn-secondary svg { transition: transform 0.3s var(--ease-out); }
+.btn-secondary:hover svg { transform: translateX(4px); }
+
+/* Lesklý prebeh cez hlavné tlačidlo */
+.btn-primary {
+    position: relative;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--grad-gold);
+}
+
+.btn-primary::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -140%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+    transform: skewX(-20deg);
+    transition: left 0.75s var(--ease-out);
+}
+
+.btn-primary:hover::after { left: 140%; }
+
+.btn-primary:hover { background: var(--grad-gold); }
+
+/* Štatistiky s odpočítavaním */
+.hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+}
+
+.hero-stat {
+    flex: 1 1 200px;
+    max-width: 260px;
+    padding: 26px 22px;
+    border-radius: 20px;
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    box-shadow: 0 18px 40px -30px rgba(15, 44, 89, 0.7);
+    transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
+}
+
+.hero-stat:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 26px 50px -28px rgba(15, 44, 89, 0.75);
+}
+
+.hero-stat__value {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1;
+    background: var(--grad-gold);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+.hero-stat:nth-child(2) .hero-stat__value { background: var(--grad-teal); -webkit-background-clip: text; background-clip: text; }
+.hero-stat:nth-child(3) .hero-stat__value { background: var(--grad-sky);  -webkit-background-clip: text; background-clip: text; }
+
+.hero-stat__label {
+    display: block;
+    margin-top: 8px;
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* Šípka „scrolluj ďalej" */
+.hero-scroll {
+    display: flex;
+    justify-content: center;
+    margin-top: 54px;
+    color: var(--text-muted);
+}
+
+.hero-scroll svg { animation: scrollNudge 2.2s ease-in-out infinite; }
+
+@keyframes scrollNudge {
+    0%, 100% { transform: translateY(0); opacity: 0.45; }
+    50%      { transform: translateY(9px); opacity: 1; }
+}
+
+/* ------------------------------------------------------------------
+   5. Nadpisy sekcií
+   ------------------------------------------------------------------ */
+h2::after {
+    background: var(--grad-gold);
+    width: 68px;
+    height: 4px;
+}
+
+.section-subtitle {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 999px;
+    background: rgba(197, 131, 43, 0.12);
+    color: var(--gold);
+    font-size: 0.78rem;
+    letter-spacing: 2.2px;
+}
+
+/* Striedanie pozadí, aby sekcie boli od seba odlíšené.
+   Poradie: výhody (tón) → partneri → o nás → služby (tón) → postup
+   → FAQ (tón) → recenzie → kontakt */
+#vyhody,
+#sluzby {
+    background: var(--section-alt-bg);
+}
+
+#postup {
+    max-width: 100%;
+}
+
+/* FAQ roztiahneme na celú šírku, aby tónované pozadie tvorilo pás.
+   Samotný obsah držíme v strede na 1200 px. */
+#faq {
+    background: var(--section-alt-bg);
+    max-width: 100%;
+}
+
+#faq > h2,
+#faq > details {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ------------------------------------------------------------------
+   6. Karty výhod
+   ------------------------------------------------------------------ */
+.benefits-grid { gap: 28px; }
+
+.benefit-item {
+    position: relative;
+    padding: 34px 30px;
+    border-radius: 22px;
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    box-shadow: 0 20px 44px -34px rgba(15, 44, 89, 0.6);
+    overflow: hidden;
+    transition: transform 0.45s var(--ease-out), box-shadow 0.45s var(--ease-out);
+}
+
+/* Farebný pásik, ktorý sa vysunie zhora pri prejdení myšou */
+.benefit-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--card-accent, var(--grad-gold));
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    transition: transform 0.5s var(--ease-out);
+}
+
+.benefit-item:hover::before { transform: scaleX(1); }
+
+.benefit-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 34px 60px -32px rgba(15, 44, 89, 0.7);
+}
+
+/* Farebná dlaždica s ikonou */
+.benefit-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 62px;
+    height: 62px;
+    border-radius: 18px;
+    background: var(--card-accent, var(--grad-gold));
+    color: #ffffff;
+    margin-bottom: 22px;
+    box-shadow: 0 12px 26px -12px var(--card-glow, rgba(197, 131, 43, 0.9));
+    transition: transform 0.5s var(--ease-spring);
+}
+
+.benefit-icon svg { width: 30px; height: 30px; }
+
+.benefit-item:hover .benefit-icon { transform: rotate(-6deg) scale(1.08); }
+
+.benefit-item:nth-child(1) { --card-accent: var(--grad-gold); --card-glow: rgba(197, 131, 43, 0.9); }
+.benefit-item:nth-child(2) { --card-accent: var(--grad-teal); --card-glow: rgba(13, 148, 136, 0.9); }
+.benefit-item:nth-child(3) { --card-accent: var(--grad-sky);  --card-glow: rgba(37, 99, 235, 0.85); }
+
+/* ------------------------------------------------------------------
+   7. Cenník
+   ------------------------------------------------------------------ */
+.cennik-wrapper {
+    position: relative;
+    margin-top: 64px;
+    padding: 44px 38px;
+    border-radius: 24px;
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    overflow: hidden;
+}
+
+.cennik-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--gold), var(--teal), var(--sky));
+}
+
+.price-subtitle {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--teal);
+}
+
+/* ------------------------------------------------------------------
+   8. Nová sekcia „Ako to prebieha"
+   ------------------------------------------------------------------ */
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.step-item {
+    position: relative;
+    padding: 34px 26px;
+    border-radius: 22px;
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    text-align: left;
+    transition: transform 0.45s var(--ease-out), box-shadow 0.45s var(--ease-out);
+}
+
+.step-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 30px 56px -34px rgba(15, 44, 89, 0.7);
+}
+
+.step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #ffffff;
+    background: var(--step-accent, var(--grad-navy));
+    margin-bottom: 20px;
+    box-shadow: 0 12px 26px -14px rgba(15, 44, 89, 0.9);
+}
+
+.step-item:nth-child(1) { --step-accent: var(--grad-gold); }
+.step-item:nth-child(2) { --step-accent: var(--grad-teal); }
+.step-item:nth-child(3) { --step-accent: var(--grad-sky); }
+.step-item:nth-child(4) { --step-accent: var(--grad-violet); }
+
+.step-item h3 {
+    font-size: 1.18rem;
+    margin-bottom: 12px;
+}
+
+.step-item p {
+    color: var(--text-muted);
+    font-size: 0.98rem;
+    line-height: 1.68;
+}
+
+/* ------------------------------------------------------------------
+   9. Služby
+   ------------------------------------------------------------------ */
+.services-grid { gap: 28px; }
+
+.service-item {
+    position: relative;
+    text-align: left;
+    padding: 36px 32px;
+    border-radius: 22px;
+    border-top: none;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    overflow: hidden;
+    transition: transform 0.45s var(--ease-out), box-shadow 0.45s var(--ease-out);
+}
+
+/* Farebná žiara, ktorá sa rozsvieti v rohu karty */
+.service-item::after {
+    content: '';
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: var(--svc-accent, var(--grad-gold));
+    opacity: 0;
+    filter: blur(46px);
+    transition: opacity 0.5s ease;
+}
+
+.service-item:hover::after { opacity: 0.34; }
+
+.service-item:hover {
+    transform: translateY(-10px);
+    border-top: none;
+    box-shadow: 0 34px 60px -32px rgba(15, 44, 89, 0.7);
+}
+
+.service-icon {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 18px;
+    background: var(--svc-accent, var(--grad-gold));
+    color: #ffffff;
+    margin-bottom: 20px;
+    transition: transform 0.5s var(--ease-spring);
+}
+
+.service-item:hover .service-icon { transform: rotate(-6deg) scale(1.08); }
+
+.service-item h3,
+.service-item p { position: relative; z-index: 1; }
+
+.service-item p { color: var(--text-muted); }
+
+.service-item:nth-child(1) { --svc-accent: var(--grad-teal); }
+.service-item:nth-child(2) { --svc-accent: var(--grad-sky); }
+
+/* Štítky s tým, čo služba pokrýva */
+.service-tags {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.service-tags span {
+    padding: 6px 13px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--heading-color);
+    background: var(--surface-ring);
+    border: 1px solid var(--surface-border);
+}
+
+body.dark-mode .service-tags span { color: var(--text-color); }
+
+/* ------------------------------------------------------------------
+   10. FAQ — plynulé rozbaľovanie
+   ------------------------------------------------------------------ */
+#faq details {
+    border-radius: 16px;
+    border: 1px solid var(--surface-border);
+    overflow: hidden;
+}
+
+#faq details[open] {
+    border-color: rgba(197, 131, 43, 0.4);
+    box-shadow: 0 20px 44px -34px rgba(15, 44, 89, 0.6);
+}
+
+#faq summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+/* Krúžok s + / − namiesto pôvodnej šípky */
+#faq summary::after {
+    content: '';
+    flex: none;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background:
+        linear-gradient(currentColor 0 0) center / 12px 2px no-repeat,
+        linear-gradient(currentColor 0 0) center / 2px 12px no-repeat;
+    color: var(--gold);
+    border: 1.5px solid rgba(197, 131, 43, 0.45);
+    transform: rotate(0deg);
+    transition: transform 0.4s var(--ease-out), background-size 0.4s var(--ease-out);
+}
+
+#faq details[open] summary::after {
+    transform: rotate(180deg);
+    background:
+        linear-gradient(currentColor 0 0) center / 12px 2px no-repeat,
+        linear-gradient(currentColor 0 0) center / 0 12px no-repeat;
+}
+
+/* Obsah sa rozbalí plynulo (výšku animujeme cez grid).
+   Predvolene je otvorený, takže FAQ funguje aj bez JavaScriptu —
+   zbalený stav nastavuje až enhance.js triedou .is-collapsed. */
+#faq details .faq-answer {
+    display: grid;
+    grid-template-rows: 1fr;
+    transition: grid-template-rows 0.42s var(--ease-out);
+}
+
+#faq details .faq-answer.is-collapsed { grid-template-rows: 0fr; }
+
+#faq details .faq-answer > div { overflow: hidden; }
+
+/* ------------------------------------------------------------------
+   11. Partneri — logá sa rozžiaria pri prejdení myšou
+   ------------------------------------------------------------------ */
+.partners-logos img {
+    filter: grayscale(100%);
+    opacity: 0.62;
+    transition: filter 0.4s ease, opacity 0.4s ease, transform 0.4s var(--ease-out);
+}
+
+.partners-logos img:hover {
+    filter: grayscale(0%);
+    opacity: 1;
+    transform: scale(1.07);
+}
+
+/* ------------------------------------------------------------------
+   12. Tlačidlo návratu hore
+   ------------------------------------------------------------------ */
+.back-to-top {
+    position: fixed;
+    right: 22px;
+    bottom: 22px;
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    border: none;
+    border-radius: 50%;
+    background: var(--grad-navy);
+    color: #ffffff;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(14px);
+    transition: opacity 0.35s ease, transform 0.35s var(--ease-out), visibility 0.35s;
+    box-shadow: 0 14px 30px -12px rgba(15, 44, 89, 0.8);
+    z-index: 900;
+}
+
+.back-to-top.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.back-to-top:hover { background: var(--grad-gold); }
+
+/* ------------------------------------------------------------------
+   13. Responzivita
+   ------------------------------------------------------------------ */
+@media (max-width: 1024px) {
+    .steps-grid { grid-template-columns: repeat(2, 1fr); }
+    .benefits-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+    #hero { padding: 76px 20px 68px; border-radius: 0 0 32px 32px; }
+    .hero-aurora, .hero-grid { border-radius: 0 0 32px 32px; }
+    .hero-actions { flex-direction: column; align-items: stretch; }
+    .hero-actions .btn-primary,
+    .hero-actions .btn-secondary { justify-content: center; }
+    .hero-stats { gap: 12px; }
+    .hero-stat { flex: 1 1 100%; max-width: 100%; padding: 20px; }
+    .hero-stat__value { font-size: 2.1rem; }
+    .hero-scroll { display: none; }
+    .steps-grid, .benefits-grid { grid-template-columns: 1fr; }
+    .cennik-wrapper { padding: 32px 22px; }
+}
+
+/* ------------------------------------------------------------------
+   14. Rešpektovanie nastavenia „obmedziť pohyb"
+   ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+    .has-reveal [data-reveal] {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+
+    .hero-aurora span,
+    .hero-badge__dot,
+    .hero-highlight,
+    .hero-scroll svg {
+        animation: none !important;
+    }
+
+    .hero-highlight {
+        background-position: 0 50%;
+    }
+
+    .btn-primary::after { transition: none; }
+
+    .benefit-item:hover,
+    .service-item:hover,
+    .step-item:hover,
+    .hero-stat:hover {
+        transform: none;
+    }
+
+    #faq details .faq-answer { transition: none; }
+}

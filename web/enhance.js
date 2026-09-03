@@ -241,118 +241,245 @@
 
 
     /* --------------------------------------------------------------
-       7. Partneri — railboard: horný pás ide doľava, dolný doprava,
-          medzi nimi pravítko, ktoré ukazuje, kde sa slučka nachádza
+       7. Partneri — railboard
+          Pásy sa nehýbu samy. Posúvajú sa podľa toho, kde je doska
+          vo výreze okna, takže ich rozhýbe scrollovanie — a keďže sa
+          hodnota dotiahne s tlmením, záleží aj na rýchlosti.
+          Pravítko sa navyše dá chytiť myšou a pretiahnuť.
        -------------------------------------------------------------- */
-    const RAIL_SPEED = 26; // pixelov za sekundu
+    const RAIL = {
+        cloneBuffer: 96,
+        minTravelCards: 1.25,
+        edgeReveal: 3.4,
+        scrollEase: 0.075,   // dotahovanie pri scrollovani
+        scrubEase: 0.22,     // rychlejsie, ked sa tahá pravítko
+        progressStart: 0.84, // doska v spodnej casti okna -> zaciatok
+        progressEnd: 0.18,   // doska hore -> koniec
+    };
+
+    const clamp01 = value => Math.min(Math.max(value, 0), 1);
 
     const initRailboard = () => {
         const board = document.querySelector('.rail-board');
         if (!board) return;
 
-        const tracks = Array.from(board.querySelectorAll('.rail-track'));
-        if (!tracks.length) return;
+        const scrubber = board.querySelector('.rail-scrubber');
+        const trackEls = Array.from(board.querySelectorAll('.rail-track'));
+        if (!scrubber || !trackEls.length) return;
 
-        const ticks = Array.from(board.querySelectorAll('.rail-scrubber span'));
+        const ticks = Array.from(scrubber.querySelectorAll('span'));
 
-        // Každý pás zdvojíme, aby slučka plynule nadväzovala.
-        // Kópie sú pre čítačky obrazovky aj pre tabulátor neviditeľné.
-        tracks.forEach(track => {
-            if (track.dataset.cloned === 'true') return;
-            Array.from(track.children).forEach(card => {
-                const copy = card.cloneNode(true);
-                copy.setAttribute('aria-hidden', 'true');
-                copy.setAttribute('tabindex', '-1');
-                copy.dataset.railClone = 'true';
-                track.appendChild(copy);
-            });
-            track.dataset.cloned = 'true';
-        });
-
-        const rails = tracks.map(track => ({
-            el: track,
-            dir: track.dataset.dir === 'right' ? 1 : -1,
-            half: 0,
-            offset: 0,
-            started: false,
+        const rails = trackEls.map(row => ({
+            row,
+            originals: Array.from(row.children).filter(el => el.matches('.rail-card')),
+            dir: row.dataset.dir === 'right' ? 1 : -1,
+            travel: 0,
+            base: 0,
         }));
 
-        // Obsah sa opakuje každých `half` pixelov, takže posun držíme
-        // v rozsahu <-half, 0). Platí to pre oba smery aj po zmene šírky.
-        const wrap = (value, half) => (((value % half) + half) % half) - half;
+        const boardWidth = () => board.getBoundingClientRect().width;
 
-        const measure = () => {
-            rails.forEach((rail, index) => {
-                rail.half = rail.el.scrollWidth / 2;
-                if (!rail.half) return;
+        const measureRail = rail => {
+            const first = rail.originals[0];
+            const last = rail.originals[rail.originals.length - 1];
+            if (!first) return;
 
-                if (!rail.started) {
-                    // dolný pás rozfázujeme o pol karty, nech riadky
-                    // nevytvárajú zarovnanú mriežku
-                    rail.offset = -rail.half - (index === 0 ? 0 : 88);
-                    rail.started = true;
-                }
+            const cardWidth = first.getBoundingClientRect().width || 176;
+            const contentWidth = last
+                ? last.getBoundingClientRect().right - first.getBoundingClientRect().left
+                : cardWidth;
+            const reveal = Math.min(boardWidth() * 0.11, 96) * RAIL.edgeReveal;
 
-                rail.offset = wrap(rail.offset, rail.half);
-                rail.el.style.transform = `translate3d(${rail.offset}px, 0, 0)`;
+            rail.travel = Math.max(
+                contentWidth - boardWidth() + reveal,
+                cardWidth * RAIL.minTravelCards
+            );
+            rail.base = rail.dir === 1 ? -rail.travel : 0;
+        };
+
+        const makeClone = card => {
+            const copy = card.cloneNode(true);
+            copy.dataset.railClone = '';
+            copy.setAttribute('aria-hidden', 'true');
+            copy.tabIndex = -1;
+            return copy;
+        };
+
+        const fillRail = rail => {
+            rail.row.querySelectorAll('[data-rail-clone]').forEach(node => node.remove());
+
+            const needed = boardWidth() + rail.travel + RAIL.cloneBuffer;
+            let rounds = 0;
+            while (rail.row.scrollWidth < needed && rounds < 12) {
+                rail.originals.forEach(card => rail.row.append(makeClone(card)));
+                rounds += 1;
+            }
+        };
+
+        const layout = () => {
+            rails.forEach(measureRail);
+            rails.forEach(fillRail);
+        };
+
+        const applyProgress = progress => {
+            rails.forEach(rail => {
+                const x = rail.base + rail.dir * progress * rail.travel;
+                rail.row.style.transform = `translate3d(${x}px, 0, 0)`;
             });
         };
 
-        measure();
-        window.addEventListener('resize', measure);
+        const paintScrubber = progress => {
+            if (!ticks.length) return;
+            const position = progress * (ticks.length - 1);
+            ticks.forEach((tick, index) => {
+                const distance = Math.abs(index - position);
+                tick.classList.toggle('on', distance < 1.2);
+                tick.classList.toggle('near', distance >= 1.2 && distance < 3.4);
+            });
+        };
 
-        // obrázky sa dopočítajú až po načítaní, potom treba premerať
+        // Kde sa doska nachádza vo výreze okna, prepočítané na 0–1
+        const scrollProgress = () => {
+            const viewport = window.innerHeight || document.documentElement.clientHeight;
+            const from = viewport * RAIL.progressStart;
+            const to = viewport * RAIL.progressEnd;
+            const rect = board.getBoundingClientRect();
+            return clamp01((from - (rect.top + rect.height / 2)) / (from - to));
+        };
+
+        // Klik na kartu ju zvýrazní (aj jej kópie v slučke)
+        const activate = name => {
+            board.querySelectorAll('.rail-card').forEach(card => {
+                const isActive = Boolean(name) && card.dataset.name === name;
+                card.classList.toggle('is-active', isActive);
+                card.setAttribute('aria-pressed', String(isActive));
+            });
+        };
+
+        let activeName = null;
+        board.addEventListener('click', event => {
+            const card = event.target.closest('.rail-card');
+            if (!card) return;
+            activeName = card.dataset.name === activeName ? null : card.dataset.name;
+            activate(activeName);
+        });
+
+        // Do tabulátora púšťame len karty, ktoré sú naozaj vidieť
+        if ('IntersectionObserver' in window) {
+            const visibility = new IntersectionObserver(
+                entries => {
+                    entries.forEach(entry => {
+                        entry.target.tabIndex = entry.intersectionRatio >= 0.5 ? 0 : -1;
+                    });
+                },
+                { root: board, threshold: [0, 0.5] }
+            );
+            rails.forEach(rail =>
+                rail.originals.forEach(card => {
+                    card.tabIndex = -1;
+                    visibility.observe(card);
+                })
+            );
+        }
+
+        layout();
+
+        let current = prefersReducedMotion ? 0.5 : scrollProgress();
+        applyProgress(current);
+        paintScrubber(current);
+
+        const relayout = () => {
+            layout();
+            applyProgress(current);
+        };
+
+        window.addEventListener('resize', relayout);
+
+        // logá majú rozmery až po načítaní, dovtedy je meranie orientačné
         board.querySelectorAll('img').forEach(image => {
-            if (!image.complete) image.addEventListener('load', measure, { once: true });
+            if (!image.complete) image.addEventListener('load', relayout, { once: true });
         });
 
         if (prefersReducedMotion) return;
 
-        let paused = false;
-        board.addEventListener('pointerenter', () => { paused = true; });
-        board.addEventListener('pointerleave', () => { paused = false; });
-        board.addEventListener('focusin', () => { paused = true; });
-        board.addEventListener('focusout', () => { paused = false; });
+        // Ťahanie pravítka
+        let dragTarget = null;
 
-        let lastTickIndex = -1;
-
-        const paintScrubber = progress => {
-            if (!ticks.length) return;
-            const index = Math.round(progress * (ticks.length - 1));
-            if (index === lastTickIndex) return;
-            lastTickIndex = index;
-
-            ticks.forEach((tick, i) => {
-                const distance = Math.abs(i - index);
-                tick.classList.toggle('on', distance <= 1);
-                tick.classList.toggle('near', distance === 2 || distance === 3);
-            });
+        const progressFromPointer = event => {
+            const rect = scrubber.getBoundingClientRect();
+            return clamp01((event.clientX - rect.left) / rect.width);
         };
 
-        let previous = null;
+        scrubber.addEventListener('pointerdown', event => {
+            event.preventDefault();
+            scrubber.setPointerCapture(event.pointerId);
+            scrubber.classList.add('is-dragging');
+            dragTarget = progressFromPointer(event);
+            start();
+        });
 
-        const step = now => {
-            if (previous === null) previous = now;
-            const elapsed = Math.min((now - previous) / 1000, 0.1);
-            previous = now;
+        scrubber.addEventListener('pointermove', event => {
+            if (!scrubber.classList.contains('is-dragging')) return;
+            dragTarget = progressFromPointer(event);
+        });
 
-            if (!paused) {
-                rails.forEach(rail => {
-                    if (!rail.half) return;
-                    rail.offset = wrap(rail.offset + rail.dir * RAIL_SPEED * elapsed, rail.half);
-                    rail.el.style.transform = `translate3d(${rail.offset}px, 0, 0)`;
-                });
+        const endDrag = event => {
+            if (!scrubber.classList.contains('is-dragging')) return;
+            scrubber.classList.remove('is-dragging');
+            dragTarget = null;
+            if (event && scrubber.hasPointerCapture(event.pointerId)) {
+                scrubber.releasePointerCapture(event.pointerId);
+            }
+        };
 
-                const lead = rails[0];
-                if (lead && lead.half) {
-                    paintScrubber(Math.abs(lead.offset) / lead.half);
-                }
+        scrubber.addEventListener('pointerup', endDrag);
+        scrubber.addEventListener('pointercancel', endDrag);
+
+        let frame = 0;
+        let onScreen = true;
+
+        const tick = () => {
+            if (!onScreen || document.hidden) {
+                frame = 0;
+                return;
             }
 
-            window.requestAnimationFrame(step);
+            const target = dragTarget === null ? scrollProgress() : dragTarget;
+            const ease = dragTarget === null ? RAIL.scrollEase : RAIL.scrubEase;
+
+            current += (target - current) * ease;
+            applyProgress(current);
+            paintScrubber(current);
+
+            frame = window.requestAnimationFrame(tick);
         };
 
-        window.requestAnimationFrame(step);
+        function start() {
+            if (!frame && onScreen && !document.hidden) {
+                frame = window.requestAnimationFrame(tick);
+            }
+        }
+
+        const stop = () => {
+            window.cancelAnimationFrame(frame);
+            frame = 0;
+        };
+
+        document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
+
+        if ('IntersectionObserver' in window) {
+            const near = new IntersectionObserver(
+                ([entry]) => {
+                    onScreen = entry ? entry.isIntersecting : true;
+                    if (onScreen) start();
+                    else stop();
+                },
+                { rootMargin: '160px 0px' }
+            );
+            near.observe(board);
+        }
+
+        start();
     };
 
     /* --------------------------------------------------------------

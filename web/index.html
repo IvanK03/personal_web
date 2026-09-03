@@ -22,6 +22,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="motion.css">
+    <script>
+        /* Animacie zapneme len ak bezi JavaScript. Keby sa motion.js
+           nenacital, po 3 s obsah aj tak odkryjeme, nech stranka
+           neostane prazdna. */
+        document.documentElement.classList.add('m-ready');
+        setTimeout(function () {
+            if (!window.__finkorbMotionReady) {
+                document.documentElement.classList.remove('m-ready');
+            }
+        }, 3000);
+    </script>
     <script>
       window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
     </script>
@@ -70,6 +82,7 @@
     </style>
 </head>
 <body>
+    <div class="m-progress" aria-hidden="true"></div>
     <a class="skip-link" href="#hero">Preskočiť na obsah</a>
 
     <!-- Hlavička s navigáciou -->
@@ -95,7 +108,8 @@
                 <ul>
                     <li><a href="#hero" class="active">Domov</a></li>
                     <li><a href="#o-mne">O nás</a></li>
-                    <li><a href="#sluzby">Služby</a></li>
+                    <li><a href="#sluzby">Poistenie</a></li>
+                    <li><a href="#postup">Postup</a></li>
                     <li><a href="#faq">FAQ</a></li>
                     <li><a href="#recenzie">Recenzie</a></li>
                     <li><a href="#kontakt">Kontakt</a></li>
@@ -134,7 +148,8 @@
         <nav class="nav-grid" aria-label="Navigácia menu">
             <a href="#hero" class="nav-pill active" data-nav-link>Domov</a>
             <a href="#o-mne" class="nav-pill" data-nav-link>O nás</a>
-            <a href="#sluzby" class="nav-pill" data-nav-link>Služby</a>
+            <a href="#sluzby" class="nav-pill" data-nav-link>Poistenie</a>
+            <a href="#postup" class="nav-pill" data-nav-link>Postup</a>
             <a href="#faq" class="nav-pill" data-nav-link>FAQ</a>
             <a href="#recenzie" class="nav-pill" data-nav-link>Recenzie</a>
             <a href="#kontakt" class="nav-pill" data-nav-link>Kontakt</a>
@@ -144,30 +159,68 @@
     <main>
         <!-- Hero sekcia -->
         <section id="hero">
+            <div class="m-mesh" aria-hidden="true"><i></i><i></i><i></i></div>
+            <div class="m-grain" aria-hidden="true"></div>
+
             <div class="hero-content">
                 <div class="hero-text">
-                    <h1>Vaša finančná budúcnosť v dobrých rukách</h1>
-                    <p>Pomáhame Vám robiť správne rozhodnutia pre stabilný a prosperujúci život.</p>
-                    <a href="#kontakt" class="btn-primary">Dohodnite si konzultáciu</a>
+                    <span class="m-badge">
+                        <span class="m-badge__dot" aria-hidden="true"></span>
+                        Životné a neživotné poistenie
+                    </span>
+
+                    <h1 class="m-display">
+                        <span class="m-line">Vaša finančná</span>
+                        <span class="m-line">budúcnosť</span>
+                        <span class="m-line"><span class="m-glow">v dobrých rukách</span></span>
+                    </h1>
+
+                    <p class="m-lede">
+                        Porovnáme celý poistný trh, vysvetlíme rozdiely a vybavíme administratívu za Vás.
+                        Konzultácia je nezáväzná a bezplatná.
+                    </p>
+
+                    <div class="m-actions">
+                        <a href="#kontakt" class="m-btn m-btn--solid">
+                            Dohodnite si konzultáciu
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </a>
+                        <a href="#sluzby" class="m-btn m-btn--ghost">
+                            Čomu sa venujeme
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </a>
+                    </div>
                 </div>
-                <!-- Dočasne schovaná fotka, kým nebude k dispozícii
-                <div class="hero-image">
-                    <img src="images/hero-finkorb.svg" alt="Finančný poradca - Ivan Korbini" width="500" height="600" fetchpriority="high">
-                </div>
-                -->
             </div>
         </section>
+
+        <!-- Bežiaci pás s oblasťami, ktoré pokrývame -->
+        <div class="m-marquee" aria-hidden="true">
+            <div class="m-marquee__track">
+                <span>Životné poistenie</span>
+                <span>Ochrana zdravia</span>
+                <span>Zabezpečenie rodiny</span>
+                <span>Poistenie majetku</span>
+                <span>PZP</span>
+                <span>Havarijné poistenie</span>
+                <span>Cestovné poistenie</span>
+                <span>Zodpovednosť za škodu</span>
+            </div>
+        </div>
 
         <!-- Sekcia Výhody spolupráce -->
         <section id="vyhody">
             <div class="container">
-                <div class="section-header">
-                    <span class="section-subtitle">BENEFITY</span>
+                <div class="m-head" data-m-reveal>
+                    <span class="m-badge">
+                        <span class="m-badge__dot" aria-hidden="true"></span>
+                        Benefity
+                    </span>
                     <h2>Výhody spolupráce</h2>
                 </div>
-                <div class="benefits-grid">
+                <div class="benefits-grid" data-m-group="140">
                     <!-- Výhoda 1 -->
-                    <div class="benefit-item">
+                    <div class="benefit-item m-glass" data-m-reveal>
                         <div class="benefit-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
                         </div>
@@ -175,7 +228,7 @@
                         <p>Nie sme viazaní na jednu poisťovňu. Vyberieme Vám najlepšie a najvýhodnejšie krytie z celého trhu.</p>
                     </div>
                     <!-- Výhoda 2 -->
-                    <div class="benefit-item">
+                    <div class="benefit-item m-glass" data-m-reveal>
                         <div class="benefit-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                         </div>
@@ -183,7 +236,7 @@
                         <p>Keď sa niečo stane, nevoláte na anonymnú infolinku, ale priamo nám. Pomôžeme Vám s nahlásením a administratívou.</p>
                     </div>
                     <!-- Výhoda 3 -->
-                    <div class="benefit-item">
+                    <div class="benefit-item m-glass" data-m-reveal>
                         <div class="benefit-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
                         </div>
@@ -193,7 +246,7 @@
                 </div>
 
                 <!-- Cenník / Právna doložka (Presunuté) -->
-                <div class="cennik-wrapper">
+                <div class="cennik-wrapper m-glass" data-m-reveal>
                     <h2>Cenník finančného poradenstva</h2>
                     <p class="price-subtitle">Konzultácia a sprostredkovanie finančného produktu sú bezplatné.</p>
                     <p class="legal-text">Podľa zákona č. 186/2009 Z. z. o finančnom sprostredkovaní a finančnom poradenstve finančný agent nesmie v súvislosti s vykonávaním finančného sprostredkovania prijímať od klienta akékoľvek peňažné plnenie. Naša odmena je vyplácaná formou provízie priamo od finančnej inštitúcie, v ktorej si produkt uzatvoríte.</p>
@@ -204,7 +257,7 @@
         <!-- Sekcia Partneri -->
         <section id="partneri">
             <div class="container partners-layout">
-                <h2 class="partners-title">Poistenie</h2>
+                <h2 class="partners-title" data-m-reveal>Spolupracujeme s poisťovňami</h2>
                 <div class="partners-slider">
                     <button class="slider-btn prev" aria-label="Predchádzajúce">&#10094;</button>
                     <div class="partners-logos">
@@ -227,45 +280,154 @@
 
         <!-- Sekcia O mne -->
         <section id="o-mne">
-            <h2>O nás</h2>
-            <p>Vitajte vo FinKorb s.r.o. Poskytujeme odborné poradenstvo v oblasti poistenia s dôrazom na transparentnosť a individuálny prístup ku každému klientovi.</p>
+            <h2 class="m-display" data-m-reveal style="font-size: clamp(1.9rem, 4.6vw, 3.4rem);">O nás</h2>
+            <p data-m-reveal style="--reveal-delay: 110ms">Vitajte vo FinKorb s.r.o. Poskytujeme odborné poradenstvo v oblasti poistenia s dôrazom na transparentnosť a individuálny prístup ku každému klientovi.</p>
         </section>
 
-        <!-- Sekcia Služby -->
+        <!-- Sekcia Poistenie - dva piliere -->
         <section id="sluzby">
-            <h2>Naše služby</h2>
-            <div class="services-grid">
-                <article class="service-item">
+            <div class="m-mesh" aria-hidden="true"><i></i><i></i><i></i></div>
+
+            <div class="m-head" data-m-reveal>
+                <span class="m-badge">
+                    <span class="m-badge__dot" aria-hidden="true"></span>
+                    Čomu sa venujeme
+                </span>
+                <h2>Dve oblasti poistenia</h2>
+                <p>Pokrývame obe strany — ochranu Vás a Vašich blízkych aj ochranu toho, čo vlastníte. V oboch porovnávame ponuky celého trhu.</p>
+            </div>
+
+            <div class="m-pillars" data-m-group="150">
+                <!-- Životné poistenie -->
+                <article class="m-pillar m-pillar--life m-glass" data-m-reveal>
+                    <div class="m-pillar__icon" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
+                    </div>
+                    <span class="m-pillar__kicker">Ochrana osôb</span>
                     <h3>Životné poistenie</h3>
                     <p>Komplexná ochrana Vášho zdravia a zabezpečenie rodiny pre prípad nečakaných životných situácií.</p>
+                    <ul class="m-list">
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <div><strong>Ochrana zdravia</strong><span>Krytie pre prípad choroby alebo úrazu.</span></div>
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <div><strong>Zabezpečenie rodiny</strong><span>Aby blízki nezostali bez príjmu, keď vypadnete.</span></div>
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <div><strong>Nečakané životné situácie</strong><span>Finančná rezerva vtedy, keď ju najviac potrebujete.</span></div>
+                        </li>
+                    </ul>
                 </article>
-                <article class="service-item">
+
+                <!-- Neživotné poistenie -->
+                <article class="m-pillar m-pillar--nonlife m-glass" data-m-reveal>
+                    <div class="m-pillar__icon" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg>
+                    </div>
+                    <span class="m-pillar__kicker">Ochrana majetku</span>
                     <h3>Neživotné poistenie</h3>
-                    <p>Poistenie majetku, vozidiel (PZP, havarijné), cestovné poistenie a zodpovednosti za škodu.</p>
+                    <p>Poistenie majetku, vozidiel, cestovné poistenie a zodpovednosti za škodu — všetko, čo vlastníte a používate.</p>
+                    <ul class="m-list">
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <div><strong>Majetok</strong><span>Dom, byt a vybavenie domácnosti.</span></div>
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <div><strong>Vozidlá</strong><span>Povinné zmluvné (PZP) aj havarijné poistenie.</span></div>
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <div><strong>Cestovné poistenie</strong><span>Na dovolenku aj pracovné cesty.</span></div>
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <div><strong>Zodpovednosť za škodu</strong><span>Keď škodu spôsobíte niekomu inému.</span></div>
+                        </li>
+                    </ul>
+                </article>
+            </div>
+
+            <div class="m-stats" data-m-group="130">
+                <div class="m-stat m-glass" data-m-reveal>
+                    <span class="m-stat__value" data-m-count="1100" data-m-suffix="+">0</span>
+                    <span class="m-stat__label">spokojných klientov</span>
+                </div>
+                <div class="m-stat m-glass" data-m-reveal>
+                    <span class="m-stat__value" data-m-count="11">0</span>
+                    <span class="m-stat__label">poisťovní, ktoré porovnávame</span>
+                </div>
+                <div class="m-stat m-glass" data-m-reveal>
+                    <span class="m-stat__value" data-m-count="0" data-m-suffix=" &euro;">0</span>
+                    <span class="m-stat__label">cena za konzultáciu</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sekcia Postup -->
+        <section id="postup">
+            <div class="m-head" data-m-reveal>
+                <span class="m-badge">
+                    <span class="m-badge__dot" aria-hidden="true"></span>
+                    Postup
+                </span>
+                <h2>Ako to prebieha</h2>
+                <p>Štyri kroky od prvého stretnutia po servis, keď už zmluvu máte.</p>
+            </div>
+
+            <div class="m-steps">
+                <article class="m-step" data-m-reveal>
+                    <div class="m-step__dot" aria-hidden="true">1</div>
+                    <h3>Nezáväzná konzultácia</h3>
+                    <p>Spolu prejdeme Vašu situáciu, súčasné zmluvy a to, čo od poistenia očakávate. Bezplatne a bez záväzku.</p>
+                </article>
+                <article class="m-step" data-m-reveal>
+                    <div class="m-step__dot" aria-hidden="true">2</div>
+                    <h3>Porovnanie trhu</h3>
+                    <p>Nie sme viazaní na jednu poisťovňu. Porovnáme rozsah krytia, výluky, limity aj cenu naprieč trhom.</p>
+                </article>
+                <article class="m-step" data-m-reveal>
+                    <div class="m-step__dot" aria-hidden="true">3</div>
+                    <h3>Vybavíme to za Vás</h3>
+                    <p>Od návrhu až po podpis zmluvy vybavíme administratívu my. Ušetríte si čas aj behanie po pobočkách.</p>
+                </article>
+                <article class="m-step" data-m-reveal>
+                    <div class="m-step__dot" aria-hidden="true">4</div>
+                    <h3>Sme tu aj potom</h3>
+                    <p>Keď sa niečo stane, voláte priamo nám. Pomôžeme Vám s nahlásením poistnej udalosti aj s administratívou.</p>
                 </article>
             </div>
         </section>
 
         <!-- Sekcia Časté otázky (FAQ) -->
         <section id="faq">
-            <h2>Časté otázky (FAQ)</h2>
-            <details>
+            <div class="m-head" data-m-reveal>
+                <span class="m-badge">
+                    <span class="m-badge__dot" aria-hidden="true"></span>
+                    FAQ
+                </span>
+                <h2>Časté otázky</h2>
+            </div>
+            <details data-m-reveal>
                 <summary>Je konzultácia nezáväzná?</summary>
                 <p>Áno, všetky konzultácie sú úplne nezáväzné. Najprv spolu prejdeme Vašu situáciu a možnosti, až potom sa rozhodnete, ako ďalej.</p>
             </details>
-            <details>
+            <details data-m-reveal>
                 <summary>S ktorými poisťovňami spolupracujete?</summary>
                 <p>Spolupracujeme so všetkými poisťovňami na slovenskom trhu. Vďaka tomu vieme porovnať ponuky a odporučiť riešenie, ktoré najlepšie vyhovuje Vašim potrebám.</p>
             </details>
-            <details>
+            <details data-m-reveal>
                 <summary>Pomôžete mi aj s porovnaním existujúcich zmlúv?</summary>
                 <p>Áno. Vaše aktuálne zmluvy spolu prejdeme a porovnáme rozsah krytia, výluky, limity aj cenu. Následne Vám odporučíme, čo sa oplatí ponechať a kde má zmysel úprava.</p>
             </details>
-            <details>
+            <details data-m-reveal>
                 <summary>Je možné vybaviť poistenie aj online alebo telefonicky?</summary>
                 <p>Áno, väčšinu dopytu vieme vybaviť online alebo telefonicky. Komunikovať môžeme cez telefón, e-mail aj WhatsApp a dokumenty Vám pošleme elektronicky; ak je potrebný osobný podpis, dopredu Vás na to upozorníme.</p>
             </details>
-            <details>
+            <details data-m-reveal>
                 <summary>Čo robiť v prípade dopravnej nehody?</summary>
                 <p>Zachovajte pokoj, zabezpečte miesto nehody a skontrolujte zranenia. Ak je to nutné, volajte záchranné zložky (112). Pri väčšej škode alebo zranení je potrebné privolať políciu. Následne vyplňte správu, v prípade nejasností nás kontaktujte na čísle <a href="tel:+421911620323">+421 911 620 323</a> alebo <a href="tel:+421911032103">+421 911 032 103</a> – pomôžeme Vám s nahlásením poistnej udalosti.</p>
             </details>
@@ -273,7 +435,7 @@
 
         <!-- Sekcia Recenzie -->
         <section id="recenzie">
-            <h2>Čo hovoria naši klienti</h2>
+            <h2 class="m-display" data-m-reveal style="font-size: clamp(1.9rem, 4.6vw, 3.4rem);">Čo hovoria naši klienti</h2>
             <div class="reviews-carousel" aria-live="off">
                 <div class="reviews-track">
                 <article class="review-item">
@@ -483,11 +645,31 @@
         </div>
     </section>
 
+        <!-- Zaverecna vyzva -->
+        <section id="zaver">
+            <div class="m-mesh" aria-hidden="true"><i></i><i></i><i></i></div>
+            <h2 class="m-display" data-m-reveal>Poďme sa <span class="m-glow">porozprávať</span></h2>
+            <p data-m-reveal style="--reveal-delay: 110ms">Nezáväzne prejdeme Vašu situáciu a poviete si, čo dáva zmysel. Nič za to neplatíte.</p>
+            <div class="m-actions" data-m-reveal style="--reveal-delay: 200ms">
+                <a href="#kontakt" class="m-btn m-btn--solid">
+                    Dohodnite si konzultáciu
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </a>
+                <a href="tel:+421911620323" class="m-btn m-btn--ghost">+421 911 620 323</a>
+            </div>
+        </section>
+    </main>
+
     <footer>
         <p class="copyright">&copy; 2026 FinKorb s.r.o. Všetky práva vyhradené.</p>
         <p class="footer-links"><a href="/ochrana-udajov.html">Zásady ochrany osobných údajov</a></p>
     </footer>
 
+    <button class="m-top" type="button" aria-label="Späť hore">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"></polyline></svg>
+    </button>
+
     <script src="script.js"></script>
+    <script src="motion.js"></script>
 </body>
 </html>

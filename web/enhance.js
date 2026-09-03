@@ -239,11 +239,124 @@
         update();
     };
 
+
+    /* --------------------------------------------------------------
+       7. Partneri — logá do dlaždíc a nekonečný pás
+       -------------------------------------------------------------- */
+    const initPartners = () => {
+        const logos = document.querySelector('.partners-logos');
+        if (!logos || logos.querySelector('.partners-marquee')) return;
+
+        const images = Array.from(logos.querySelectorAll('img'));
+        if (!images.length) return;
+
+        const track = document.createElement('div');
+        track.className = 'partners-marquee';
+
+        images.forEach(image => {
+            const tile = document.createElement('div');
+            tile.className = 'partner-tile';
+            tile.appendChild(image);
+            track.appendChild(tile);
+        });
+
+        logos.textContent = '';
+        logos.appendChild(track);
+
+        // Druhá polovica pásu je kópia prvej, aby slučka plynule nadväzovala.
+        // Kópie sú pre čítačky obrazovky skryté, nech sa logá nečítajú dvakrát.
+        Array.from(track.children).forEach(tile => {
+            const copy = tile.cloneNode(true);
+            copy.setAttribute('aria-hidden', 'true');
+            const image = copy.querySelector('img');
+            if (image) image.alt = '';
+            track.appendChild(copy);
+        });
+    };
+
+    /* --------------------------------------------------------------
+       8. Recenzie — iniciály autora a pätička karty
+       -------------------------------------------------------------- */
+    const AVATAR_GRADIENTS = [
+        'linear-gradient(135deg, #e8b563, #c5832b)',
+        'linear-gradient(135deg, #2dd4bf, #0d9488)',
+        'linear-gradient(135deg, #60a5fa, #2563eb)',
+        'linear-gradient(135deg, #a78bfa, #7c3aed)',
+    ];
+
+    const initialsOf = name =>
+        name
+            .split(/\s+/)
+            .filter(Boolean)
+            .slice(0, 2)
+            .map(part => part.charAt(0))
+            .join('')
+            .toUpperCase();
+
+    const enhanceReview = item => {
+        if (item.dataset.enhanced === 'true') return;
+
+        const heading = item.querySelector('h4');
+        if (!heading) return;
+
+        item.dataset.enhanced = 'true';
+
+        // meno je v tvare „– Peter N."
+        const name = heading.textContent.replace(/^[\s\u2013\u2014-]+/, '').trim();
+
+        const foot = document.createElement('div');
+        foot.className = 'review-foot';
+
+        const avatar = document.createElement('span');
+        avatar.className = 'review-avatar';
+        avatar.setAttribute('aria-hidden', 'true');
+        avatar.textContent = initialsOf(name) || '?';
+
+        let sum = 0;
+        for (let i = 0; i < name.length; i += 1) sum += name.charCodeAt(i);
+        avatar.style.setProperty('--avatar-grad', AVATAR_GRADIENTS[sum % AVATAR_GRADIENTS.length]);
+
+        const box = document.createElement('div');
+        const role = document.createElement('span');
+        role.className = 'review-role';
+        role.textContent = 'klient';
+
+        item.insertBefore(foot, heading);
+        foot.appendChild(avatar);
+        foot.appendChild(box);
+        box.appendChild(heading);
+        box.appendChild(role);
+    };
+
+    const initReviews = () => {
+        const track = document.querySelector('.reviews-track');
+        if (!track) return;
+
+        track.querySelectorAll('.review-item').forEach(enhanceReview);
+
+        // Recenzie zo servera aj kópie pre slučku pribúdajú až neskôr,
+        // preto sledujeme, čo sa do pásu pridá.
+        if (!('MutationObserver' in window)) return;
+
+        const observer = new MutationObserver(mutations => {
+            mutations.forEach(mutation => {
+                mutation.addedNodes.forEach(node => {
+                    if (node.nodeType !== Node.ELEMENT_NODE) return;
+                    if (node.classList.contains('review-item')) enhanceReview(node);
+                });
+            });
+        });
+
+        observer.observe(track, { childList: true });
+    };
+
     const init = () => {
         // Povie inline poistke v <head>, ze animacie prevzal tento subor
         window.__finkorbRevealReady = true;
 
         initStagger();
+        initPartners();
+        initReviews();
         initReveal();
         initCounters();
         initScrollProgress();

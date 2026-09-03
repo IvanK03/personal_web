@@ -166,7 +166,7 @@
             <div class="hero-content">
                 <div class="hero-text">
                     <span class="hero-badge" data-reveal="zoom">
-                        <span class="hero-badge__dot" aria-hidden="true"></span>
+                        <span class="hero-badge__radar" aria-hidden="true"><i></i><i></i></span>
                         Nezávislé porovnanie celého poistného trhu
                     </span>
                     <h1 data-reveal style="--reveal-delay: 90ms">
@@ -256,7 +256,10 @@
         <!-- Sekcia Partneri -->
         <section id="partneri">
             <div class="container partners-layout">
-                <h2 class="partners-title" data-reveal="left">Poistenie</h2>
+                <div class="partners-head" data-reveal>
+                    <h2 class="partners-title">Spolupracujeme s poisťovňami</h2>
+                    <p class="partners-note">Nie sme viazaní na jednu z nich. Porovnávame ponuky <strong>11 poisťovní</strong> a vyberáme tú, ktorá Vám sadne najlepšie.</p>
+                </div>
                 <div class="partners-slider">
                     <button class="slider-btn prev" aria-label="Predchádzajúce">&#10094;</button>
                     <div class="partners-logos">
@@ -377,7 +380,10 @@
 
         <!-- Sekcia Recenzie -->
         <section id="recenzie">
-            <h2 data-reveal>Čo hovoria naši klienti</h2>
+            <div class="reviews-head" data-reveal>
+                <span class="section-subtitle">RECENZIE</span>
+                <h2>Čo hovoria naši klienti</h2>
+            </div>
             <div class="reviews-carousel" aria-live="off">
                 <div class="reviews-track">
                 <article class="review-item">
@@ -501,12 +507,37 @@
     <section id="kontakt">
         <div class="container contact-container">
             <div class="contact-details">
-                <h2>Kontaktujte nás</h2>
-                <p style="margin-bottom: 30px;">Máte otázky alebo si chcete dohodnúť stretnutie? Vyplňte formulár alebo nám zavolajte.</p>
-                <div class="contact-info-items">
-                    <p><strong>Email:</strong> <a href="mailto:ivan.korbini@okgroup.sk">ivan.korbini@okgroup.sk</a></p>
-                    <p><strong>Telefón:</strong> <a href="tel:+421911620323">+421 911 620 323</a> | <a href="tel:+421911032103">+421 911 032 103</a></p>
-                    <p><strong>Adresa:</strong> Sološnícka 566/13, Bratislava</p>
+                <span class="section-subtitle" data-reveal>KONTAKT</span>
+                <h2 data-reveal>Kontaktujte nás</h2>
+                <p class="contact-lede" data-reveal>Máte otázky alebo si chcete dohodnúť stretnutie? Vyplňte formulár alebo nám zavolajte — ozveme sa do 24 hodín.</p>
+
+                <div class="contact-info-items" data-reveal-group="110">
+                    <div class="contact-row" data-reveal>
+                        <span class="contact-row__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg></span>
+                        <div>
+                            <span class="contact-row__label">E-mail</span>
+                            <div class="contact-row__value"><a href="mailto:ivan.korbini@okgroup.sk">ivan.korbini@okgroup.sk</a></div>
+                        </div>
+                    </div>
+                    <div class="contact-row" data-reveal>
+                        <span class="contact-row__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.68 13.1 19.79 19.79 0 0 1 1.61 4.5 2 2 0 0 1 3.6 2.32h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l.98-.98a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></span>
+                        <div>
+                            <span class="contact-row__label">Telefón</span>
+                            <div class="contact-row__value"><a href="tel:+421911620323">+421 911 620 323</a><span class="sep">|</span><a href="tel:+421911032103">+421 911 032 103</a></div>
+                        </div>
+                    </div>
+                    <div class="contact-row" data-reveal>
+                        <span class="contact-row__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></span>
+                        <div>
+                            <span class="contact-row__label">Adresa</span>
+                            <div class="contact-row__value">Sološnícka 566/13, Bratislava</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-quick" data-reveal>
+                    <a href="tel:+421911620323" class="is-call"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.68 13.1 19.79 19.79 0 0 1 1.61 4.5 2 2 0 0 1 3.6 2.32h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l.98-.98a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> Zavolať</a>
+                    <a href="mailto:ivan.korbini@okgroup.sk" class="is-mail"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg> Napísať e-mail</a>
                 </div>
             </div>
             <div class="contact-form-wrapper">
@@ -570,7 +601,7 @@
                             <option value="vecer">Podvečer (16:00 - 19:00)</option>
                         </select>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group form-group--wide">
                         <label for="message">Doplňujúca správa (nepovinné)</label>
                         <textarea id="message" name="message" rows="5" placeholder="Ak chcete, môžete doplniť podrobnosti k Vašej požiadavke."></textarea>
                         <p class="field-help">Toto pole je nepovinné.</p>
@@ -581,6 +612,11 @@
                     </div>
                     <p id="form-status" class="form-status" aria-live="polite"></p>
                     <button type="submit" class="btn-primary full-width">Odoslať nezáväzný dopyt</button>
+                    <div class="form-assurance">
+                        <span><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg> Nezáväzne</span>
+                        <span><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg> Bezplatne</span>
+                        <span><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg> Odpoveď do 24 hodín</span>
+                    </div>
                     <p class="form-note">Ak formulár odosielate cez FormSubmit prvýkrát, potvrďte najprv aktivačný e-mail, ktorý Vám príde po prvom odoslaní.</p>
                 </form>
             </div>

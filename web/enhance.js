@@ -241,37 +241,118 @@
 
 
     /* --------------------------------------------------------------
-       7. Partneri — logá do dlaždíc a nekonečný pás
+       7. Partneri — railboard: horný pás ide doľava, dolný doprava,
+          medzi nimi pravítko, ktoré ukazuje, kde sa slučka nachádza
        -------------------------------------------------------------- */
-    const initPartners = () => {
-        const logos = document.querySelector('.partners-logos');
-        if (!logos || logos.querySelector('.partners-marquee')) return;
+    const RAIL_SPEED = 26; // pixelov za sekundu
 
-        const images = Array.from(logos.querySelectorAll('img'));
-        if (!images.length) return;
+    const initRailboard = () => {
+        const board = document.querySelector('.rail-board');
+        if (!board) return;
 
-        const track = document.createElement('div');
-        track.className = 'partners-marquee';
+        const tracks = Array.from(board.querySelectorAll('.rail-track'));
+        if (!tracks.length) return;
 
-        images.forEach(image => {
-            const tile = document.createElement('div');
-            tile.className = 'partner-tile';
-            tile.appendChild(image);
-            track.appendChild(tile);
+        const ticks = Array.from(board.querySelectorAll('.rail-scrubber span'));
+
+        // Každý pás zdvojíme, aby slučka plynule nadväzovala.
+        // Kópie sú pre čítačky obrazovky aj pre tabulátor neviditeľné.
+        tracks.forEach(track => {
+            if (track.dataset.cloned === 'true') return;
+            Array.from(track.children).forEach(card => {
+                const copy = card.cloneNode(true);
+                copy.setAttribute('aria-hidden', 'true');
+                copy.setAttribute('tabindex', '-1');
+                copy.dataset.railClone = 'true';
+                track.appendChild(copy);
+            });
+            track.dataset.cloned = 'true';
         });
 
-        logos.textContent = '';
-        logos.appendChild(track);
+        const rails = tracks.map(track => ({
+            el: track,
+            dir: track.dataset.dir === 'right' ? 1 : -1,
+            half: 0,
+            offset: 0,
+            started: false,
+        }));
 
-        // Druhá polovica pásu je kópia prvej, aby slučka plynule nadväzovala.
-        // Kópie sú pre čítačky obrazovky skryté, nech sa logá nečítajú dvakrát.
-        Array.from(track.children).forEach(tile => {
-            const copy = tile.cloneNode(true);
-            copy.setAttribute('aria-hidden', 'true');
-            const image = copy.querySelector('img');
-            if (image) image.alt = '';
-            track.appendChild(copy);
+        // Obsah sa opakuje každých `half` pixelov, takže posun držíme
+        // v rozsahu <-half, 0). Platí to pre oba smery aj po zmene šírky.
+        const wrap = (value, half) => (((value % half) + half) % half) - half;
+
+        const measure = () => {
+            rails.forEach((rail, index) => {
+                rail.half = rail.el.scrollWidth / 2;
+                if (!rail.half) return;
+
+                if (!rail.started) {
+                    // dolný pás rozfázujeme o pol karty, nech riadky
+                    // nevytvárajú zarovnanú mriežku
+                    rail.offset = -rail.half - (index === 0 ? 0 : 88);
+                    rail.started = true;
+                }
+
+                rail.offset = wrap(rail.offset, rail.half);
+                rail.el.style.transform = `translate3d(${rail.offset}px, 0, 0)`;
+            });
+        };
+
+        measure();
+        window.addEventListener('resize', measure);
+
+        // obrázky sa dopočítajú až po načítaní, potom treba premerať
+        board.querySelectorAll('img').forEach(image => {
+            if (!image.complete) image.addEventListener('load', measure, { once: true });
         });
+
+        if (prefersReducedMotion) return;
+
+        let paused = false;
+        board.addEventListener('pointerenter', () => { paused = true; });
+        board.addEventListener('pointerleave', () => { paused = false; });
+        board.addEventListener('focusin', () => { paused = true; });
+        board.addEventListener('focusout', () => { paused = false; });
+
+        let lastTickIndex = -1;
+
+        const paintScrubber = progress => {
+            if (!ticks.length) return;
+            const index = Math.round(progress * (ticks.length - 1));
+            if (index === lastTickIndex) return;
+            lastTickIndex = index;
+
+            ticks.forEach((tick, i) => {
+                const distance = Math.abs(i - index);
+                tick.classList.toggle('on', distance <= 1);
+                tick.classList.toggle('near', distance === 2 || distance === 3);
+            });
+        };
+
+        let previous = null;
+
+        const step = now => {
+            if (previous === null) previous = now;
+            const elapsed = Math.min((now - previous) / 1000, 0.1);
+            previous = now;
+
+            if (!paused) {
+                rails.forEach(rail => {
+                    if (!rail.half) return;
+                    rail.offset = wrap(rail.offset + rail.dir * RAIL_SPEED * elapsed, rail.half);
+                    rail.el.style.transform = `translate3d(${rail.offset}px, 0, 0)`;
+                });
+
+                const lead = rails[0];
+                if (lead && lead.half) {
+                    paintScrubber(Math.abs(lead.offset) / lead.half);
+                }
+            }
+
+            window.requestAnimationFrame(step);
+        };
+
+        window.requestAnimationFrame(step);
     };
 
     /* --------------------------------------------------------------
@@ -355,7 +436,7 @@
         window.__finkorbRevealReady = true;
 
         initStagger();
-        initPartners();
+        initRailboard();
         initReviews();
         initReveal();
         initCounters();

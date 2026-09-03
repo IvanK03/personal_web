@@ -894,7 +894,7 @@ body.dark-mode .service-tags span { color: var(--text-color); }
 }
 
 /* ------------------------------------------------------------------
-   16. Partneri — nekonečný pás so sklenenými dlaždicami
+   16. Partneri — railboard (dva pásy proti sebe + pravítko)
    ------------------------------------------------------------------ */
 #partneri {
     padding: 76px 0;
@@ -905,7 +905,7 @@ body.dark-mode .service-tags span { color: var(--text-color); }
 
 .partners-layout {
     flex-direction: column;
-    gap: 34px;
+    gap: 40px;
     align-items: stretch;
 }
 
@@ -932,79 +932,253 @@ body.dark-mode .service-tags span { color: var(--text-color); }
     font-weight: 700;
 }
 
-/* Šípky nahradil automatický pás */
-.slider-btn { display: none !important; }
-
-.partners-slider { width: 100%; }
-
-.partners-logos {
-    overflow: hidden !important;
-    scroll-snap-type: none !important;
-    width: 100%;
-    gap: 0;
-    /* okraje sa jemne strácajú */
-    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+/* --- Doska --- */
+.rail-board {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
 }
 
-.partners-marquee {
+/* Okraje sa strácajú do pozadia dosky */
+.rail-board::before,
+.rail-board::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: min(12%, 110px);
+    z-index: 2;
+    pointer-events: none;
+}
+
+.rail-board::before {
+    left: 0;
+    background: linear-gradient(90deg, var(--surface) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.rail-board::after {
+    right: 0;
+    background: linear-gradient(270deg, var(--surface) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+body.dark-mode .rail-board::before {
+    background: linear-gradient(90deg, var(--surface) 0%, rgba(16, 29, 56, 0) 100%);
+}
+
+body.dark-mode .rail-board::after {
+    background: linear-gradient(270deg, var(--surface) 0%, rgba(16, 29, 56, 0) 100%);
+}
+
+/* --- Pásy --- */
+.rail-track {
     display: flex;
-    align-items: center;
-    gap: 20px;
     width: max-content;
-    animation: partnersSlide 46s linear infinite;
+    will-change: transform;
 }
 
-.partners-slider:hover .partners-marquee,
-.partners-slider:focus-within .partners-marquee {
-    animation-play-state: paused;
+/* --- Karta --- */
+.rail-card {
+    --rail-rest: 176px;
+    --rail-active: 194px;
+    --tone: var(--gold);
+
+    position: relative;
+    flex: 0 0 var(--rail-rest);
+    width: var(--rail-rest);
+    min-height: 190px;
+    padding: 20px 18px;
+    border: 0;
+    border-right: 1px solid var(--surface-border);
+    background: none;
+    font: inherit;
+    color: var(--heading-color);
+    text-align: center;
+    cursor: pointer;
+    overflow: hidden;
+    appearance: none;
+    transition: flex-basis 0.3s var(--ease-out), width 0.3s var(--ease-out);
 }
 
-@keyframes partnersSlide {
-    to { transform: translateX(-50%); }
+.rail-card[data-tone='gold']   { --tone: #c5832b; }
+.rail-card[data-tone='teal']   { --tone: #0d9488; }
+.rail-card[data-tone='sky']    { --tone: #2563eb; }
+.rail-card[data-tone='violet'] { --tone: #7c3aed; }
+
+/* Farebné podfarbenie, ktoré sa rozsvieti zdola */
+.rail-card::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    height: 64%;
+    z-index: 0;
+    opacity: 0;
+    pointer-events: none;
+    background: linear-gradient(
+        0deg,
+        color-mix(in srgb, var(--tone) 20%, transparent) 0%,
+        color-mix(in srgb, var(--tone) 8%, transparent) 48%,
+        transparent 100%
+    );
+    transition: opacity 0.34s ease;
 }
 
-/* Každé logo dostane vlastnú dlaždicu */
-.partner-tile {
-    flex: none;
+/* Logo */
+.rail-card__logo {
+    position: absolute;
+    top: 52px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
     display: grid;
     place-items: center;
-    width: 190px;
-    height: 104px;
-    padding: 16px 20px;
-    border-radius: 18px;
-    /* #partneri ma bielu plochu, dlazdice preto tonujeme */
-    background: var(--section-alt-bg);
-    border: 1px solid var(--surface-border);
-    transition:
-        transform 0.45s var(--ease-out),
-        box-shadow 0.45s var(--ease-out),
-        border-color 0.45s ease;
+    width: 116px;
+    height: 52px;
+    transition: top 0.28s var(--ease-out), transform 0.28s var(--ease-out);
 }
 
-.partner-tile:hover {
-    transform: translateY(-6px);
-    border-color: rgba(197, 131, 43, 0.5);
-    box-shadow: 0 22px 40px -26px rgba(15, 44, 89, 0.75);
-}
-
-.partner-tile img {
+.rail-card__logo img {
     max-width: 100%;
     max-height: 100%;
     width: auto;
     height: auto;
     object-fit: contain;
     filter: grayscale(100%);
-    opacity: 0.6;
+    opacity: 0.42;
     transition: filter 0.45s ease, opacity 0.45s ease;
 }
 
-.partner-tile:hover img {
+body.dark-mode .rail-card__logo img { opacity: 0.5; }
+
+/* Názov */
+.rail-card__name {
+    position: absolute;
+    top: 118px;
+    left: 12px;
+    right: 12px;
+    z-index: 1;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.98rem;
+    font-weight: 700;
+    line-height: 1.22;
+    color: var(--text-muted);
+    transition: top 0.28s var(--ease-out), color 0.4s ease;
+}
+
+/* Popis — zbalený, odkryje sa až pri prejdení */
+.rail-card__meta {
+    position: absolute;
+    top: 146px;
+    left: 10px;
+    right: 10px;
+    z-index: 1;
+    display: block;
+}
+
+.rail-card__kind,
+.rail-card__desc {
+    display: block;
+    opacity: 0;
+    transition: opacity 0.28s ease, transform 0.28s var(--ease-out);
+}
+
+.rail-card__kind {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--tone);
+    transform: translateY(8px);
+}
+
+.rail-card__desc {
+    margin-top: 4px;
+    font-size: 0.78rem;
+    line-height: 1.4;
+    color: var(--text-muted);
+    transform: translateY(8px);
+}
+
+/* Aktívny stav — myš, klávesnica aj dotyk */
+.rail-card:hover,
+.rail-card:focus-visible,
+.rail-card.is-active {
+    flex-basis: var(--rail-active);
+    width: var(--rail-active);
+    outline: none;
+}
+
+.rail-card:hover::after,
+.rail-card:focus-visible::after,
+.rail-card.is-active::after { opacity: 1; }
+
+.rail-card:hover .rail-card__logo,
+.rail-card:focus-visible .rail-card__logo,
+.rail-card.is-active .rail-card__logo { top: 42px; }
+
+.rail-card:hover .rail-card__logo img,
+.rail-card:focus-visible .rail-card__logo img,
+.rail-card.is-active .rail-card__logo img {
     filter: grayscale(0%);
     opacity: 1;
 }
 
-body.dark-mode .partner-tile img { opacity: 0.72; }
+.rail-card:hover .rail-card__name,
+.rail-card:focus-visible .rail-card__name,
+.rail-card.is-active .rail-card__name {
+    top: 104px;
+    color: var(--heading-color);
+}
+
+.rail-card:hover .rail-card__kind,
+.rail-card:hover .rail-card__desc,
+.rail-card:focus-visible .rail-card__kind,
+.rail-card:focus-visible .rail-card__desc,
+.rail-card.is-active .rail-card__kind,
+.rail-card.is-active .rail-card__desc {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.rail-card:focus-visible {
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tone) 70%, transparent);
+}
+
+/* --- Pravítko medzi pásmi --- */
+.rail-scrubber {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2px;
+    height: 34px;
+    padding: 0 18px;
+    border-top: 1px solid var(--surface-border);
+    border-bottom: 1px solid var(--surface-border);
+    background: var(--section-alt-bg);
+    overflow: hidden;
+}
+
+.rail-scrubber span {
+    flex: 1 1 auto;
+    max-width: 1px;
+    height: 9px;
+    background: var(--surface-border);
+    transition: height 0.22s var(--ease-out), background-color 0.22s ease;
+}
+
+.rail-scrubber span.major { height: 15px; }
+
+.rail-scrubber span.near {
+    height: 15px;
+    background: color-mix(in srgb, var(--gold) 55%, var(--surface-border));
+}
+
+.rail-scrubber span.on {
+    height: 21px;
+    background: var(--gold);
+}
 
 /* ------------------------------------------------------------------
    17. Recenzie
@@ -1391,11 +1565,18 @@ body.dark-mode .partner-tile img { opacity: 0.72; }
 
 @media (max-width: 768px) {
     #hero { padding-top: 54px; }
+
+    /* Užšie karty, nech sa ich na displej zmestí viac ako dve */
+    .rail-card { --rail-rest: 142px; --rail-active: 158px; }
+    .rail-card__logo { width: 96px; }
+    .rail-board::before,
+    .rail-board::after { width: min(8%, 56px); }
+    .rail-scrubber { padding: 0 10px; }
+
     .contact-form { grid-template-columns: 1fr; }
     .contact-form-wrapper { padding: 30px 22px; }
     .review-item { padding: 30px 26px 26px; }
     .review-item::before { font-size: 7rem; top: -18px; }
-    .partner-tile { width: 152px; height: 88px; }
     #recenzie, #kontakt { padding: 74px 20px; }
     .contact-quick a { flex: 1 1 100%; justify-content: center; }
 }
@@ -1405,14 +1586,20 @@ body.dark-mode .partner-tile img { opacity: 0.72; }
    ------------------------------------------------------------------ */
 @media (prefers-reduced-motion: reduce) {
     .hero-badge__radar::before,
-    .hero-badge__radar i,
-    .partners-marquee {
+    .hero-badge__radar i {
         animation: none !important;
+    }
+
+    /* Pásy sa pri obmedzenom pohybe nehýbu vôbec — rieši to enhance.js,
+       ktorý animačnú slučku ani nespustí. */
+    .rail-card:hover,
+    .rail-card:focus-visible {
+        flex-basis: var(--rail-rest);
+        width: var(--rail-rest);
     }
 
     .hero-badge__radar i { opacity: 0.4; transform: scale(1); }
 
-    .partner-tile:hover,
     .review-item:hover,
     .contact-row:hover,
     .contact-quick a:hover {

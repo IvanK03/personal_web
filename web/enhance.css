@@ -1067,24 +1067,25 @@ body.dark-mode .rail-board::after {
 }
 
 /* Logo */
+/* Okienko je blok, nie grid: percentualna vyska obrazka sa v grid bunke
+   s automatickym riadkom vyhodnoti ako auto a logo potom pretekalo von.
+   Vystredenie rieši object-fit na samotnom obrazku. */
 .rail-card__logo {
     position: absolute;
     top: 52px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 1;
-    display: grid;
-    place-items: center;
+    display: block;
     width: 116px;
     height: 52px;
     transition: top 0.28s var(--ease-out), transform 0.28s var(--ease-out);
 }
 
 .rail-card__logo img {
-    max-width: 100%;
-    max-height: 100%;
-    width: auto;
-    height: auto;
+    display: block;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
     filter: grayscale(100%);
     opacity: 0.42;
@@ -1185,6 +1186,21 @@ body.dark-mode .rail-card__logo img { opacity: 0.5; }
 
 .rail-card:focus-visible {
     box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tone) 70%, transparent);
+}
+
+/* MetLife ma znacku nad napisom, teda na vysku. V sirokom okienku
+   ostatnych log by vysla drobna, preto dostane vyssie a uzsie.
+   Musi to byt az za pravidlami aktivneho stavu, inak by ich neprebilo. */
+.rail-card__logo--stacked {
+    top: 36px;
+    width: 78px;
+    height: 70px;
+}
+
+.rail-card:hover .rail-card__logo--stacked,
+.rail-card:focus-visible .rail-card__logo--stacked,
+.rail-card.is-active .rail-card__logo--stacked {
+    top: 28px;
 }
 
 /* --- Pravítko medzi pásmi --- */
@@ -1592,6 +1608,7 @@ body.dark-mode .rail-card__logo img { opacity: 0.5; }
     /* Užšie karty, nech sa ich na displej zmestí viac ako dve */
     .rail-card { --rail-rest: 142px; --rail-active: 158px; }
     .rail-card__logo { width: 96px; }
+    .rail-card__logo--stacked { width: 70px; }
     .rail-board::before,
     .rail-board::after { width: min(8%, 56px); }
     .rail-scrubber { padding: 0 10px; }

@@ -975,6 +975,30 @@ body.dark-mode .service-tags span { color: var(--text-color); }
     font-weight: 700;
 }
 
+.partners-explore {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin-top: 18px;
+    padding: 11px 24px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.97rem;
+    color: var(--heading-color);
+    background: var(--surface);
+    border: 1.5px solid var(--surface-border);
+    transition: transform 0.35s var(--ease-out), border-color 0.35s ease, box-shadow 0.35s var(--ease-out);
+}
+
+.partners-explore:hover {
+    transform: translateY(-3px);
+    border-color: var(--gold);
+    box-shadow: 0 12px 26px -14px rgba(15, 44, 89, 0.6);
+}
+
+.partners-explore svg { transition: transform 0.3s var(--ease-out); }
+.partners-explore:hover svg { transform: translateX(4px); }
+
 /* --- Doska --- */
 .rail-board {
     position: relative;
@@ -1069,17 +1093,29 @@ body.dark-mode .rail-board::after {
 /* Logo */
 /* Okienko je blok, nie grid: percentualna vyska obrazka sa v grid bunke
    s automatickym riadkom vyhodnoti ako auto a logo potom pretekalo von.
-   Vystredenie rieši object-fit na samotnom obrazku. */
+   Vystredenie rieši object-fit na samotnom obrazku.
+
+   Biela podložka: väčšina log má napečené biele pozadie a MetLife má
+   čierny nápis. Na tmavej karte by prvé svietili ako sivé obdĺžniky
+   a druhé by zmizlo. Na bielej podložke vyzerajú všetky tak, ako boli
+   navrhnuté. Vo svetlom režime je podložka neviditeľná. */
 .rail-card__logo {
     position: absolute;
-    top: 52px;
+    top: 46px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 1;
     display: block;
-    width: 116px;
-    height: 52px;
-    transition: top 0.28s var(--ease-out), transform 0.28s var(--ease-out);
+    width: 120px;
+    height: 62px;
+    padding: 7px 10px;
+    border-radius: 12px;
+    background: #ffffff;
+    transition: top 0.28s var(--ease-out), transform 0.28s var(--ease-out), box-shadow 0.28s var(--ease-out);
+}
+
+body.dark-mode .rail-card__logo {
+    box-shadow: 0 2px 10px -4px rgba(0, 0, 0, 0.6);
 }
 
 .rail-card__logo img {
@@ -1088,11 +1124,9 @@ body.dark-mode .rail-board::after {
     height: 100%;
     object-fit: contain;
     filter: grayscale(100%);
-    opacity: 0.42;
+    opacity: 0.78;
     transition: filter 0.45s ease, opacity 0.45s ease;
 }
-
-body.dark-mode .rail-card__logo img { opacity: 0.5; }
 
 /* Názov */
 .rail-card__name {
@@ -1158,7 +1192,7 @@ body.dark-mode .rail-card__logo img { opacity: 0.5; }
 
 .rail-card:hover .rail-card__logo,
 .rail-card:focus-visible .rail-card__logo,
-.rail-card.is-active .rail-card__logo { top: 42px; }
+.rail-card.is-active .rail-card__logo { top: 36px; }
 
 .rail-card:hover .rail-card__logo img,
 .rail-card:focus-visible .rail-card__logo img,
@@ -1192,15 +1226,15 @@ body.dark-mode .rail-card__logo img { opacity: 0.5; }
    ostatnych log by vysla drobna, preto dostane vyssie a uzsie.
    Musi to byt az za pravidlami aktivneho stavu, inak by ich neprebilo. */
 .rail-card__logo--stacked {
-    top: 36px;
-    width: 78px;
-    height: 70px;
+    top: 32px;
+    width: 76px;
+    height: 76px;
 }
 
 .rail-card:hover .rail-card__logo--stacked,
 .rail-card:focus-visible .rail-card__logo--stacked,
 .rail-card.is-active .rail-card__logo--stacked {
-    top: 28px;
+    top: 24px;
 }
 
 /* --- Pravítko medzi pásmi --- */
@@ -1607,8 +1641,8 @@ body.dark-mode .rail-card__logo img { opacity: 0.5; }
 
     /* Užšie karty, nech sa ich na displej zmestí viac ako dve */
     .rail-card { --rail-rest: 142px; --rail-active: 158px; }
-    .rail-card__logo { width: 96px; }
-    .rail-card__logo--stacked { width: 70px; }
+    .rail-card__logo { width: 100px; height: 56px; padding: 6px 8px; }
+    .rail-card__logo--stacked { width: 68px; height: 68px; }
     .rail-board::before,
     .rail-board::after { width: min(8%, 56px); }
     .rail-scrubber { padding: 0 10px; }
@@ -1645,4 +1679,208 @@ body.dark-mode .rail-card__logo img { opacity: 0.5; }
     .contact-quick a:hover {
         transform: none;
     }
+}
+
+/* =====================================================================
+   21. Podstránka s prehľadom poisťovní (poistovne.html)
+   ===================================================================== */
+.insurers-section {
+    max-width: 100%;
+    padding: 84px 20px 110px;
+}
+
+.insurers-head {
+    max-width: 760px;
+    margin: 0 auto 54px;
+    text-align: center;
+}
+
+.insurers-head h2 {
+    font-size: clamp(1.9rem, 4.4vw, 2.9rem);
+    line-height: 1.14;
+    margin-bottom: 20px;
+}
+
+.insurers-head p {
+    color: var(--text-muted);
+    font-size: 1.06rem;
+    line-height: 1.72;
+}
+
+/* Mriežka kariet s vlasovými deliacimi čiarami */
+.insurers-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 1200px;
+    margin: 0 auto;
+    border: 1px solid var(--surface-border);
+    border-radius: 20px;
+    overflow: hidden;
+    background: var(--surface);
+}
+
+.insurer-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 30px 26px 28px;
+    border-right: 1px solid var(--surface-border);
+    border-bottom: 1px solid var(--surface-border);
+    color: inherit;
+    text-decoration: none;
+    overflow: hidden;
+    transition: background-color 0.35s ease;
+}
+
+/* posledný v riadku a posledný riadok bez vonkajšej čiary */
+.insurers-grid .insurer-card:nth-child(4n) { border-right: 0; }
+.insurers-grid .insurer-card:nth-last-child(-n + 4) { border-bottom: 0; }
+
+/* Farebné podfarbenie zdola, rovnaké ako na railboarde */
+.insurer-card::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    height: 60%;
+    z-index: 0;
+    opacity: 0;
+    pointer-events: none;
+    background: linear-gradient(
+        0deg,
+        color-mix(in srgb, var(--tone) 18%, transparent) 0%,
+        color-mix(in srgb, var(--tone) 7%, transparent) 48%,
+        transparent 100%
+    );
+    transition: opacity 0.35s ease;
+}
+
+.insurer-card:hover::after,
+.insurer-card:focus-visible::after { opacity: 1; }
+
+.insurer-card:focus-visible {
+    outline: 2px solid var(--tone);
+    outline-offset: -3px;
+}
+
+/* Logo na bielej podložke — v plnej farbe a ostré, žiadne stlmenie */
+.insurer-card__logo {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 132px;
+    height: 62px;
+    padding: 7px 10px;
+    border-radius: 12px;
+    background: #ffffff;
+    transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
+}
+
+body.dark-mode .insurer-card__logo {
+    box-shadow: 0 3px 12px -5px rgba(0, 0, 0, 0.7);
+}
+
+.insurer-card__logo--stacked {
+    width: 78px;
+    height: 84px;
+}
+
+.insurer-card__logo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.insurer-card:hover .insurer-card__logo {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 28px -16px rgba(15, 44, 89, 0.55);
+}
+
+.insurer-card__body {
+    position: relative;
+    z-index: 1;
+    display: block;
+}
+
+.insurer-card__name {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--heading-color);
+    margin-bottom: 8px;
+}
+
+.insurer-card__name svg {
+    opacity: 0;
+    transform: translate(-3px, 3px);
+    transition: opacity 0.3s ease, transform 0.3s var(--ease-out);
+    color: var(--tone);
+}
+
+.insurer-card:hover .insurer-card__name svg,
+.insurer-card:focus-visible .insurer-card__name svg {
+    opacity: 1;
+    transform: none;
+}
+
+.insurer-card__desc {
+    display: block;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+}
+
+.insurers-cta {
+    max-width: 620px;
+    margin: 56px auto 0;
+    text-align: center;
+}
+
+.insurers-cta p {
+    color: var(--text-muted);
+    font-size: 1.04rem;
+    margin-bottom: 22px;
+}
+
+.insurer-back {
+    display: inline-flex;
+    align-items: center;
+    padding: 11px 22px;
+    border-radius: 999px;
+    font-size: 0.94rem;
+    font-weight: 600;
+    color: var(--heading-color);
+    background: var(--surface);
+    border: 1.5px solid var(--surface-border);
+    transition: border-color 0.3s ease, transform 0.3s var(--ease-out);
+}
+
+.insurer-back:hover {
+    border-color: var(--gold);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 1024px) {
+    .insurers-grid { grid-template-columns: repeat(2, 1fr); }
+    .insurers-grid .insurer-card:nth-child(4n) { border-right: 1px solid var(--surface-border); }
+    .insurers-grid .insurer-card:nth-child(2n) { border-right: 0; }
+    .insurers-grid .insurer-card:nth-last-child(-n + 4) { border-bottom: 1px solid var(--surface-border); }
+    .insurers-grid .insurer-card:nth-last-child(-n + 2) { border-bottom: 0; }
+}
+
+@media (max-width: 620px) {
+    .insurers-grid { grid-template-columns: 1fr; }
+    .insurers-grid .insurer-card { border-right: 0; border-bottom: 1px solid var(--surface-border); }
+    .insurers-grid .insurer-card:last-child { border-bottom: 0; }
+    .insurers-section { padding: 60px 20px 80px; }
+    .insurer-back { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .insurer-card:hover .insurer-card__logo,
+    .insurer-back:hover { transform: none; }
 }

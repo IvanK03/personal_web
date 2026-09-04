@@ -405,6 +405,10 @@
         // Ťahanie pravítka
         let dragTarget = null;
         let touchProbe = null;
+        // Poloha nastavená ručne. Drží sa, kým používateľ nezačne
+        // scrollovať — inak by sa pás hneď po pustení vrátil tam,
+        // kam ho ťahá poloha dosky vo výreze okna.
+        let holdProgress = null;
 
         const progressFromPointer = event => {
             const rect = scrubber.getBoundingClientRect();
@@ -464,6 +468,7 @@
             touchProbe = null;
             if (!scrubber.classList.contains('is-dragging')) return;
             scrubber.classList.remove('is-dragging');
+            if (dragTarget !== null) holdProgress = dragTarget;
             dragTarget = null;
             if (event && scrubber.hasPointerCapture && scrubber.hasPointerCapture(event.pointerId)) {
                 scrubber.releasePointerCapture(event.pointerId);
@@ -483,8 +488,19 @@
                 return;
             }
 
-            const target = dragTarget === null ? scrollProgress() : dragTarget;
-            const ease = dragTarget === null ? RAIL.scrollEase : RAIL.scrubEase;
+            let target;
+            let ease;
+
+            if (dragTarget !== null) {
+                target = dragTarget;
+                ease = RAIL.scrubEase;
+            } else if (holdProgress !== null) {
+                target = holdProgress;
+                ease = RAIL.scrubEase;
+            } else {
+                target = scrollProgress();
+                ease = RAIL.scrollEase;
+            }
 
             current += (target - current) * ease;
             applyProgress(current);
@@ -505,6 +521,17 @@
         };
 
         document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
+
+        // Len skutočný posun stránky, nie drobné dochvenie po pustení prsta
+        let lastScrollY = window.scrollY;
+        window.addEventListener(
+            'scroll',
+            () => {
+                if (Math.abs(window.scrollY - lastScrollY) > 4) holdProgress = null;
+                lastScrollY = window.scrollY;
+            },
+            { passive: true }
+        );
 
         if ('IntersectionObserver' in window) {
             const near = new IntersectionObserver(

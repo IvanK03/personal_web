@@ -1879,3 +1879,188 @@ body.dark-mode .insurer-card__logo {
     .insurer-card:hover .insurer-card__logo,
     .insurer-back:hover { transform: none; }
 }
+
+/* =====================================================================
+   22. Mobil — zhustenie
+   Na malom displeji boli sekcie aj karty rovnako velkorysé ako na
+   monitore, čo znamenalo veľa zbytočného scrollovania. Tu sa všetko
+   sťahuje; na počítači zostáva pôvodné rozloženie nedotknuté.
+   ===================================================================== */
+@media (max-width: 768px) {
+    /* --- Sekcie --- */
+    #hero { padding: 40px 16px 52px; }
+    #vyhody,
+    #sluzby,
+    #postup,
+    #faq,
+    #recenzie,
+    #zaver { padding: 54px 16px; }
+    #kontakt { padding: 54px 16px 60px; }
+    #o-mne { padding: 46px 16px; }
+    #partneri { padding: 46px 0; }
+
+    /* --- Nadpisy --- */
+    h2 { font-size: 1.55rem; margin-bottom: 1.5rem; }
+    h2::after { width: 48px; height: 3px; }
+    .section-header,
+    .partners-head,
+    .reviews-head { margin-bottom: 30px; }
+    .section-subtitle { font-size: 0.68rem; padding: 5px 12px; letter-spacing: 1.6px; }
+
+    /* --- Hero --- */
+    .hero-badge {
+        font-size: 0.74rem;
+        padding: 6px 14px 6px 7px;
+        gap: 9px;
+        margin-bottom: 22px;
+    }
+    .hero-badge__radar { width: 24px; height: 24px; }
+    #hero h1 { font-size: clamp(1.85rem, 8vw, 2.3rem); margin-bottom: 1rem; }
+    #hero p { font-size: 0.98rem; margin-bottom: 1.7rem; }
+    .hero-actions { gap: 10px; margin-bottom: 34px; }
+    .hero-actions .btn-primary,
+    .hero-actions .btn-secondary { padding: 13px 24px; font-size: 0.97rem; }
+
+    .hero-stats { gap: 10px; }
+    .hero-stat { padding: 16px 18px; border-radius: 16px; }
+    .hero-stat__value { font-size: 1.75rem; }
+    .hero-stat__label { font-size: 0.84rem; margin-top: 5px; }
+
+    /* --- Karty --- */
+    .benefit-item,
+    .service-item,
+    .step-item {
+        padding: 22px 18px;
+        border-radius: 18px;
+    }
+    .benefits-grid,
+    .services-grid,
+    .steps-grid { gap: 14px; }
+
+    .benefit-icon,
+    .service-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 13px;
+        margin-bottom: 14px;
+    }
+    .benefit-icon svg,
+    .service-icon svg { width: 22px; height: 22px; }
+
+    .benefit-item h3,
+    .service-item h3,
+    .step-item h3 { font-size: 1.08rem; margin-bottom: 8px; }
+    .benefit-item p,
+    .service-item p,
+    .step-item p { font-size: 0.92rem; line-height: 1.6; }
+
+    .step-number { width: 40px; height: 40px; border-radius: 12px; font-size: 1.05rem; margin-bottom: 13px; }
+    .service-tags { margin-top: 13px; gap: 6px; }
+    .service-tags span { font-size: 0.75rem; padding: 4px 10px; }
+
+    .cennik-wrapper { margin-top: 32px; padding: 24px 18px; border-radius: 18px; }
+    .price-subtitle { font-size: 1rem; }
+    .legal-text { font-size: 0.85rem; line-height: 1.6; }
+
+    /* --- Recenzie --- */
+    .reviews-track { gap: 14px; }
+    .review-item { padding: 22px 18px 18px; border-radius: 18px; }
+    .review-item::before { font-size: 5.5rem; top: -12px; right: 10px; }
+    .review-item .stars { font-size: 0.95rem; margin-bottom: 12px; }
+    .review-item p { font-size: 0.95rem; line-height: 1.62; }
+    .review-foot { margin-top: 16px; padding-top: 14px; gap: 11px; }
+    .review-avatar { width: 38px; height: 38px; font-size: 0.85rem; }
+    .review-item h4 { font-size: 0.94rem; }
+    .reviews-cta { margin-top: 22px; }
+
+    /* --- FAQ --- */
+    #faq details { margin-bottom: 9px; border-radius: 14px; }
+    #faq summary { padding: 15px 16px; font-size: 0.97rem; gap: 12px; }
+    #faq details p { padding: 0 16px 17px; font-size: 0.92rem; line-height: 1.6; }
+    .faq-icon { width: 20px; height: 20px; }
+    .faq-icon svg { width: 14px; height: 14px; }
+
+    /* --- Kontakt --- */
+    .contact-container { gap: 26px; }
+    .contact-lede { font-size: 0.96rem; margin-bottom: 20px !important; }
+    .contact-info-items { gap: 9px; margin-bottom: 20px; }
+    .contact-row { padding: 13px 14px; gap: 12px; border-radius: 14px; }
+    .contact-row__icon { width: 38px; height: 38px; border-radius: 11px; }
+    .contact-row__icon svg { width: 17px; height: 17px; }
+    .contact-row__label { font-size: 0.68rem; margin-bottom: 2px; }
+    .contact-row__value { font-size: 0.94rem; }
+    .contact-quick a { padding: 11px 20px; font-size: 0.92rem; }
+
+    .contact-form-wrapper { padding: 22px 16px; border-radius: 20px; }
+    .form-intro { font-size: 0.9rem; margin-bottom: 16px; }
+    .form-group { margin-bottom: 14px; }
+    .form-group label { font-size: 0.86rem; margin-bottom: 5px; }
+    /* 16 px zostáva — pod ňou iOS pri kliknutí do poľa priblíži stránku */
+    .contact-form input,
+    .contact-form select { height: 46px; }
+    .contact-form textarea { min-height: 88px; }
+    .form-consent { padding: 13px 14px; margin-bottom: 16px; border-radius: 13px; }
+    .form-consent label { font-size: 0.85rem; line-height: 1.5; }
+    .contact-form .btn-primary.full-width { padding: 14px 24px; font-size: 0.99rem; }
+    .form-assurance { margin-top: 15px; gap: 7px 16px; }
+    .form-assurance span { font-size: 0.8rem; }
+    .form-note { font-size: 0.8rem; line-height: 1.5; }
+
+    /* --- Railboard --- */
+    .rail-card { --rail-rest: 124px; --rail-active: 138px; min-height: 152px; padding: 14px 12px; }
+    .rail-card__logo { top: 34px; width: 92px; height: 48px; padding: 5px 7px; border-radius: 10px; }
+    .rail-card:hover .rail-card__logo,
+    .rail-card:focus-visible .rail-card__logo,
+    .rail-card.is-active .rail-card__logo { top: 26px; }
+    .rail-card__logo--stacked { top: 22px; width: 58px; height: 58px; }
+    .rail-card:hover .rail-card__logo--stacked,
+    .rail-card:focus-visible .rail-card__logo--stacked,
+    .rail-card.is-active .rail-card__logo--stacked { top: 16px; }
+    .rail-card__name { top: 106px; font-size: 0.86rem; }
+    .rail-card:hover .rail-card__name,
+    .rail-card:focus-visible .rail-card__name,
+    .rail-card.is-active .rail-card__name { top: 98px; }
+    .partners-note { font-size: 0.92rem; }
+    .partners-explore { margin-top: 14px; padding: 10px 20px; font-size: 0.92rem; }
+
+    /* --- Postup: menšie odsadenie zľava --- */
+    .m-steps { padding-left: 54px; }
+}
+
+/* ------------------------------------------------------------------
+   22b. Prehľad poisťovní — dva stĺpce aj na telefóne
+   ------------------------------------------------------------------ */
+@media (max-width: 1024px) {
+    .insurers-grid__inner { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+    .insurers-section { padding: 46px 16px 64px; }
+    .insurers-head { margin-bottom: 26px; }
+    .insurers-head h2 { font-size: 1.5rem; margin-bottom: 12px; }
+    .insurers-head p { font-size: 0.92rem; line-height: 1.6; }
+
+    .insurers-grid { border-radius: 16px; }
+    .insurer-card { padding: 16px 12px 14px; gap: 11px; }
+
+    .insurer-card__logo {
+        width: 100%;
+        max-width: 116px;
+        height: 44px;
+        padding: 5px 7px;
+        border-radius: 9px;
+    }
+    .insurer-card__logo--stacked { width: 52px; height: 54px; }
+
+    .insurer-card__name { font-size: 0.93rem; margin-bottom: 5px; gap: 5px; }
+    .insurer-card__name svg { width: 12px; height: 12px; }
+    .insurer-card__desc { font-size: 0.79rem; line-height: 1.45; }
+
+    .insurers-cta { margin-top: 30px; }
+    .insurers-cta p { font-size: 0.93rem; margin-bottom: 16px; }
+}
+
+/* Jeden stĺpec až na naozaj úzkych displejoch */
+@media (max-width: 359px) {
+    .insurers-grid__inner { grid-template-columns: 1fr; }
+}

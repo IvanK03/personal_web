@@ -716,28 +716,43 @@ body.dark-mode .service-tags span { color: var(--text-color); }
     gap: 16px;
 }
 
-/* Krúžok s + / − namiesto pôvodnej šípky */
-#faq summary::after {
-    content: '';
+/* Jemné plus, ktoré sa pri otvorení otočí na mínus.
+   Kreslené ako SVG, nie cez pozadia — tie sa v orámovanom krúžku
+   centrovali voči vnútornej ploche a čiarka sedela mimo stredu. */
+#faq summary::after { content: none; }
+
+.faq-icon {
     flex: none;
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background:
-        linear-gradient(currentColor 0 0) center / 12px 2px no-repeat,
-        linear-gradient(currentColor 0 0) center / 2px 12px no-repeat;
-    color: var(--gold);
-    border: 1.5px solid rgba(197, 131, 43, 0.45);
-    transform: rotate(0deg);
-    transition: transform 0.4s var(--ease-out), background-size 0.4s var(--ease-out);
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    color: var(--text-muted);
+    transition: color 0.3s ease, transform 0.45s var(--ease-out);
 }
 
-#faq details[open] summary::after {
-    transform: rotate(180deg);
-    background:
-        linear-gradient(currentColor 0 0) center / 12px 2px no-repeat,
-        linear-gradient(currentColor 0 0) center / 0 12px no-repeat;
+.faq-icon svg {
+    width: 15px;
+    height: 15px;
+    overflow: visible;
 }
+
+.faq-icon__v {
+    transform-origin: 12px 12px;
+    transition: transform 0.4s var(--ease-out), opacity 0.3s ease;
+}
+
+#faq details[open] .faq-icon {
+    color: var(--gold);
+    transform: rotate(180deg);
+}
+
+#faq details[open] .faq-icon__v {
+    transform: scaleY(0);
+    opacity: 0;
+}
+
+#faq summary:hover .faq-icon { color: var(--gold); }
 
 /* Obsah sa rozbalí plynulo (výšku animujeme cez grid).
    Predvolene je otvorený, takže FAQ funguje aj bez JavaScriptu —
@@ -1053,7 +1068,7 @@ body.dark-mode .rail-board::after {
     position: relative;
     flex: 0 0 var(--rail-rest);
     width: var(--rail-rest);
-    min-height: 190px;
+    min-height: 178px;
     padding: 20px 18px;
     border: 0;
     border-right: 1px solid var(--surface-border);
@@ -1131,7 +1146,7 @@ body.dark-mode .rail-card__logo {
 /* Názov */
 .rail-card__name {
     position: absolute;
-    top: 118px;
+    top: 128px;
     left: 12px;
     right: 12px;
     z-index: 1;
@@ -1141,40 +1156,6 @@ body.dark-mode .rail-card__logo {
     line-height: 1.22;
     color: var(--text-muted);
     transition: top 0.28s var(--ease-out), color 0.4s ease;
-}
-
-/* Popis — zbalený, odkryje sa až pri prejdení */
-.rail-card__meta {
-    position: absolute;
-    top: 146px;
-    left: 10px;
-    right: 10px;
-    z-index: 1;
-    display: block;
-}
-
-.rail-card__kind,
-.rail-card__desc {
-    display: block;
-    opacity: 0;
-    transition: opacity 0.28s ease, transform 0.28s var(--ease-out);
-}
-
-.rail-card__kind {
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--tone);
-    transform: translateY(8px);
-}
-
-.rail-card__desc {
-    margin-top: 4px;
-    font-size: 0.78rem;
-    line-height: 1.4;
-    color: var(--text-muted);
-    transform: translateY(8px);
 }
 
 /* Aktívny stav — myš, klávesnica aj dotyk */
@@ -1204,18 +1185,8 @@ body.dark-mode .rail-card__logo {
 .rail-card:hover .rail-card__name,
 .rail-card:focus-visible .rail-card__name,
 .rail-card.is-active .rail-card__name {
-    top: 104px;
+    top: 120px;
     color: var(--heading-color);
-}
-
-.rail-card:hover .rail-card__kind,
-.rail-card:hover .rail-card__desc,
-.rail-card:focus-visible .rail-card__kind,
-.rail-card:focus-visible .rail-card__desc,
-.rail-card.is-active .rail-card__kind,
-.rail-card.is-active .rail-card__desc {
-    opacity: 1;
-    transform: translateY(0);
 }
 
 .rail-card:focus-visible {

@@ -719,7 +719,12 @@ body.dark-mode .service-tags span { color: var(--text-color); }
 /* Jemné plus, ktoré sa pri otvorení otočí na mínus.
    Kreslené ako SVG, nie cez pozadia — tie sa v orámovanom krúžku
    centrovali voči vnútornej ploche a čiarka sedela mimo stredu. */
-#faq summary::after { content: none; }
+/* Stara ikona zo style.css sa rusi v oboch stavoch. Pravidlo pre
+   otvoreny stav tam ma vyssiu specificitu, takze mu treba odpovedat
+   rovnako specifickym selektorom - inak sa pri otvoreni vrati a v
+   riadku su naraz dve ikony. */
+#faq summary::after,
+#faq details[open] summary::after { content: none; }
 
 .faq-icon {
     flex: none;

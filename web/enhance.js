@@ -624,11 +624,57 @@
         observer.observe(track, { childList: true });
     };
 
+    /* --------------------------------------------------------------
+       9. Online poistenie — kalkulačka BrokerPortal
+          Vloží sa len vtedy, keď je na sekcii vyplnený vlastný hash
+          v data-bpo-hash. Ten hash určuje, komu sa uzatvorená zmluva
+          priradí, takže sa nedá prevziať cudzí — treba si vyžiadať
+          vlastný. Kým tam nie je, ostáva odkaz na kalkulačku OK Group.
+       -------------------------------------------------------------- */
+    const BPO_SCRIPT = 'https://api.brokerportal.sk/online/app.js';
+
+    const initOnlineInsurance = () => {
+        const section = document.getElementById('online-poistenie');
+        if (!section) return;
+
+        const hash = (section.dataset.bpoHash || '').trim();
+        const embed = section.querySelector('.online-embed');
+        const fallback = section.querySelector('.online-fallback');
+        if (!embed) return;
+
+        if (!hash) {
+            embed.hidden = true;
+            return;
+        }
+
+        const holder = document.createElement('div');
+        holder.className = '__bpo';
+        holder.id = hash;
+        embed.appendChild(holder);
+
+        if (!document.getElementById('brokerportal-online-loader')) {
+            const loader = document.createElement('script');
+            loader.id = 'brokerportal-online-loader';
+            loader.src = BPO_SCRIPT;
+            loader.crossOrigin = 'anonymous';
+            loader.async = true;
+            // Keby sa skript nenacital, odkaz na OK Group ostane viditelny
+            loader.addEventListener('error', () => {
+                embed.hidden = true;
+                if (fallback) fallback.hidden = false;
+            });
+            document.body.appendChild(loader);
+        }
+
+        if (fallback) fallback.hidden = true;
+    };
+
     const init = () => {
         // Povie inline poistke v <head>, ze animacie prevzal tento subor
         window.__finkorbRevealReady = true;
 
         initStagger();
+        initOnlineInsurance();
         initRailboard();
         initReviews();
         initReveal();

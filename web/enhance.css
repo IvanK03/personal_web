@@ -2074,3 +2074,119 @@ body.dark-mode .insurer-card__logo {
 
 [data-name='Generali'],
 [data-name='Wüstenrot'] { --logo-scale: 1.05; }
+
+/* =====================================================================
+   24. Online poistenie
+   ===================================================================== */
+#online-poistenie {
+    max-width: 100%;
+    padding: 100px 20px;
+}
+
+.online-lede {
+    max-width: 620px;
+    margin: 18px auto 0;
+    color: var(--text-muted);
+    font-size: 1.06rem;
+    line-height: 1.7;
+}
+
+.online-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.online-card {
+    padding: 30px 26px;
+    border-radius: 22px;
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    box-shadow: 0 20px 44px -34px rgba(15, 44, 89, 0.6);
+    transition: transform 0.45s var(--ease-out), box-shadow 0.45s var(--ease-out);
+}
+
+.online-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 30px 56px -32px rgba(15, 44, 89, 0.7);
+}
+
+.online-card__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+    color: #ffffff;
+    margin-bottom: 18px;
+    background: var(--grad-teal);
+}
+
+.online-card:nth-child(2) .online-card__icon { background: var(--grad-sky); }
+.online-card:nth-child(3) .online-card__icon { background: var(--grad-gold); }
+
+.online-card h3 {
+    font-size: 1.16rem;
+    margin-bottom: 9px;
+    color: var(--heading-color);
+}
+
+.online-card p {
+    color: var(--text-muted);
+    font-size: 0.97rem;
+    line-height: 1.62;
+}
+
+/* Miesto pre kalkulačku */
+.online-embed {
+    max-width: 1000px;
+    margin: 40px auto 0;
+    border-radius: 22px;
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+}
+
+.online-embed:empty { display: none; }
+
+.online-embed .__bpo,
+.online-embed iframe {
+    display: block;
+    width: 100%;
+    border: 0;
+}
+
+.online-fallback {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.online-note {
+    margin-top: 14px;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+}
+
+@media (max-width: 900px) {
+    .online-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+    #online-poistenie { padding: 54px 16px; }
+    .online-lede { font-size: 0.96rem; margin-top: 14px; }
+    .online-grid { gap: 14px; }
+    .online-card { padding: 22px 18px; border-radius: 18px; }
+    .online-card__icon { width: 44px; height: 44px; border-radius: 13px; margin-bottom: 14px; }
+    .online-card__icon svg { width: 22px; height: 22px; }
+    .online-card h3 { font-size: 1.05rem; }
+    .online-card p { font-size: 0.92rem; }
+    .online-embed { margin-top: 26px; border-radius: 16px; }
+    .online-fallback { margin-top: 26px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .online-card:hover { transform: none; }
+}

@@ -2069,7 +2069,8 @@ body.dark-mode .insurer-card__logo {
 [data-name='ČSOB'],
 [data-name='Uniqa'],
 [data-name='Allianz'],
-[data-name='Colonnade'] { --logo-scale: 1.1; }
+[data-name='Colonnade'],
+[data-name='Genertel'] { --logo-scale: 1.1; }
 
 [data-name='Generali'],
 [data-name='Wüstenrot'] { --logo-scale: 1.05; }

@@ -1771,6 +1771,9 @@ body.dark-mode .rail-card__logo {
     display: block;
     width: 132px;
     height: 62px;
+    /* podložka má pevnú šírku, takže by v stĺpcovom flexe sadla doľava */
+    margin-left: auto;
+    margin-right: auto;
     padding: 7px 10px;
     border-radius: 12px;
     background: #ffffff;
@@ -2047,6 +2050,8 @@ body.dark-mode .insurer-card__logo {
         width: 100%;
         max-width: 116px;
         height: 44px;
+        margin-left: auto;
+        margin-right: auto;
         padding: 5px 7px;
         border-radius: 9px;
     }

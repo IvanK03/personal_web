@@ -1217,7 +1217,9 @@ body.dark-mode .rail-card__logo {
 .rail-scrubber {
     position: relative;
     z-index: 1;
-    /* zvislé posúvanie stránky patrí prehliadaču aj nad pravítkom */
+    cursor: grab;
+    /* Vodorovné gesto si berie skript na posun pásov, zvislé zostáva
+       prehliadaču na scrollovanie stránky. */
     touch-action: pan-y;
     display: flex;
     align-items: center;
@@ -1250,6 +1252,15 @@ body.dark-mode .rail-card__logo {
     height: 21px;
     background: var(--gold);
 }
+
+.rail-scrubber.is-dragging {
+    cursor: grabbing;
+    touch-action: none;
+}
+
+/* Pri ťahaní sa rysky mierne zvýraznia, nech je jasné, že prvok reaguje */
+.rail-scrubber.is-dragging span.on { height: 24px; }
+.rail-scrubber.is-dragging span.near { height: 18px; }
 
 /* ------------------------------------------------------------------
    17. Recenzie
@@ -1627,6 +1638,7 @@ body.dark-mode .rail-card__logo {
 
     /* Užšie karty, nech sa ich na displej zmestí viac ako dve */
     .rail-card { --rail-rest: 142px; --rail-active: 158px; }
+    .rail-scrubber { height: 42px; }
     .rail-card__logo { width: 100px; height: 56px; padding: 6px 8px; }
     .rail-card__logo--stacked { width: 68px; height: 68px; }
     .rail-board::before,

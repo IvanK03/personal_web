@@ -404,41 +404,75 @@
 
         // Ťahanie pravítka
         let dragTarget = null;
+        let touchProbe = null;
 
         const progressFromPointer = event => {
             const rect = scrubber.getBoundingClientRect();
             return clamp01((event.clientX - rect.left) / rect.width);
         };
 
-        scrubber.addEventListener('pointerdown', event => {
-            // Na dotyku ťahanie nezapíname. Pravítko je úzky pás cez celú
-            // šírku dosky a preventDefault by zablokoval scrollovanie
-            // stránky, keby naň používateľ položil prst pri posúvaní.
-            if (event.pointerType === 'touch') return;
-
-            event.preventDefault();
-            scrubber.setPointerCapture(event.pointerId);
+        const beginDrag = event => {
+            if (scrubber.setPointerCapture) {
+                try { scrubber.setPointerCapture(event.pointerId); } catch (error) { /* nevadi */ }
+            }
             scrubber.classList.add('is-dragging');
             dragTarget = progressFromPointer(event);
             start();
+        };
+
+        scrubber.addEventListener('pointerdown', event => {
+            // Myšou a perom začíname hneď.
+            if (event.pointerType !== 'touch') {
+                event.preventDefault();
+                beginDrag(event);
+                return;
+            }
+
+            // Pri dotyku počkáme, ktorým smerom prst pôjde. Pravítko je úzky
+            // pás cez celú šírku dosky — keby sme ťahanie spustili hneď,
+            // nedalo by sa cezeň scrollovať stránku.
+            touchProbe = { id: event.pointerId, x: event.clientX, y: event.clientY };
         });
 
         scrubber.addEventListener('pointermove', event => {
+            if (touchProbe && event.pointerId === touchProbe.id && !scrubber.classList.contains('is-dragging')) {
+                const dx = Math.abs(event.clientX - touchProbe.x);
+                const dy = Math.abs(event.clientY - touchProbe.y);
+
+                if (dy > 10 && dy > dx) {
+                    // zvislé gesto patrí stránke
+                    touchProbe = null;
+                    return;
+                }
+
+                if (dx > 8 && dx > dy) {
+                    touchProbe = null;
+                    beginDrag(event);
+                } else {
+                    return;
+                }
+            }
+
             if (!scrubber.classList.contains('is-dragging')) return;
+
+            // počas ťahania nechceme, aby sa popri tom hýbala aj stránka
+            if (event.cancelable) event.preventDefault();
             dragTarget = progressFromPointer(event);
         });
 
         const endDrag = event => {
+            touchProbe = null;
             if (!scrubber.classList.contains('is-dragging')) return;
             scrubber.classList.remove('is-dragging');
             dragTarget = null;
-            if (event && scrubber.hasPointerCapture(event.pointerId)) {
+            if (event && scrubber.hasPointerCapture && scrubber.hasPointerCapture(event.pointerId)) {
                 scrubber.releasePointerCapture(event.pointerId);
             }
         };
 
         scrubber.addEventListener('pointerup', endDrag);
         scrubber.addEventListener('pointercancel', endDrag);
+        scrubber.addEventListener('lostpointercapture', endDrag);
 
         let frame = 0;
         let onScreen = true;

@@ -1683,16 +1683,23 @@ body.dark-mode .rail-card__logo {
     line-height: 1.72;
 }
 
-/* Mriežka kariet s vlasovými deliacimi čiarami */
+/* Mriežka kariet s vlasovými deliacimi čiarami.
+   Čiary kreslí každá karta vpravo a dole; vnútorný obal je o 1 px
+   posunutý von, takže rám ich po obvode oreže. Vďaka tomu to sedí
+   pri akomkoľvek počte kariet — aj keď posledný riadok nie je plný. */
 .insurers-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
     max-width: 1200px;
     margin: 0 auto;
     border: 1px solid var(--surface-border);
     border-radius: 20px;
     overflow: hidden;
     background: var(--surface);
+}
+
+.insurers-grid__inner {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin: 0 -1px -1px 0;
 }
 
 .insurer-card {
@@ -1708,10 +1715,6 @@ body.dark-mode .rail-card__logo {
     overflow: hidden;
     transition: background-color 0.35s ease;
 }
-
-/* posledný v riadku a posledný riadok bez vonkajšej čiary */
-.insurers-grid .insurer-card:nth-child(4n) { border-right: 0; }
-.insurers-grid .insurer-card:nth-last-child(-n + 4) { border-bottom: 0; }
 
 /* Farebné podfarbenie zdola, rovnaké ako na railboarde */
 .insurer-card::after {
@@ -1841,17 +1844,11 @@ body.dark-mode .insurer-card__logo {
 }
 
 @media (max-width: 1024px) {
-    .insurers-grid { grid-template-columns: repeat(2, 1fr); }
-    .insurers-grid .insurer-card:nth-child(4n) { border-right: 1px solid var(--surface-border); }
-    .insurers-grid .insurer-card:nth-child(2n) { border-right: 0; }
-    .insurers-grid .insurer-card:nth-last-child(-n + 4) { border-bottom: 1px solid var(--surface-border); }
-    .insurers-grid .insurer-card:nth-last-child(-n + 2) { border-bottom: 0; }
+    .insurers-grid__inner { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 620px) {
-    .insurers-grid { grid-template-columns: 1fr; }
-    .insurers-grid .insurer-card { border-right: 0; border-bottom: 1px solid var(--surface-border); }
-    .insurers-grid .insurer-card:last-child { border-bottom: 0; }
+    .insurers-grid__inner { grid-template-columns: 1fr; }
     .insurers-section { padding: 60px 20px 80px; }
     .insurer-back { display: none; }
 }

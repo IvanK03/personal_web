@@ -1217,6 +1217,8 @@ body.dark-mode .rail-card__logo {
 .rail-scrubber {
     position: relative;
     z-index: 1;
+    /* zvislé posúvanie stránky patrí prehliadaču aj nad pravítkom */
+    touch-action: pan-y;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1614,6 +1616,14 @@ body.dark-mode .rail-card__logo {
 
 @media (max-width: 768px) {
     #hero { padding-top: 54px; }
+
+    /* Prepínač témy mal 38 px, čo je pod odporúčanou veľkosťou
+       dotykového cieľa (44 px). Ikona zostáva rovnaká. */
+    .theme-toggle-btn {
+        width: 44px;
+        height: 44px;
+        justify-content: center;
+    }
 
     /* Užšie karty, nech sa ich na displej zmestí viac ako dve */
     .rail-card { --rail-rest: 142px; --rail-active: 158px; }

@@ -411,6 +411,11 @@
         };
 
         scrubber.addEventListener('pointerdown', event => {
+            // Na dotyku ťahanie nezapíname. Pravítko je úzky pás cez celú
+            // šírku dosky a preventDefault by zablokoval scrollovanie
+            // stránky, keby naň používateľ položil prst pri posúvaní.
+            if (event.pointerType === 'touch') return;
+
             event.preventDefault();
             scrubber.setPointerCapture(event.pointerId);
             scrubber.classList.add('is-dragging');
